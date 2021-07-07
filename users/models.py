@@ -3,7 +3,6 @@ from django.db import models
 # Create your models here.
 from django.contrib.auth.models import User
 from phone_field import PhoneField
-# from dogs.models import Dog
 
 
 class Client(models.Model):

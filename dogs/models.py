@@ -16,9 +16,9 @@ class Dog(models.Model):
     vet_address = models.CharField(max_length=200)
     special_needs = models.TextField(blank=True)
     extra_notes = models.TextField(blank=True)
-    # classes_completed =
-    # booked_sessions =
-    # media =
+    booked_sessions = models.ManyToManyField(
+        to="training_sessions.Session", default=None, blank=True)
+    # media = photo/video uploads
     no_match_dogs = models.ManyToManyField('self', default=None, blank=True)
 
     def __str__(self):
