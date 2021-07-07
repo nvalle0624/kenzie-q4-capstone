@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "kenzie-q4-capstone"
+version = "0.1.0"
+description = ""
+authors = ["nvalle0624 <nvalle0624@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Django = "^3.2.5"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
