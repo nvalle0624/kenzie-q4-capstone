@@ -7,7 +7,7 @@ from django.shortcuts import render, HttpResponseRedirect, reverse
 
 # Create your views here.
 
-def message_view(request):
+def message_form_view(request):
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
@@ -25,6 +25,6 @@ def message_view(request):
     return render(request, 'tweet.html', {'form': form})
 
 
-def tweet_detail_view(request, message_id: int):
+def message_detail_view(request, message_id: int):
     my_message = Message.objects.get(id=message_id)
     return render(request, 'tweet_detail.html', {'message': my_message})
