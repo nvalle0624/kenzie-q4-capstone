@@ -37,14 +37,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'phone_field',
+
     'api',
     'authentication',
     'dogs',
     'schedule',
     'training_sessions',
+
+    
+    'phone_field'
+
     'admin_users',
     'users',
+
 ]
 
 MIDDLEWARE = [
@@ -62,7 +67,10 @@ ROOT_URLCONF = 'bananadog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+
+
         'DIRS': [BASE_DIR / 'templates'],
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
