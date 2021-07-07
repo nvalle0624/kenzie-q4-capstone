@@ -22,9 +22,9 @@ def message_form_view(request):
             )
             return HttpResponseRedirect(reverse('homepage'))
     form = MessageForm()
-    return render(request, 'tweet.html', {'form': form})
+    return render(request, 'message_form.html', {'form': form})
 
 
 def message_detail_view(request, message_id: int):
     my_message = Message.objects.get(id=message_id)
-    return render(request, 'tweet_detail.html', {'message': my_message})
+    return render(request, 'message_detail.html', {'message': my_message})
