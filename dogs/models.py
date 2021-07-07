@@ -20,6 +20,8 @@ class Dog(models.Model):
         to="training_sessions.Session", default=None, blank=True)
     # media = photo/video uploads
     no_match_dogs = models.ManyToManyField('self', default=None, blank=True)
+    # reports = models.ForeignKey(
+    #     to="training_sessions.Report", on_delete=models.CASCADE, blank=True, default=None)
 
     def __str__(self):
         return self.name
