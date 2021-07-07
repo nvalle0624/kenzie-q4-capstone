@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from messages.models import Message
-from messages.forms import MessageForm
+from all_messages.models import Message
+from all_messages.forms import MessageForm
 from notifications.models import Notification
 from django.shortcuts import render, HttpResponseRedirect, reverse
 
@@ -26,5 +26,5 @@ def message_view(request):
 
 
 def tweet_detail_view(request, message_id: int):
-    message = Message.objects.get(id=message_id)
-    return render(request, 'tweet_detail.html', {'message': message})
+    my_message = Message.objects.get(id=message_id)
+    return render(request, 'tweet_detail.html', {'message': my_message})

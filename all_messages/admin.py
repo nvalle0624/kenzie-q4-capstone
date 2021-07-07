@@ -1,5 +1,5 @@
 from django.contrib import admin
-from messages.models import Message
+from all_messages.models import Message
 
 # Register your models here.
 

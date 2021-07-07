@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'phone_field',
     'admin_users',
     'users',
-
+    'all_messages',
+    'notifications',
 ]
 
 MIDDLEWARE = [
