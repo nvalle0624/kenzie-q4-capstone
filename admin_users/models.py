@@ -2,17 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from phone_field import PhoneField
-# Create your models here.
 
-
-# Admin/trainer
-# Name - text
-# Number - phone/integer?
-# Email - email
-# Monthly availability - choices, date/time fields?
-# Booked sessions - list, text or date/time fields?
-# Certifications- text, choices
-# Field expertise(trainer, walker, hiker, runner, behavior) - text, choices
 
 
 class Trainer(models.Model):
