@@ -1,0 +1,21 @@
+<div>
+  <p>{{dog.name}}</p>
+  <p>{{dog.owner}}</p>
+  <p>{{dog.breed}}</p>
+  <p>{{dog.age_years}}years {{dog.age_months}}months</p>
+  <p>{{dog.vet_name}}</p>
+  <p>{{dog.vet_number}}</p>
+  <p>{{dog.vet_address}}</p>
+  <p>{{dog.special_needs}}</p>
+  <img>{{dog.extra_notes}}</img>
+  <br>
+  {% load static %}
+  <p>Profile Pic</p>
+  <img src='{% static dog.profile_pic %}'>
+  <p>{{dog.profile_pic}}</p>
+  <br>
+  <p>All media</p>
+  {% for p in pics %}
+ <p>{{p}}</p>
+  {% endfor %}
+</div>
