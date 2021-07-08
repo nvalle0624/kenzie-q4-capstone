@@ -14,4 +14,5 @@ class Session(models.Model):
 
 class Report(models.Model):
     dog_name = models.ForeignKey(Dog, on_delete=CASCADE)
+    # report = models.models.TextField()
     time_created = models.DateTimeField(default=timezone.now)

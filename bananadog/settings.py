@@ -37,16 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'api',
     'authentication',
     'dogs',
     'schedule',
     'training_sessions',
-
-    
-    'phone_field'
-
+    'phone_field',
     'admin_users',
     'users',
 

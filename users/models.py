@@ -15,7 +15,7 @@ class Client(models.Model):
     phone_contact = PhoneField(blank=True, help_text='Contact Number')
 
     # booked_sessions = upcoming sessions, many to many?, should show all past and future sessions from training sessions model
-    # dogs_owned = models.ForeignKey(Dog, on_delete=models.CASCADE)
+    
     # reports = foreign key or one to one with reports model in training sessions
 
     def __str__(self):
