@@ -22,6 +22,8 @@ class Session(models.Model):
 
 class Report(models.Model):
     dog_name = models.ForeignKey(Dog, on_delete=CASCADE)
+
     sessions = models.ManyToManyField(Session)
+
     time_created = models.DateTimeField(default=timezone.now)
     notes = models.TextField(blank=True)
