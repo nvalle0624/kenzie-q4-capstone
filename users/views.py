@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect, reverse
 
 from django.contrib.auth import login, logout, authenticate
 
-from users.forms import LoginForm, SignUpForm
+from users.forms import LoginForm, SignUpForm, ClientForm
 
 from users.models import Client
 
