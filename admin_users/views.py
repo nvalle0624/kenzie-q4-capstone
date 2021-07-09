@@ -8,10 +8,10 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 ''' add trainer id '''
-
+@staff_member_required
 def trainer_home(request):
     if request.user.is_authenticated:
-        trainer = Trainer.objects.all()
+        trainer = Trainer.objects.get(id=request.user.id)
         return render(request, 'admin_homepage.html', {'trainer':trainer})
     return HttpResponseRedirect(reverse('add_trainer'))
     

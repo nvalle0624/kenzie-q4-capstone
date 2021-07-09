@@ -10,10 +10,10 @@ from users.models import Client
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-
-def client_home(request):
+# Create your views here.
+def client_home(request, user_id:int):
     if request.user.is_authenticated:
-       client = Client.objects.all()
+       client = Client.objects.get(id=user_id)
        return render(request, 'client_homepage.html', {'client':client})
     return HttpResponseRedirect(reverse('sign_up'))
 
@@ -27,7 +27,7 @@ def login_view(request):
             )
             if user:
                 login(request, user)
-                return HttpResponseRedirect(reverse("homepage"))
+                return HttpResponseRedirect(reverse("client_home"))
     form = LoginForm()
     return render(request, "login.html", {"form": form})
 
@@ -43,7 +43,7 @@ def signup_view(request):
                 email=data['email'],
                 password=data["password"],
             )
-            return HttpResponseRedirect(reverse("homepage"))
+            return HttpResponseRedirect(reverse("client_home"))
 
     form = SignUpForm()
     
