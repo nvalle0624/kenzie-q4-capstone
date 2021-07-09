@@ -34,16 +34,28 @@ def dog_profile_view(request, dog_id: int):
     dog = Dog.objects.get(id=dog_id)
     vids = []
     pics = []
+    # from : https://www.codespeedy.com/how-to-iterate-over-files-in-a-given-directory-in-python/
     for subdirectories, directories, files in os.walk(r'./static/'):
         for file_name in files:
-            # file_loc = subdirectories + os.path.sep + file_name
-            if file_name.endswith(".mov"):
+            file_loc = subdirectories + os.path.sep + file_name
+            if file_loc.endswith(".m4v"):
+                vids.append(file_loc)
+            elif file_loc.endswith('.jpg'):
+                pics.append(file_loc)
+    # these next dozen lines are probably not the best way to do this, but it works for now
+    vids_path = []
+    pics_path = []
+    prof_pic = ''
+    for vid in vids:
+        vids_path.append(vid[9:])
+    for pic in pics:
+        if pic.startswith('./static/profile/'):
+            pics_path.append(pic[17:])
+            prof_pic += pic[17:]
+        else:
+            pics_path.append(pic[9:])
 
-                vids.append(file_name)
-            elif file_name.endswith('.jpg'):
-                pics.append(file_name)
-
-    return render(request, 'dog_profile_view.html', {'dog': dog, 'pics': pics, 'vids': vids})
+    return render(request, 'dog_profile_view.html', {'dog': dog, 'pics_path': pics_path, 'vids_path': vids_path, 'prof_pic': prof_pic})
 
 
 def all_dogs_view(request):
