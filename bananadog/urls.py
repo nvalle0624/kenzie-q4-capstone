@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 
+
 from dogs import views as dog_views
 
 from django.urls import path,include
@@ -29,3 +30,5 @@ urlpatterns = [
     path('dog_profile/<int:dog_id>/',
          dog_views.dog_profile_view, name='dog_profile_view'),
 ]
+
+    
