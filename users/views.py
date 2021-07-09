@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, HttpResponseRedirect, reverse
 
 from django.contrib.auth import login, logout, authenticate
@@ -7,9 +8,14 @@ from users.forms import LoginForm, SignUpForm
 from users.models import Client
 
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
 
+def client_home(request):
+    if request.user.is_authenticated:
+       client = Client.objects.all()
+       return render(request, 'client_homepage.html', {'client':client})
+    return HttpResponseRedirect(reverse('sign_up'))
 
 def login_view(request):
     if request.method == "POST":
@@ -47,3 +53,4 @@ def signup_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("login"))
+
