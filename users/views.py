@@ -31,6 +31,7 @@ def login_view(request):
     form = LoginForm()
     return render(request, "login.html", {"form": form})
 
+
 def signup_view(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
@@ -46,7 +47,7 @@ def signup_view(request):
             return HttpResponseRedirect(reverse("client_home"))
 
     form = SignUpForm()
-    
+
     return render(request, "signup.html", {"form": form})
 
 

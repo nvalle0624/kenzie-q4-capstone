@@ -7,6 +7,7 @@ class LoginForm(forms.Form):
     username = forms.CharField(max_length=50)
     password = forms.CharField(widget=forms.PasswordInput)
 
+
 class SignUpForm(forms.Form):
     username = forms.CharField(max_length=50)
     email = forms.EmailField(max_length=100)
@@ -15,4 +16,3 @@ class SignUpForm(forms.Form):
     class Meta:
         model = Client
         fields = ("username", "password")
-    

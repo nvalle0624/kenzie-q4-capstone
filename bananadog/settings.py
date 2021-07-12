@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'users',
     'all_messages',
     'notifications',
+    'media_files',
 ]
 
 MIDDLEWARE = [

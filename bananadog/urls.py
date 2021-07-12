@@ -18,7 +18,7 @@ from django.contrib import admin
 
 from dogs import views as dog_views
 
-from django.urls import path,include
+from django.urls import path, include
 
 
 urlpatterns = [
@@ -30,6 +30,6 @@ urlpatterns = [
     path('all_dogs/', dog_views.all_dogs_view, name="all_dogs_view"),
     path('dog_profile/<int:dog_id>/',
          dog_views.dog_profile_view, name='dog_profile_view'),
+    path('delete_media/<int:mediafile_id>/',
+         dog_views.delete_media_view, name='delete_media_view'),
 ]
-
-    
