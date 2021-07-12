@@ -15,7 +15,7 @@ def client_home(request, user_id:int):
     if request.user.is_authenticated:
        client = Client.objects.get(id=user_id)
        return render(request, 'client_homepage.html', {'client':client})
-    return HttpResponseRedirect(reverse('sign_up'))
+    return HttpResponseRedirect(reverse('signup'))
 
 def login_view(request):
     if request.method == "POST":
@@ -27,7 +27,7 @@ def login_view(request):
             )
             if user:
                 login(request, user)
-                return HttpResponseRedirect(reverse("client_home"))
+                return HttpResponseRedirect(reverse("client_home/"))
     form = LoginForm()
     return render(request, "login.html", {"form": form})
 
@@ -44,7 +44,7 @@ def signup_view(request):
                 email=data['email'],
                 password=data["password"],
             )
-            return HttpResponseRedirect(reverse("client_home"))
+            return HttpResponseRedirect("client_home")
 
     form = SignUpForm()
 
