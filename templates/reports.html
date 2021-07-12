@@ -1,0 +1,9 @@
+{%for r in report%}
+<p>{{r.dog_name}}</p>
+{%for s in r.sessions.all%}
+<p>{{s.activity_name}}</p>
+{%endfor%}
+
+<p>{{r.notes}}</p>
+<p>{{r.time_created}}</p>
+{%endfor%}

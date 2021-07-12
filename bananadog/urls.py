@@ -24,6 +24,7 @@ from django.urls import path,include
 urlpatterns = [
     path('', include('admin_users.urls')),
     path('', include('users.urls')),
+    path('', include('training_sessions.urls')),
     path('admin/', admin.site.urls),
     path('dog_form/', dog_views.dog_profile_form_view, name='dog_form_view'),
     path('all_dogs/', dog_views.all_dogs_view, name="all_dogs_view"),
