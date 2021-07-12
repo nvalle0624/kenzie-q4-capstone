@@ -21,9 +21,10 @@ def login_view(request):
             )
             if user:
                 login(request, user)
-                return HttpResponseRedirect(reverse("homepage"))
+                return HttpResponseRedirect(reverse("all_dogs_view"))
     form = LoginForm()
     return render(request, "login.html", {"form": form})
+
 
 def signup_view(request):
     if request.method == "POST":
@@ -37,10 +38,10 @@ def signup_view(request):
                 email=data['email'],
                 password=data["password"],
             )
-            return HttpResponseRedirect(reverse("homepage"))
+            return HttpResponseRedirect(reverse("client_form_view"))
 
     form = SignUpForm()
-    
+
     return render(request, "signup.html", {"form": form})
 
 

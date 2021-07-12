@@ -11,11 +11,11 @@ class Client(models.Model):
     email = models.EmailField(max_length=100)
     address = models.CharField(max_length=300)
     # phone field from: https://pypi.org/project/django-phone-field/
-    phone_contact = PhoneField(blank=True, help_text='Contact Number')
+    phone_contact = PhoneField(
+        blank=True, help_text='Contact Number')
 
     dogs_owned = models.ManyToManyField(
         to="dogs.Dog", default=None, blank=True)
-
 
     def __str__(self):
         return self.name
