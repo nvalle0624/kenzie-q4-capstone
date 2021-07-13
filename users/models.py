@@ -7,7 +7,7 @@ from phone_field import PhoneField
 
 class Client(models.Model):
     name = models.CharField(max_length=60)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     email = models.EmailField(max_length=100)
     address = models.CharField(max_length=300)
     # phone field from: https://pypi.org/project/django-phone-field/
