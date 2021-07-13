@@ -1,5 +1,6 @@
 
-{'% load staticfiles %}
+{% load bootstrap4 %}
+{% load static %}
 <!doctype html>
 <html lang="en">
 
@@ -10,13 +11,13 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
-  <link rel="stylesheet" type="text/css" href="{'% static 'cal/css/styles.css' %}">
+  <link rel="stylesheet" type="text/css" href="{'% static 'calendar.css' %}">
   <title>Django Calendar App</title>
 </head>
 <body>
 
-  {'% block content %}
-  {'% endblock %}
+  {% block content %}
+  {% endblock %}
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -27,7 +28,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
 
-  {'% block script %}
-  {'% endblock %}
+  {% block script %}
+  {% endblock %}
 </body>
 </html>
