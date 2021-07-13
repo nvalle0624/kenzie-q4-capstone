@@ -6,32 +6,38 @@
   <p>Breed: {{dog.breed}}</p>
   <p>Age: {{dog.age_years}}year(s) {{dog.age_months}}month(s)</p>
   <p>Vet Name: {{dog.vet_name}}</p>
-  <p>Vet Contact #: {{dog.vet_number.phone}}</p>
+  <p>Vet Contact #: {{dog.vet_number}}</p>
   <p>Vet Address: {{dog.vet_address}}</p>
   <p>Speacial Needs: {{dog.special_needs}}</p>
   <img>Extra Notes: {{dog.extra_notes}}</img>
   </div>
   <br>
   <div>
+
     
-    <p><b>Profile Pic</b></p>
-    <img src="{% static 'img_media/profiles/IMG_3496.jpg' %}" width="200" height="200">
-    <p>{{dog.profile_pic}}</p>
-    <br>
-    <p><b>All Media</b></p>
-    - Photos
-    <br>
-    {% for p in pics_path %}
-    <img src="{% static p %}" width="200" height="200">
-    <p>{{p}}</p>
-    {% endfor %}
-    - Videos
-    <br>
-    {% for v in vids_path %}
-    <video width="320" height="240" controls>
-      <source src="{% static v %}" type="video/mp4">
-    </video>
-    <p>{{v}}</p>
-    {% endfor %}
+    <form method='POST' action="" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{image_form.as_p}}
+      <input type='submit' value='Submit'>
+    </form>
+    <h2>Pics</h2>
+  {% for image in image_files %}
+  {% if '.jpg' in image.image.url %}
+  <img src={{image.image.url}} width="200" height="200">
+  <a href='/delete_media/{{image.id}}'>Delete</a>
+  {% endif %}
+  {% endfor %}
+
+
+    <h2>Vids</h2>
+  {% for file in image_files %}
+  {% if '.m4v' in file.image.url %}
+  <p>{{file.file}}</p>
+  <video width="320" height="240" controls>
+    <source src={{file.image.url}} type="video/mp4">
+  </video>
+  <a href='/delete_media/{{file.id}}'>Delete</a>
+  {% endif %}
+  {% endfor %}
   </div>
 

@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from phone_field import PhoneField
 
 
-
 class Trainer(models.Model):
     EXPERTISE_CHOICES = (
         ('T', 'Trainer'),
@@ -24,4 +23,4 @@ class Trainer(models.Model):
         max_length=1, choices=EXPERTISE_CHOICES)
 
     def __str__(self):
-        return self.name 
+        return self.name
