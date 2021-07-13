@@ -4,5 +4,5 @@ from training_sessions import views
 
 urlpatterns = [
     path('reports/', views.reports, name='reports'),
-    path(r'^calendar/$', views.Calendar.as_view(), name='calendar'),
+    path('calendar/', views.CalendarView.as_view(template_name='calendar.html'), name='calendar'),
 ]
