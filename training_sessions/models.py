@@ -26,4 +26,4 @@ class Report(models.Model):
     sessions = models.ManyToManyField(Session)
 
     time_created = models.DateTimeField(default=timezone.now)
-    notes = models.TextField(blank=True)
+    
