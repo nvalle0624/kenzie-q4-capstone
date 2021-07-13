@@ -8,7 +8,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
 
 
-class SignUpForm(forms.Form):
+class SignUpForm(forms.ModelForm):
     username = forms.CharField(max_length=50)
     email = forms.EmailField(max_length=100)
     password = forms.CharField(widget=forms.PasswordInput)

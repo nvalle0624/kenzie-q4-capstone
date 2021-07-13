@@ -1,9 +1,15 @@
 {%for r in report%}
-<p>{{r.dog_name}}</p>
-{%for s in r.sessions.all%}
-<p>{{s.activity_name}}</p>
-{%endfor%}
+<p>Dog Name: {{r.dog_name}}</p>
+{%for s in r.sessions.all%} {%for t in s.trainer.all%}
+<p>Trainer: {{t.admin_user}}</p>
+
+<p>Activity: {{s.activity_name}}</p>
+<p>Start: {{s.time_started}}</p>
+<p>End: {{s.time_ended}}</p>
+<p>Completed: {{s.completed}}</p>
+<p>notes: {{s.notes}}</p>
 
 <p>{{r.notes}}</p>
 <p>{{r.time_created}}</p>
-{%endfor%}
+<hr />
+{%endfor%} {%endfor%} {%endfor%}

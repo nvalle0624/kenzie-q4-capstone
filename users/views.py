@@ -27,7 +27,7 @@ def login_view(request):
             )
             if user:
                 login(request, user)
-                return HttpResponseRedirect(reverse("client_home/"))
+                return HttpResponseRedirect(reverse("client_home", args=[user.id]))
     form = LoginForm()
     return render(request, "login.html", {"form": form})
 
@@ -44,7 +44,8 @@ def signup_view(request):
                 email=data['email'],
                 password=data["password"],
             )
-            return HttpResponseRedirect("client_home")
+            
+            return HttpResponseRedirect("client_home", args=[user.id])
 
     form = SignUpForm()
 
