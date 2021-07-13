@@ -1,25 +1,26 @@
 from django.shortcuts import render
-from training_sessions.models import Report
+
+from training_sessions.models import Report, Session, Calendar
+
 from datetime import datetime, date
 
 from django.http import HttpResponse
 from django.views import generic
 from django.utils.safestring import mark_safe
 
-from .models import *
-from django.utils import Calendar
+
 # Create your views here
+
 
 def reports(request):
     report = Report.objects.all()
-    return render(request, 'reports.html', {'report':report})
-
+    return render(request, 'reports.html', {'report': report})
 
 
 class CalendarView(generic.ListView):
-    model = Event
-    template_name = 'cal/calendar.html'
-    #  ^ change template name ^ 
+    model = Session
+    template_name = 'calendar.html'
+    #  ^ change template name ^
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -34,6 +35,7 @@ class CalendarView(generic.ListView):
         html_cal = cal.formatmonth(withyear=True)
         context['calendar'] = mark_safe(html_cal)
         return context
+
 
 def get_date(req_day):
     if req_day:
