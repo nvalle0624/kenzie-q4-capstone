@@ -1,0 +1,14 @@
+<h1>This is {{request.user}}'s notifications page</h1>
+
+{% if all_notifications %}
+<h3>You have {{count}} new notification(s)</h3>
+{% for item in all_notifications %}
+<div style='border: 2px solid lightblue; width: 300px;'>
+  <p><b>{{item.sent_by}}</b></p>
+<p>{{item.text}}</p>
+<h5>{{item.time_posted}}</h5>
+</div>
+{% endfor %}
+{% else %}
+<h3>No new notifications</h3>
+{% endif %}

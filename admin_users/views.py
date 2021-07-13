@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse 
+from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from admin_users.models import Trainer
 from admin_users.forms import TrainerForm
 from django.contrib.auth.models import User
@@ -8,13 +8,16 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 ''' add trainer id '''
+
+
 @staff_member_required
 def trainer_home(request):
     if request.user.is_authenticated:
         trainer = Trainer.objects.get(id=request.user.id)
-        return render(request, 'admin_homepage.html', {'trainer':trainer})
+        return render(request, 'admin_homepage.html', {'trainer': trainer})
     return HttpResponseRedirect(reverse('add_trainer'))
-    
+
+
 @staff_member_required
 def add_trainer(request):
     if request.method == "POST":
@@ -23,7 +26,7 @@ def add_trainer(request):
         if form.is_valid():
             data = form.cleaned_data
             print(data)
-            Trainer.objects.create(
+            new_trainer = Trainer.objects.create(
                 admin_user=data['admin_user'],
                 name=data['name'],
                 phone=data['phone'],
@@ -32,7 +35,7 @@ def add_trainer(request):
                 field_of_expertise=data['field_of_expertise']
 
             )
-            
+
             return HttpResponseRedirect(reverse("homepage"))
     form = TrainerForm()
-    return render(request, "trainer_form.html", {"form": form})        
+    return render(request, "trainer_form.html", {"form": form})
