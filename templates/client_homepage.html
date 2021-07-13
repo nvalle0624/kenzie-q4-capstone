@@ -2,4 +2,6 @@
 <p>{{client.email}}</p>
 <p>{{client.address}}</p>
 <p>{{client.phone_contact}}</p>
-<p>{{client.dogs_owned}}</p>
+{%for c in client.dogs_owned.all%}
+<p>{{c.name}}</p>
+{%endfor%}
