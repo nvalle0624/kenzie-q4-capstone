@@ -36,8 +36,10 @@ def login_view(request):
                 
                 login(request, user)
 
+
                 
                 return HttpResponseRedirect(reverse("client_home", args=[request.user.id] ))
+
 
     form = LoginForm()
     return render(request, "login.html", {"form": form})
@@ -58,6 +60,7 @@ def signup_view(request):
                 password=data["password"])
             
             return HttpResponseRedirect(reverse('clientform'))
+
 
     form = SignUpForm()
     
