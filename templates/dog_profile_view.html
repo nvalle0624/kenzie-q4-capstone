@@ -35,8 +35,8 @@
   <p>{{file.file}}</p>
   <video width="320" height="240" controls>
     <source src={{file.image.url}} type="video/mp4">
-    <a href='/delete_media/{{image.id}}'>Delete</a>
   </video>
+  <a href='/delete_media/{{file.id}}'>Delete</a>
   {% endif %}
   {% endfor %}
   </div>

@@ -17,6 +17,8 @@ from django.contrib import admin
 
 
 from dogs import views as dog_views
+from all_messages import views as message_views
+from notifications import views as notifications_view
 
 from django.urls import path, include
 
@@ -32,4 +34,10 @@ urlpatterns = [
          dog_views.dog_profile_view, name='dog_profile_view'),
     path('delete_media/<int:mediafile_id>/',
          dog_views.delete_media_view, name='delete_media_view'),
+    path('message_form/', message_views.client_message_form_view,
+         name='message_form_view'),
+    path('all_messages/<int:user_id>/', message_views.all_messages_view,
+         name='all_messages_view'),
+    path('notifications/<int:user_id>/',
+         notifications_view.notifications_view, name='notifications_view')
 ]

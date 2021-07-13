@@ -1,0 +1,30 @@
+
+
+<div>
+  <form method="post" action="">
+    {% csrf_token%} {{form.as_p}}
+    <input type="submit" value="submit" />
+  </form>
+</div>
+
+<h2>Messages: </h2>
+{% for message in all_messages %}
+{% if  message.sent_by == request.user and message.send_to == user_filter %}
+<div style='border: 2px solid blue; width: 300px; flex-direction: column;'>
+  <p>To: {{message.send_to}}</p>
+  <p>{{message.text}}</p>
+  <p>{{message.time_posted}}</p>
+  
+</div>
+
+{% elif message.send_to == request.user and message.sent_by == user_filter %}
+<div style='border: 2px solid green; width: 300px; flex-direction: column; margin-left: 50%;'>
+  <p>From: {{message.sent_by}}</p>
+  <p>{{message.text}}</p>
+  <p>{{message.time_posted}}</p>
+  
+</div>
+{% endif %}
+
+{% endfor %}
+
