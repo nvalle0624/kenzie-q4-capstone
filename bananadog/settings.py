@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'authentication',
+    'bootstrap4',
     'dogs',
     'schedule',
     'training_sessions',
