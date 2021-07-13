@@ -31,6 +31,7 @@ def login_view(request):
             user = authenticate(
                 request, username=data.get("username"), password=data.get("password")
             )
+
             login(request, user)
             if user.is_staff == True:
                 if Trainer.objects.filter(admin_user=request.user).exists():
@@ -44,6 +45,7 @@ def login_view(request):
                     return HttpResponseRedirect(reverse("clienthome", args=[this_client.id]))
                 else:
                     return HttpResponseRedirect(reverse("clientform"))
+
     form = LoginForm()
     return render(request, "login.html", {"form": form})
 
@@ -62,6 +64,7 @@ def signup_view(request):
                 password=data["password"])
             # login(request, new_user)
             return HttpResponseRedirect(reverse('login'))
+
 
     form = SignUpForm()
     return render(request, "clientform.html", {"form": form})
