@@ -11,11 +11,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-def client_home(request, user_id:int):
+
+
+def client_home(request, user_id: int):
     if request.user.is_authenticated:
-       client = Client.objects.get(id=user_id)
-       return render(request, 'client_homepage.html', {'client':client})
+        client = Client.objects.get(id=user_id)
+        return render(request, 'client_homepage.html', {'client': client})
     return HttpResponseRedirect(reverse('sign_up'))
+
 
 def login_view(request):
     if request.method == "POST":
@@ -27,7 +30,7 @@ def login_view(request):
             )
             if user:
                 login(request, user)
-                return HttpResponseRedirect(reverse("client_home"))
+                return HttpResponseRedirect(reverse("client_home", args=[request.user.id]))
     form = LoginForm()
     return render(request, "login.html", {"form": form})
 
@@ -44,7 +47,7 @@ def signup_view(request):
                 email=data['email'],
                 password=data["password"],
             )
-            return HttpResponseRedirect(reverse("client_home"))
+            return HttpResponseRedirect(reverse("client_home", args=[new_user.id]))
 
     form = SignUpForm()
 
@@ -54,4 +57,3 @@ def signup_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("login"))
-
