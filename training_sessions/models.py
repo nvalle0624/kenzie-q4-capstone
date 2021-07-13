@@ -23,7 +23,7 @@ class Calendar(HTMLCalendar):
         sessions_per_day = sessions.filter(start_time__day=day)
         d = ''
         for session in sessions_per_day:
-            d += f'<li> {session.title} </li>'
+            d += f'<li> {session.activity_name} </li>'
 
         if day != 0:
             return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
