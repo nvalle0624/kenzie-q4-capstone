@@ -1,10 +1,13 @@
 from django.shortcuts import render
+
 from training_sessions.models import Report, Session, Calendar
+
 from datetime import datetime, date
 
 from django.http import HttpResponse
 from django.views import generic
 from django.utils.safestring import mark_safe
+
 
 # Create your views here
 
