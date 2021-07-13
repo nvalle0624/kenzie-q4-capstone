@@ -9,7 +9,6 @@ from admin_users.models import Trainer
 # Create your models here.
 from datetime import datetime, timedelta
 from calendar import HTMLCalendar
-from .models import Event
 
 
 class Calendar(HTMLCalendar):
@@ -54,10 +53,10 @@ class Calendar(HTMLCalendar):
 class Session(models.Model):
     trainer = models.ManyToManyField(Trainer)
     activity_name = models.CharField(max_length=50)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     dogs_in_session = models.ManyToManyField(Dog)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(default=timezone.now)
+    end_time = models.DateTimeField(default=timezone.now)
     completed = models.BooleanField(default=False)
     notes = models.TextField(blank=True)
 
