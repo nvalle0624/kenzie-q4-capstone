@@ -1,9 +1,11 @@
 from django.contrib.auth.models import User
 from admin_users.models import Trainer
 from users.models import Client
+from training_sessions.forms import SessionForm
 from django.shortcuts import render
-
+from django.views.generic.edit import FormView
 from training_sessions.models import Report, Session, Calendar
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from datetime import datetime, date, timedelta
 
@@ -92,3 +94,19 @@ def next_month(d):
     next_month = last + timedelta(days=1)
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
+
+
+class SessionFormView(LoginRequiredMixin, FormView):
+
+    template_name = 'session_form.html'
+    form_class = SessionForm
+    success_url = '/calendar/'
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['form'] = form
+    # return context

@@ -35,10 +35,10 @@ End:
 {{session.end_time}}
 <br>
 
-{% if not session.full %}
-<p>There are still {{num_of_dogs}} slots available for this session!</p>
-{%else %}
+{% if session.full %}
 <p>Sorry, this session is full!</p>
+{% else %}
+<p>There are still {{num_of_dogs}} slots available for this session!</p>
 {% endif %}
 
 <br>
