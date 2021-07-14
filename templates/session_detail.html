@@ -1,6 +1,17 @@
+
+
+
 Activity: {{session.activity_name}}
 <br>
-Run by: {{session.trainer.name}}
+Run by: 
+
+<ul>
+  {% for trainer in session.trainer.all  %}
+  <li>
+    <a href='/trainer_detail/{{trainer.id}}'>{{trainer.name}}</a>
+  </li>
+  {% endfor %}
+</ul>
 <br>
 Dogs in session:
 <br>
