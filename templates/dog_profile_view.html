@@ -8,7 +8,7 @@
 
 <div>
   <p>Name: {{dog.name}}</p>
-  <p>Owner: {{dog.owner.full_name}}</p>
+  <p>Owner: <a href='/client_detail/{{dog.owner.id}}'>{{dog.owner.full_name}}</a></p>
   <p>Breed: {{dog.breed}}</p>
   <p>Age: {{dog.age_years}}year(s) {{dog.age_months}}month(s)</p>
   <p>Vet Name: {{dog.vet_name}}</p>
