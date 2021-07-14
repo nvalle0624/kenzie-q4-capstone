@@ -5,7 +5,7 @@ Run by: {{session.trainer.name}}
 Dogs in session:
 <br>
 {% for dog in dogs_assigned %}
-<a href='/dog_profile/{dog.id}'>{{dog.name}}</a>
+<a href='/dog_profile/{{dog.id}}'>{{dog.name}}</a>
 <br>
 {% endfor %}
 <br>
