@@ -109,3 +109,15 @@ def client_signup_view(request):
             return HttpResponseRedirect(reverse("client_home", args=[this_client.id]))
     form = ClientForm()
     return render(request, 'clientform.html', {'form': form})
+
+
+def all_trainers_view(request):
+    all_trainers = Trainer.objects.all()
+    this_user = User.objects.get(id=request.user.id)
+    return render(request, 'all_trainers.html', {'all_trainers': all_trainers, 'this_user': this_user})
+
+
+def trainer_detail_view(request, trainer_id: int):
+    this_trainer = Trainer.objects.get(id=trainer_id)
+    this_user = User.objects.get(id=request.user.id)
+    return render(request, 'trainer_detail.html', {'this_trainer': this_trainer, 'this_user': this_user})
