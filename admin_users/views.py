@@ -75,4 +75,5 @@ def all_clients_view(request):
 @staff_member_required
 def client_detail_view(request, client_id: int):
     this_client = Client.objects.get(id=client_id)
-    return render(request, 'client_detail.html', {'this_client': this_client})
+    this_user = User.objects.get(id=request.user.id)
+    return render(request, 'client_detail.html', {'this_client': this_client, 'this_user': this_user})
