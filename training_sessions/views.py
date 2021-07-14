@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from admin_users.models import Trainer
 from users.models import Client
 from django.shortcuts import render
@@ -15,19 +16,24 @@ import calendar
 
 
 def session_view(request, session_id: int):
+    this_user = User.objects.get(id=request.user.id)
     session = Session.objects.get(id=session_id)
     dogs_in_session = session.dogs_in_session.all()
     dogs_assigned = []
+
     for dog in dogs_in_session:
         dogs_assigned.append(dog)
-
+    # this is for demo purposes. ideally, there would be different types of sessions with different limits
+    if dogs_assigned == 4:
+        session.full = True
     if session.completed:
         for dog in dogs_assigned:
             Report.objects.create(
                 dog_name=dog,
                 time_created=session.end_time,
             )
-    return render(request, 'session_detail.html', {'session': session, 'dogs_assigned': dogs_assigned})
+    num_of_dogs = len(dogs_assigned)
+    return render(request, 'session_detail.html', {'session': session, 'dogs_assigned': dogs_assigned, 'this_user': this_user, 'num_of_dogs': num_of_dogs})
 
 
 def reports(request):
