@@ -1,0 +1,52 @@
+{% if request.user.is_staff %}
+<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
+{% else %}
+<button><a href='/client_home/{{this_user.id}}'>Home</a></button>
+{% endif %}
+<button><a href='/calendar/'>Calendar</a></button>
+
+
+<br>
+Activity: {{session.activity_name}}
+<br>
+Run by: 
+<ul>
+  {% for trainer in session.trainer.all  %}
+  <li>
+    <a href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a>
+  </li>
+  {% endfor %}
+</ul>
+
+
+<br>
+Dogs in session:
+<br>
+{% for dog in dogs_assigned %}
+<a href='/dog_profile/{{dog.id}}'>{{dog.name}}</a>
+<br>
+{% endfor %}
+<br>
+
+Start:
+{{session.start_time}}
+<br>
+End:
+{{session.end_time}}
+<br>
+
+{% if not session.full %}
+<p>There are still {{num_of_dogs}} slots available for this session!</p>
+{%else %}
+<p>Sorry, this session is full!</p>
+{% endif %}
+
+<br>
+{% if session.completed %}
+<p> This session has ended </p>
+{% else %}
+<p>This session is pending completion</p>
+{% endif %}
+<br>
+<h3>Notes:</h3>
+{{session.notes}}

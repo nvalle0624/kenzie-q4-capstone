@@ -11,7 +11,6 @@ from datetime import datetime, timedelta
 from calendar import HTMLCalendar
 
 
-
 class Calendar(HTMLCalendar):
     def __init__(self, year=None, month=None):
         self.year = year
@@ -24,7 +23,8 @@ class Calendar(HTMLCalendar):
         sessions_per_day = sessions.filter(start_time__day=day)
         d = ''
         for session in sessions_per_day:
-            d += f'<li> {session.activity_name} </li>'
+            # each session added links to session view
+            d += f'<li> <a href="/session/{session.id}">{session.activity_name}</a> </li>'
 
         if day != 0:
             return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
@@ -59,6 +59,7 @@ class Session(models.Model):
     start_time = models.DateTimeField(default=timezone.now)
     end_time = models.DateTimeField(default=timezone.now)
     completed = models.BooleanField(default=False)
+    full = models.BooleanField(default=False)
     notes = models.TextField(blank=True)
 
     def __str__(self):

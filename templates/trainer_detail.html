@@ -1,0 +1,19 @@
+{% if request.user.is_staff %}
+<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
+{% else %}
+<button><a href='/client_home/{{this_user.id}}'>Home</a></button>
+{% endif %}
+<button><a href='/logout/'>Logout</a></button>
+
+<p>Name: {{this_trainer.full_name}}</p>
+<p>Phone: {{this_trainer.phone}}</p>
+<p>Email: {{this_trainer.email}}</p>
+<p>Roles: 
+  <ul>
+  {% for role in this_trainer.field_of_expertise.all %}
+  <li>{{role}}</li>
+  {%endfor%}
+</ul>
+</p>
+<p>Certifications: {{this_trainer.cert}}</p>
+

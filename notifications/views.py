@@ -19,4 +19,4 @@ def notifications_view(request, user_id: int):
     for item in all_notifications:
         if item.seen_by_user == True:
             item.delete()
-    return render(request, 'notifications.html', {'all_notifications': all_notifications, 'count': count})
+    return render(request, 'notifications.html', {'all_notifications': all_notifications, 'count': count, 'this_user': this_user})

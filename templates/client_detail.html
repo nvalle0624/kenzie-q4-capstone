@@ -1,0 +1,14 @@
+<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
+<button><a href='/logout/'>Logout</a></button>
+
+<p>Name: {{this_client.full_name}}</p>
+<p>Email: {{this_client.email}}</p>
+<p>Address: {{this_client.address}}</p>
+<p>Phone: {{this_client.phone_contact}}</p>
+<br>
+<p>Dogs:</p>
+<ul>
+{%for dog in this_client.dogs_owned.all%}
+<li><a href='/dog_profile/{{dog.id}}'>{{dog.name}}</a></li>
+{%endfor%}
+</ul>

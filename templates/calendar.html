@@ -1,6 +1,17 @@
+<!-- # calendar: https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html -->
+
 {% extends 'base.html' %}
-
-
 {% block content %}
+{% if request.user.is_staff %}
+<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
+{% else %}
+<button><a href='/client_home/{{this_user.id}}'>Home</a></button>
+{% endif %}
+<div class="clearfix">
+	<a class="btn btn-info left" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
+	<a class="btn btn-info right" href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
+</div>
+
+
 {{ calendar }}
 {% endblock %}
