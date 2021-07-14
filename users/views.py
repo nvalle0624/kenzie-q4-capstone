@@ -57,7 +57,14 @@ def login_view(request):
                     return HttpResponseRedirect(reverse("clientform"))
 
     form = LoginForm()
-    return render(request, "login.html", {"form": form})
+    if request.user.is_authenticated and request.user.is_staff:
+        this_user = Trainer.objects.get(admin_user=request.user)
+        return render(request, 'login.html', {'form': form, 'this_user': this_user})
+    elif request.user.is_authenticated and not request.user.is_staff:
+        this_user = Client.objects.get(user=request.user)
+        return render(request, 'login.html', {'form': form, 'this_user': this_user})
+    else:
+        return render(request, "login.html", {"form": form})
 
 
 def logout_view(request):
@@ -81,7 +88,7 @@ def signup_view(request):
             return HttpResponseRedirect(reverse('login'))
 
     form = SignUpForm()
-    return render(request, "clientform.html", {"form": form})
+    return render(request, "signup.html", {"form": form})
 
 
 def client_signup_view(request):

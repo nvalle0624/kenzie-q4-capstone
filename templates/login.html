@@ -1,4 +1,11 @@
-  
+{% if request.user.is_authenticated and request.user.is_staff%}
+<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
+{% elif request.user.is_authenticated and not request.user.is_staff %}
+<button><a href='/client_home/{{this_user.id}}'>Home</a></button>
+{% else %}
+<button><a href="/">Home</a></button>  
+{% endif %}
+
 <form method='post' action=''>
 
 
