@@ -1,5 +1,11 @@
 <h1>BananaDog Home Page</h1>
 
+{% if request.user.is_authenticated and request.user.is_staff%}
+<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
+{% elif request.user.is_authenticated and not request.user.is_staff %}
+<button><a href='/client_home/{{this_user.id}}'>Home</a></button>
+{% endif %}
+
 <button><a href='/signup/'>Client Sign Up</a></button>
 
 <button><a href='/login/'>Login</a></button>

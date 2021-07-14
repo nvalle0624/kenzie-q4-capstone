@@ -16,6 +16,12 @@ from django.contrib.auth.decorators import login_required
 
 
 def app_home(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        this_user = Trainer.objects.get(admin_user=request.user)
+        return render(request, 'app_home.html', {'this_user': this_user})
+    elif request.user.is_authenticated and not request.user.is_staff:
+        this_user = Client.objects.get(user=request.user)
+        return render(request, 'app_home.html', {'this_user': this_user})
     return render(request, 'app_home.html')
 
 
