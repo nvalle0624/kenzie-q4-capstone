@@ -14,9 +14,17 @@ import calendar
 
 def session_view(request, session_id: int):
     session = Session.objects.get(id=session_id)
+    dogs_in_session = session.dogs_in_session.all()
     dogs_assigned = []
-    for dog in session.dogs_in_session.all():
+    for dog in dogs_in_session:
         dogs_assigned.append(dog)
+
+    if session.completed:
+        for dog in dogs_assigned:
+            Report.objects.create(
+                dog_name=dog,
+                time_created=session.end_time,
+            )
     return render(request, 'session_detail.html', {'session': session, 'dogs_assigned': dogs_assigned})
 
 
