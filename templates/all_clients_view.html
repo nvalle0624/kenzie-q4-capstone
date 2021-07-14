@@ -6,7 +6,7 @@
 {% for client in all_clients %}
 <br>
 <h3>Client</h3>
-<a href='/client_detail/{{client.id}}'>{{client.name}}</a>
+<a href='/client_detail/{{client.id}}'>{{client.full_name}}</a>
 <ul>
   <h4>Dogs</h4>
 {% for dog in client.dogs_owned.all %}

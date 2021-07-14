@@ -15,7 +15,7 @@ class Trainer(models.Model):
 
     )
     admin_user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
+    full_name = models.CharField(max_length=50)
     phone = PhoneField(blank=True, help_text='Contact phone number')
     email = models.EmailField(max_length=254)
     cert = models.CharField(max_length=50, blank=True)

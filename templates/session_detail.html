@@ -13,7 +13,7 @@ Run by:
 <ul>
   {% for trainer in session.trainer.all  %}
   <li>
-    <a href='/trainer_detail/{{trainer.id}}'>{{trainer.name}}</a>
+    <a href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a>
   </li>
   {% endfor %}
 </ul>

@@ -49,10 +49,10 @@ def add_trainer(request):
             data = form.cleaned_data
             print(data)
             new_trainer = Trainer.objects.create(
-                admin_user=data['admin_user'],
-                name=data['name'],
+                admin_user=request.user,
+                full_name=data['full_name'],
                 phone=data['phone'],
-                email=data['email'],
+                email=request.user.email,
                 cert=data['cert'],
                 field_of_expertise=data['field_of_expertise']
 

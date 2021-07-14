@@ -101,7 +101,7 @@ def client_signup_view(request):
             data = form.cleaned_data
             my_user = Client.objects.create(
                 user=request.user,
-                name=data['name'],
+                full_name=data['full_name'],
                 address=data['address'],
                 phone_contact=data['phone_contact'],
                 email=request.user.email

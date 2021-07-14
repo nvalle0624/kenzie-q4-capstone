@@ -10,7 +10,7 @@
 {% for trainer in all_trainers %}
 <br>
 <h3>Trainer</h3>
-<a href='/trainer_detail/{{trainer.id}}'>{{trainer.name}}</a>
+<a href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a>
 <ul>
   <h4>Roles:</h4>
 {% for role in roles %}
