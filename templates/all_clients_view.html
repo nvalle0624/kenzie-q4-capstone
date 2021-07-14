@@ -1,0 +1,12 @@
+<h1>All Clients</h1>
+
+{% for client in all_clients %}
+<br>
+<a href='/'>{{client.name}}</a>
+<ul>
+{% for dog in client_dogs %}
+<li><a href='/'>{{dog.name}}</a></li>
+{% endfor %}
+</ul>
+<br>
+{% endfor %}

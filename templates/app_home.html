@@ -8,4 +8,8 @@
 
 <button><a href='/signup/'>Client Sign Up</a></button>
 
+{% if request.user.is_authenticated %}
+<button><a href='/logout/'>Logout</a></button>
+{% elif not request.user.is_authenticated %}
 <button><a href='/login/'>Login</a></button>
+{% endif %}

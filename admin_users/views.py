@@ -1,3 +1,4 @@
+from users.models import Client
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from admin_users.models import Trainer
 from admin_users.forms import TrainerForm
@@ -59,3 +60,13 @@ def add_trainer(request):
             return HttpResponseRedirect(reverse("trainer_home", args=[new_trainer.id]))
     form = TrainerForm()
     return render(request, "trainer_form.html", {"form": form})
+
+
+@staff_member_required
+def all_clients_view(request):
+    all_clients = Client.objects.all()
+    client_dogs = []
+    for client in all_clients:
+        for dog in client.dogs_owned.all():
+            client_dogs.append(dog)
+    return render(request, 'all_clients_view.html', {'all_clients': all_clients, 'client_dogs': client_dogs})

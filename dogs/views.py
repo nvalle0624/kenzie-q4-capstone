@@ -13,7 +13,7 @@ import os
 
 def dog_profile_form_view(request):
     if request.user.is_staff == False:
-        this_client = Client.objects.get(user_id=request.user.id)
+        this_client = Client.objects.get(user=request.user)
     if request.method == 'POST':
         form = DogProfileForm(request.POST)
         if form.is_valid():
@@ -30,6 +30,7 @@ def dog_profile_form_view(request):
                 special_needs=data['special_needs'],
                 extra_notes=data['extra_notes'],
             )
+            this_client.dogs_owned.add(new_dog)
             return HttpResponseRedirect(reverse('client_home', args=[this_client.id]))
     form = DogProfileForm()
     return render(request, 'dog_profile_form.html', {'form': form, 'this_client': this_client})
