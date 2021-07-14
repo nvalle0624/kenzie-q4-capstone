@@ -9,7 +9,7 @@
 <a href='/client_detail/{{client.id}}'>{{client.name}}</a>
 <ul>
   <h4>Dogs</h4>
-{% for dog in client_dogs %}
+{% for dog in client.dogs_owned.all %}
 <li><a href='/dog_profile/{{dog.id}}'>{{dog.name}}</a></li>
 {% endfor %}
 </ul>

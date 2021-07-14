@@ -1,6 +1,7 @@
 from users.models import Client
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from admin_users.models import Trainer
+from dogs.models import Dog
 from admin_users.forms import TrainerForm
 from django.contrib.auth.models import User
 from users.forms import SignUpForm
@@ -66,11 +67,7 @@ def add_trainer(request):
 def all_clients_view(request):
     this_user = User.objects.get(id=request.user.id)
     all_clients = Client.objects.all()
-    client_dogs = []
-    for client in all_clients:
-        for dog in client.dogs_owned.all():
-            client_dogs.append(dog)
-    return render(request, 'all_clients_view.html', {'all_clients': all_clients, 'client_dogs': client_dogs, 'this_user': this_user})
+    return render(request, 'all_clients_view.html', {'all_clients': all_clients, 'this_user': this_user})
 
 
 @staff_member_required
