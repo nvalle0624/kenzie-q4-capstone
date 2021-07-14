@@ -64,12 +64,13 @@ def add_trainer(request):
 
 @staff_member_required
 def all_clients_view(request):
+    this_user = User.objects.get(id=request.user.id)
     all_clients = Client.objects.all()
     client_dogs = []
     for client in all_clients:
         for dog in client.dogs_owned.all():
             client_dogs.append(dog)
-    return render(request, 'all_clients_view.html', {'all_clients': all_clients, 'client_dogs': client_dogs})
+    return render(request, 'all_clients_view.html', {'all_clients': all_clients, 'client_dogs': client_dogs, 'this_user': this_user})
 
 
 @staff_member_required
