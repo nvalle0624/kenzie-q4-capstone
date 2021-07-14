@@ -50,6 +50,11 @@ def login_view(request):
     return render(request, "login.html", {"form": form})
 
 
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("login"))
+
+
 def signup_view(request):
 
     if request.method == "POST":
@@ -64,7 +69,6 @@ def signup_view(request):
                 password=data["password"])
             # login(request, new_user)
             return HttpResponseRedirect(reverse('login'))
-
 
     form = SignUpForm()
     return render(request, "clientform.html", {"form": form})
@@ -88,8 +92,3 @@ def client_signup_view(request):
             return HttpResponseRedirect(reverse("client_home", args=[this_client.id]))
     form = ClientForm()
     return render(request, 'clientform.html', {'form': form})
-
-
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse("login"))

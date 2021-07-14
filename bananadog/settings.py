@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'bootstrap4',
     'api',
     'authentication',
-    'bootstrap4',
     'dogs',
     'schedule',
     'training_sessions',

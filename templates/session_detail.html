@@ -1,0 +1,26 @@
+Activity: {{session.activity_name}}
+<br>
+Run by: {{session.trainer.name}}
+<br>
+Dogs in session:
+<br>
+{% for dog in dogs_assigned %}
+<a href='/dog_profile/{dog.id}'>{{dog.name}}</a>
+<br>
+{% endfor %}
+<br>
+
+Start:
+{{session.start_time}}
+<br>
+End:
+{{session.end_time}}
+<br>
+{% if session.completed %}
+<p> This session has ended </p>
+{% else %}
+<p>This session is pending completion</p>
+{% endif %}
+<br>
+<h3>Notes:</h3>
+{{session.notes}}
