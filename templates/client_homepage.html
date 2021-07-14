@@ -1,7 +1,15 @@
-<p>{{client.name}}</p>
-<p>{{client.email}}</p>
-<p>{{client.address}}</p>
-<p>{{client.phone_contact}}</p>
-{%for c in client.dogs_owned.all%}
-<p>{{c.name}}</p>
+<button><a href='/logout/'>Logout</a></button>
+
+<p>Name: {{client.name}}</p>
+<p>Email: {{client.email}}</p>
+<p>Address: {{client.address}}</p>
+<p>Phone: {{client.phone_contact}}</p>
+<br>
+<p>Dogs:</p>
+<ul>
+{%for dog in client.dogs_owned.all%}
+<li><a href='/dog_profile/{{dog.id}}'>{{dog.name}}</a></li>
 {%endfor%}
+</ul>
+<br>
+<button><a href='/dog_form/'>Add dog</a></button>

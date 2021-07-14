@@ -15,6 +15,10 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
+def app_home(request):
+    return render(request, 'app_home.html')
+
+
 def client_home(request, user_id: int):
     if request.user.is_authenticated:
         client = Client.objects.get(user=request.user)
@@ -52,7 +56,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("login"))
+    return HttpResponseRedirect(reverse("app_home"))
 
 
 def signup_view(request):

@@ -19,11 +19,13 @@ from django.contrib import admin
 from dogs import views as dog_views
 from all_messages import views as message_views
 from notifications import views as notifications_view
+from users import views as user_views
 
 from django.urls import path, include
 
 
 urlpatterns = [
+    path('', user_views.app_home, name='app_home'),
     path('', include('admin_users.urls')),
     path('', include('users.urls')),
     path('', include('training_sessions.urls')),

@@ -1,4 +1,6 @@
 from users.models import Client
+from admin_users.models import Trainer
+from django.contrib.auth.models import User
 from django.shortcuts import redirect, render, HttpResponseRedirect, reverse
 from dogs.models import Dog
 from dogs.forms import DogProfileForm
@@ -28,7 +30,7 @@ def dog_profile_form_view(request):
                 special_needs=data['special_needs'],
                 extra_notes=data['extra_notes'],
             )
-            return HttpResponseRedirect(reverse('all_dogs_view'))
+            return HttpResponseRedirect(reverse('client_home', args=[this_client.id]))
     form = DogProfileForm()
     return render(request, 'dog_profile_form.html', {'form': form})
 
@@ -69,4 +71,5 @@ def delete_media_view(request, mediafile_id: int):
 
 def all_dogs_view(request):
     all_dogs = Dog.objects.all()
-    return render(request, 'all_dogs.html', {'dogs': all_dogs})
+    this_user = User.objects.get(id=request.user.id)
+    return render(request, 'all_dogs.html', {'dogs': all_dogs, 'this_user': this_user})
