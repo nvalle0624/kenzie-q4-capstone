@@ -2,10 +2,12 @@
 
 {% for client in all_clients %}
 <br>
-<a href='/'>{{client.name}}</a>
+<h3>Client</h3>
+<a href='/client_detail/{{client.id}}'>{{client.name}}</a>
 <ul>
+  <h4>Dogs</h4>
 {% for dog in client_dogs %}
-<li><a href='/'>{{dog.name}}</a></li>
+<li><a href='/dog_profile/{{dog.id}}'>{{dog.name}}</a></li>
 {% endfor %}
 </ul>
 <br>
