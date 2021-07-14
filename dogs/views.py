@@ -32,7 +32,7 @@ def dog_profile_form_view(request):
             )
             return HttpResponseRedirect(reverse('client_home', args=[this_client.id]))
     form = DogProfileForm()
-    return render(request, 'dog_profile_form.html', {'form': form})
+    return render(request, 'dog_profile_form.html', {'form': form, 'this_client': this_client})
 
 
 def dog_profile_view(request, dog_id: int):

@@ -46,7 +46,7 @@ def login_view(request):
             else:
                 if Client.objects.filter(user=request.user).exists():
                     this_client = Client.objects.get(user=request.user)
-                    return HttpResponseRedirect(reverse("clienthome", args=[this_client.id]))
+                    return HttpResponseRedirect(reverse("client_home", args=[this_client.id]))
                 else:
                     return HttpResponseRedirect(reverse("clientform"))
 
