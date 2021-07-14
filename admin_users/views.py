@@ -22,6 +22,7 @@ def trainer_home(request, user_id: int):
 
 @staff_member_required
 def add_admin_user(request):
+    this_user = Trainer.objects.get(admin_user=request.user)
     if request.method == "POST":
         form = SignUpForm(request.POST)
         print('Form', form.errors)
@@ -34,7 +35,7 @@ def add_admin_user(request):
                 is_staff=True)
             return HttpResponseRedirect(reverse('login'))
     form = SignUpForm()
-    return render(request, "clientform.html", {"form": form})
+    return render(request, "clientform.html", {"form": form, "this_user": this_user})
 
 
 @staff_member_required

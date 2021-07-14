@@ -1,3 +1,4 @@
+from users.models import Client
 from django.contrib.auth.decorators import login_required
 from admin_users.models import Trainer
 from django.contrib.auth.models import User
@@ -110,8 +111,10 @@ def client_message_form_view(request):
             )
             return HttpResponseRedirect(reverse('all_messages_view', args=[this_user.id]))
     if this_user.is_staff != True:
+        this_client = Client.objects.get(user=this_user)
         form = ClientMessageForm()
-        return render(request, 'message_form.html', {'form': form})
+        return render(request, 'message_form.html', {'form': form, 'this_client': this_client})
     else:
+        this_trainer = Trainer.objects.get(admin_user=this_user)
         form = TrainerMessageForm()
-        return render(request, 'message_form.html', {'form': form})
+        return render(request, 'message_form.html', {'form': form, 'this_trainer': this_trainer})

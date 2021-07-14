@@ -1,10 +1,12 @@
+from admin_users.models import Trainer
+from users.models import Client
 from django.shortcuts import render
 
 from training_sessions.models import Report, Session, Calendar
 
 from datetime import datetime, date, timedelta
 
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 from django.views import generic
 from django.utils.safestring import mark_safe
 import calendar
@@ -49,12 +51,18 @@ class CalendarView(generic.ListView):
         # Instantiate our calendar class with today's year and date
         cal = Calendar(d.year, d.month)
 
+        if self.request.user.is_staff:
+            this_user = Trainer.objects.get(admin_user=self.request.user)
+        else:
+            this_user = Client.objects.get(user=self.request.user)
+
         # Call the formatmonth method, which returns our calendar as a table
         html_cal = cal.formatmonth(withyear=True)
         context['calendar'] = mark_safe(html_cal)
 
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
+        context['this_user'] = this_user
         return context
 
 
