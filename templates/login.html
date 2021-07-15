@@ -1,3 +1,8 @@
+
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
 {% if request.user.is_authenticated and request.user.is_staff%}
 <button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
 {% elif request.user.is_authenticated and not request.user.is_staff %}
@@ -6,14 +11,20 @@
 <button><a href="/">Home</a></button>  
 {% endif %}
 
-<form method='post' action=''>
 
+{% block content %}
+<form method='post' action=''>
+<h2>LogIn</h2>
 
     {% csrf_token %}
   
-    {{ form.as_p }}
+    {{ form|crispy }}
   
     <input type="submit" value="Submit">
   </form>
-  
+  <br>
   <button><a style='text-decoration: none;' href='/signup/'>Sign Up</a></button>
+
+  {% endblock %}
+
+  
