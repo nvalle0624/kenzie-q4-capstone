@@ -61,6 +61,7 @@ class Session(models.Model):
     end_time = models.TimeField(default=timezone.now)
     completed = models.BooleanField(default=False)
     max_slots = models.IntegerField(default=0)
+    slots_available = models.IntegerField(default=0, editable=False)
     full = models.BooleanField(default=False)
     notes = models.TextField(blank=True)
 

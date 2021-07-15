@@ -1,3 +1,4 @@
+from os import name
 from django.urls import path
 from training_sessions import views
 
@@ -10,4 +11,6 @@ urlpatterns = [
         template_name='session_form.html'), name='session_form'),
     path('session_edit/<int:pk>/',
          views.SessionEditView.as_view(), name='session_edit'),
+    path('session_add_dog/<int:session_id>/',
+         views.session_add_dog_view, name='session_add_dog'),
 ]

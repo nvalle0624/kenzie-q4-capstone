@@ -1,8 +1,9 @@
+from dogs.models import Dog
 from django.contrib.auth.models import User
 from admin_users.models import Trainer
 from users.models import Client
-from training_sessions.forms import SessionForm, DateInput, TimeInput
-from django.shortcuts import render, get_object_or_404
+from training_sessions.forms import SessionAddDogForm, SessionForm, DateInput, TimeInput
+from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.views.generic.edit import FormView
 from django.views.generic import UpdateView
 from training_sessions.models import Report, Session, Calendar
@@ -33,6 +34,8 @@ def session_view(request, session_id: int):
     if len(dogs_assigned) >= session.max_slots:
         session.full = True
         print('session is full')
+    else:
+        session.full = False
     if session.completed:
         for dog in dogs_assigned:
             new_report = Report.objects.create(
@@ -41,6 +44,8 @@ def session_view(request, session_id: int):
             )
     num_of_dogs = len(dogs_assigned)
     open_slots = session.max_slots - num_of_dogs
+    session.slots_available = open_slots
+    session.save()
     return render(request, 'session_detail.html', {'session': session, 'dogs_assigned': dogs_assigned, 'this_user': this_user, 'num_of_dogs': num_of_dogs, 'open_slots': open_slots})
 
 
@@ -131,3 +136,28 @@ class SessionEditView(UserPassesTestMixin, UpdateView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+
+def session_add_dog_view(request, session_id: int):
+    this_client = Client.objects.get(user=request.user)
+    this_session = Session.objects.get(id=session_id)
+    if request.method == 'POST':
+        form = SessionAddDogForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            dogs = data['dogs']
+
+            for dog in dogs:
+                if len(dogs) <= this_session.slots_available:
+                    this_session.dogs_in_session.add(dog)
+                    this_session.save()
+                else:
+                    slots_full_message = "Sorry! This session doesn't have enough space."
+                    form = SessionAddDogForm()
+                    form.fields['dogs'].queryset = Dog.objects.filter(
+                        owner=this_client)
+                    return render(request, 'session_add_dog_form.html', {'form': form, 'this_session': this_session, 'slots_full_message': slots_full_message})
+            return HttpResponseRedirect(reverse('session_detail', args=[this_session.id]))
+    form = SessionAddDogForm()
+    form.fields['dogs'].queryset = Dog.objects.filter(owner=this_client)
+    return render(request, 'session_add_dog_form.html', {'form': form, 'this_session': this_session})

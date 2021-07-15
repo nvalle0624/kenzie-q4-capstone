@@ -1,6 +1,7 @@
 from django.forms import ModelForm, widgets
 from django import forms
 from training_sessions.models import Session
+from dogs.models import Dog
 
 
 class DateInput(forms.DateInput):
@@ -33,3 +34,7 @@ class SessionForm(forms.ModelForm):
             'start_time': TimeInput(),
             'end_time': TimeInput(),
         }
+
+
+class SessionAddDogForm(forms.Form):
+    dogs = forms.ModelMultipleChoiceField(queryset=Dog.objects.all())
