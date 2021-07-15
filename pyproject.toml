@@ -8,6 +8,7 @@ authors = ["nvalle0624 <nvalle0624@gmail.com>"]
 python = "^3.9"
 Django = "^3.2.5"
 bootstrap4 = "^0.1.0"
+django-bootstrap4 = "^3.0.1"
 
 [tool.poetry.dev-dependencies]
 autopep8 = "^1.5.7"
