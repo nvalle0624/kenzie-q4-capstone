@@ -19,4 +19,4 @@ class Client(models.Model):
         to="dogs.Dog", blank=True)
 
     def __str__(self):
-        return self.name
+        return self.full_name
