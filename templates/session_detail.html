@@ -1,3 +1,4 @@
+
 {% if request.user.is_staff %}
 <button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
 <button><a href='/session_edit/{{session.id}}'>Edit Session</a></button>
@@ -10,50 +11,55 @@
 
 
 <br>
-Activity: {{session.activity_name}}
+<b>Activity:</b> {{session.activity_name}}
 <br>
-Run by: 
-<ul>
+<b>Date</b>
+{{session.date}}
+<br>
+<b>Start:</b>
+{{session.start_time}}
+<br>
+<b>End:</b>
+{{session.end_time}}
+<br>
+<b>Trainers</b>
   {% for trainer in session.trainer.all  %}
   <li>
     <a href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a>
   </li>
   {% endfor %}
-</ul>
-
-
 <br>
-Dogs in session:
+<b>Description:</b> {{session.description}}
+<br>
+<br>
+<b>Dogs Booked:</b>
 <br>
 {% for dog in dogs_assigned %}
-<a href='/dog_profile/{{dog.id}}'>{{dog.name}}</a>
+<li>
+  <a href='/dog_profile/{{dog.id}}'>{{dog.name}}</a>
+</li>
 <br>
 {% endfor %}
 <br>
-
-
-Date:
-{{session.date}}
-<br>
-Start:
-{{session.start_time}}
-<br>
-End:
-{{session.end_time}}
+<p>
+  <b>Availability:</b>
+  {% if session.full %}
+  Sorry, this session is full!
+  {% else %}
+  There are still {{open_slots}} slots available for this session!
+  {% endif %}
+</p>
 <br>
 
-{% if session.full %}
-<p>Sorry, this session is full!</p>
+<p>
+  <b>Session Status:</b>
+  {% if session.completed %}
+This session has ended
 {% else %}
-<p>There are still {{num_of_dogs}} slots available for this session!</p>
+This session is pending completion
 {% endif %}
+</p>
 
-<br>
-{% if session.completed %}
-<p> This session has ended </p>
-{% else %}
-<p>This session is pending completion</p>
-{% endif %}
 <br>
 <h3>Notes:</h3>
 {{session.notes}}

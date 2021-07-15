@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from admin_users.models import Trainer
 from users.models import Client
-from training_sessions.forms import SessionForm
+from training_sessions.forms import SessionForm, DateInput, TimeInput
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import FormView
 from django.views.generic import UpdateView
@@ -9,6 +9,7 @@ from training_sessions.models import Report, Session, Calendar
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.admin.views.decorators import staff_member_required
+from django.forms.models import modelform_factory
 
 from datetime import datetime, date, timedelta
 
@@ -29,16 +30,18 @@ def session_view(request, session_id: int):
     for dog in dogs_in_session:
         dogs_assigned.append(dog)
     # this is for demo purposes. ideally, there would be different types of sessions with different limits
-    if dogs_assigned == 4:
+    if len(dogs_assigned) >= session.max_slots:
         session.full = True
+        print('session is full')
     if session.completed:
         for dog in dogs_assigned:
-            Report.objects.create(
+            new_report = Report.objects.create(
                 dog_name=dog,
                 time_created=session.end_time,
             )
     num_of_dogs = len(dogs_assigned)
-    return render(request, 'session_detail.html', {'session': session, 'dogs_assigned': dogs_assigned, 'this_user': this_user, 'num_of_dogs': num_of_dogs})
+    open_slots = session.max_slots - num_of_dogs
+    return render(request, 'session_detail.html', {'session': session, 'dogs_assigned': dogs_assigned, 'this_user': this_user, 'num_of_dogs': num_of_dogs, 'open_slots': open_slots})
 
 
 def reports(request):
@@ -113,8 +116,18 @@ class SessionFormView(UserPassesTestMixin, FormView):
         return super().form_valid(form)
 
 
-class SessionEditView(UpdateView):
+# editability from: https://www.youtube.com/watch?v=J7xaESAddDQ&list=RDCMUCFB0dxMudkws1q8w5NJEAmw&index=1
+
+
+class SessionEditView(UserPassesTestMixin, UpdateView):
     model = Session
+    form_class = SessionForm
     template_name = 'session_edit.html'
-    fields = ['trainer', 'activity_name', 'description', 'dogs_in_session', 'date',
-              'start_time', 'end_time', 'completed', 'max_slots', 'notes', ]
+    success_url = '/calendar/'
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

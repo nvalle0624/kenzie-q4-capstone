@@ -7,6 +7,10 @@ class DateInput(forms.DateInput):
     input_type = 'date'
 
 
+class TimeInput(forms.DateInput):
+    input_type = 'time'
+
+
 class SessionForm(forms.ModelForm):
 
     class Meta:
@@ -26,4 +30,6 @@ class SessionForm(forms.ModelForm):
 
         widgets = {
             'date': DateInput(),
+            'start_time': TimeInput(),
+            'end_time': TimeInput(),
         }
