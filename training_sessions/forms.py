@@ -38,3 +38,7 @@ class SessionForm(forms.ModelForm):
 
 class SessionAddDogForm(forms.Form):
     dogs = forms.ModelMultipleChoiceField(queryset=Dog.objects.all())
+
+
+class SessionTriggerForm(forms.Form):
+    ...

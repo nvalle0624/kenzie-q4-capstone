@@ -62,3 +62,25 @@ This session is pending completion
 <br>
 <h3>Notes:</h3>
 {{session.notes}}
+
+
+{% if session.complete %}
+<p>Session times:</p>
+start:{{session.start}}
+end:{{session.end}}
+{% endif %}
+
+{% if request.user.is_staff %}
+<h3>Start/End</h3>
+<form method='post' action="">
+  {% csrf_token %}
+  {{form.as_p}}
+  {% if not session.start_check and not session.completed %}
+  <input type='submit' value='Start'>
+  {% elif session.start_check and not session.completed %}
+  <input type='submit' value='End'>
+  {% else %}
+  <input type='submit' value='Submit Reports'>
+  {% endif %}
+</form>
+{% endif %}
