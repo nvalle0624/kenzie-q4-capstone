@@ -11,7 +11,6 @@ from datetime import datetime, timedelta
 from calendar import HTMLCalendar
 
 
-
 class Calendar(HTMLCalendar):
     def __init__(self, year=None, month=None):
         self.year = year
@@ -21,10 +20,11 @@ class Calendar(HTMLCalendar):
     # formats a day as a td
     # filter events by day
     def formatday(self, day, sessions):
-        sessions_per_day = sessions.filter(start_time__day=day)
+        sessions_per_day = sessions.filter(date__day=day)
         d = ''
         for session in sessions_per_day:
-            d += f'<li> {session.activity_name} </li>'
+            # each session added links to session view
+            d += f'<li> <a href="/session/{session.id}">{session.activity_name}</a> </li>'
 
         if day != 0:
             return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
@@ -41,7 +41,7 @@ class Calendar(HTMLCalendar):
     # filter events by year and month
     def formatmonth(self, withyear=True):
         sessions = Session.objects.filter(
-            start_time__year=self.year, start_time__month=self.month)
+            date__year=self.year, date__month=self.month)
 
         cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
         cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
@@ -56,9 +56,13 @@ class Session(models.Model):
     activity_name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     dogs_in_session = models.ManyToManyField(Dog)
-    start_time = models.DateTimeField(default=timezone.now)
-    end_time = models.DateTimeField(default=timezone.now)
+    date = models.DateField(default=timezone.now)
+    start_time = models.TimeField(default=timezone.now)
+    end_time = models.TimeField(default=timezone.now)
     completed = models.BooleanField(default=False)
+    max_slots = models.IntegerField(default=0)
+    slots_available = models.IntegerField(default=0, editable=False)
+    full = models.BooleanField(default=False)
     notes = models.TextField(blank=True)
 
     def __str__(self):

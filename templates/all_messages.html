@@ -1,4 +1,8 @@
-
+{% if request.user.is_staff %}
+<button><a href='/trainer_home/{{request.user.id}}'>Home</a></button>
+{% else %}
+<button><a href='/client_home/{{request.user.id}}'>Home</a></button>
+{% endif %}
 
 <div>
   <form method="post" action="">

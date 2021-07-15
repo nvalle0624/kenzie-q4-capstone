@@ -9,7 +9,7 @@ from bananadog.settings import BASE_DIR
 class Dog(models.Model):
     name = models.CharField(max_length=30)
     owner = models.ForeignKey(
-        Client, on_delete=models.CASCADE)
+        Client, on_delete=models.CASCADE, null=True)
     breed = models.CharField(max_length=40, blank=True)
     age_years = models.PositiveSmallIntegerField(default=0, blank=True)
     age_months = models.PositiveSmallIntegerField(default=0, blank=True)

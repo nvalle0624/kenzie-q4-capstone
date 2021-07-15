@@ -15,6 +15,16 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
+def app_home(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        this_user = Trainer.objects.get(admin_user=request.user)
+        return render(request, 'app_home.html', {'this_user': this_user})
+    elif request.user.is_authenticated and not request.user.is_staff:
+        this_user = Client.objects.get(user=request.user)
+        return render(request, 'app_home.html', {'this_user': this_user})
+    return render(request, 'app_home.html')
+
+
 def client_home(request, user_id: int):
     if request.user.is_authenticated:
         client = Client.objects.get(user=request.user)
@@ -42,12 +52,24 @@ def login_view(request):
             else:
                 if Client.objects.filter(user=request.user).exists():
                     this_client = Client.objects.get(user=request.user)
-                    return HttpResponseRedirect(reverse("clienthome", args=[this_client.id]))
+                    return HttpResponseRedirect(reverse("client_home", args=[this_client.id]))
                 else:
                     return HttpResponseRedirect(reverse("clientform"))
 
     form = LoginForm()
-    return render(request, "login.html", {"form": form})
+    if request.user.is_authenticated and request.user.is_staff:
+        this_user = Trainer.objects.get(admin_user=request.user)
+        return render(request, 'login.html', {'form': form, 'this_user': this_user})
+    elif request.user.is_authenticated and not request.user.is_staff:
+        this_user = Client.objects.get(user=request.user)
+        return render(request, 'login.html', {'form': form, 'this_user': this_user})
+    else:
+        return render(request, "login.html", {"form": form})
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("app_home"))
 
 
 def signup_view(request):
@@ -65,9 +87,8 @@ def signup_view(request):
             # login(request, new_user)
             return HttpResponseRedirect(reverse('login'))
 
-
     form = SignUpForm()
-    return render(request, "clientform.html", {"form": form})
+    return render(request, "signup.html", {"form": form})
 
 
 def client_signup_view(request):
@@ -80,7 +101,7 @@ def client_signup_view(request):
             data = form.cleaned_data
             my_user = Client.objects.create(
                 user=request.user,
-                name=data['name'],
+                full_name=data['full_name'],
                 address=data['address'],
                 phone_contact=data['phone_contact'],
                 email=request.user.email
@@ -90,6 +111,13 @@ def client_signup_view(request):
     return render(request, 'clientform.html', {'form': form})
 
 
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse("login"))
+def all_trainers_view(request):
+    all_trainers = Trainer.objects.all()
+    this_user = User.objects.get(id=request.user.id)
+    return render(request, 'all_trainers.html', {'all_trainers': all_trainers, 'this_user': this_user})
+
+
+def trainer_detail_view(request, trainer_id: int):
+    this_trainer = Trainer.objects.get(id=trainer_id)
+    this_user = User.objects.get(id=request.user.id)
+    return render(request, 'trainer_detail.html', {'this_trainer': this_trainer, 'this_user': this_user})

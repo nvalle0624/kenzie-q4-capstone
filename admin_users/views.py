@@ -1,5 +1,7 @@
+from users.models import Client
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from admin_users.models import Trainer
+from dogs.models import Dog
 from admin_users.forms import TrainerForm
 from django.contrib.auth.models import User
 from users.forms import SignUpForm
@@ -22,6 +24,7 @@ def trainer_home(request, user_id: int):
 
 @staff_member_required
 def add_admin_user(request):
+    this_user = Trainer.objects.get(admin_user=request.user)
     if request.method == "POST":
         form = SignUpForm(request.POST)
         print('Form', form.errors)
@@ -34,7 +37,7 @@ def add_admin_user(request):
                 is_staff=True)
             return HttpResponseRedirect(reverse('login'))
     form = SignUpForm()
-    return render(request, "clientform.html", {"form": form})
+    return render(request, "clientform.html", {"form": form, "this_user": this_user})
 
 
 @staff_member_required
@@ -46,10 +49,10 @@ def add_trainer(request):
             data = form.cleaned_data
             print(data)
             new_trainer = Trainer.objects.create(
-                admin_user=data['admin_user'],
-                name=data['name'],
+                admin_user=request.user,
+                full_name=data['full_name'],
                 phone=data['phone'],
-                email=data['email'],
+                email=request.user.email,
                 cert=data['cert'],
                 field_of_expertise=data['field_of_expertise']
 
@@ -58,3 +61,17 @@ def add_trainer(request):
             return HttpResponseRedirect(reverse("trainer_home", args=[new_trainer.id]))
     form = TrainerForm()
     return render(request, "trainer_form.html", {"form": form})
+
+
+@staff_member_required
+def all_clients_view(request):
+    this_user = User.objects.get(id=request.user.id)
+    all_clients = Client.objects.all()
+    return render(request, 'all_clients_view.html', {'all_clients': all_clients, 'this_user': this_user})
+
+
+@staff_member_required
+def client_detail_view(request, client_id: int):
+    this_client = Client.objects.get(id=client_id)
+    this_user = User.objects.get(id=request.user.id)
+    return render(request, 'client_detail.html', {'this_client': this_client, 'this_user': this_user})

@@ -1,0 +1,17 @@
+<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
+
+
+<h1>All Clients</h1>
+
+{% for client in all_clients %}
+<br>
+<h3>Client</h3>
+<a href='/client_detail/{{client.id}}'>{{client.full_name}}</a>
+<ul>
+  <h4>Dogs</h4>
+{% for dog in client.dogs_owned.all %}
+<li><a href='/dog_profile/{{dog.id}}'>{{dog.name}}</a></li>
+{% endfor %}
+</ul>
+<br>
+{% endfor %}

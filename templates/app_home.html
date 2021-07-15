@@ -1,19 +1,15 @@
+<h1>BananaDog Home Page</h1>
+
 {% if request.user.is_authenticated and request.user.is_staff%}
 <button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
 {% elif request.user.is_authenticated and not request.user.is_staff %}
 <button><a href='/client_home/{{this_user.id}}'>Home</a></button>
-{% else %}
-<button><a href="/">Home</a></button>  
 {% endif %}
 
-<form method='post' action=''>
+<button><a href='/signup/'>Client Sign Up</a></button>
 
-
-    {% csrf_token %}
-  
-    {{ form.as_p }}
-  
-    <input type="submit" value="Submit">
-  </form>
-  
-  <button><a style='text-decoration: none;' href='/signup/'>Sign Up</a></button>
+{% if request.user.is_authenticated %}
+<button><a href='/logout/'>Logout</a></button>
+{% elif not request.user.is_authenticated %}
+<button><a href='/login/'>Login</a></button>
+{% endif %}
