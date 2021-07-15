@@ -4,6 +4,7 @@
 {% block content %}
 {% if request.user.is_staff %}
 <button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
+<button><a href='/session_form/'>Add Session to Calendar</a></button>
 {% else %}
 <button><a href='/client_home/{{this_user.id}}'>Home</a></button>
 {% endif %}

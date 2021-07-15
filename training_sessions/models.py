@@ -20,7 +20,7 @@ class Calendar(HTMLCalendar):
     # formats a day as a td
     # filter events by day
     def formatday(self, day, sessions):
-        sessions_per_day = sessions.filter(start_time__day=day)
+        sessions_per_day = sessions.filter(date__day=day)
         d = ''
         for session in sessions_per_day:
             # each session added links to session view
@@ -41,7 +41,7 @@ class Calendar(HTMLCalendar):
     # filter events by year and month
     def formatmonth(self, withyear=True):
         sessions = Session.objects.filter(
-            start_time__year=self.year, start_time__month=self.month)
+            date__year=self.year, date__month=self.month)
 
         cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
         cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
@@ -56,8 +56,9 @@ class Session(models.Model):
     activity_name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     dogs_in_session = models.ManyToManyField(Dog)
-    start_time = models.DateTimeField(default=timezone.now)
-    end_time = models.DateTimeField(default=timezone.now)
+    date = models.DateField(default=timezone.now)
+    start_time = models.TimeField(default=timezone.now)
+    end_time = models.TimeField(default=timezone.now)
     completed = models.BooleanField(default=False)
     max_slots = models.IntegerField(default=0)
     full = models.BooleanField(default=False)

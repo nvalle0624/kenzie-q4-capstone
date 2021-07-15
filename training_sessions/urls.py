@@ -8,4 +8,6 @@ urlpatterns = [
     path('session/<int:session_id>/', views.session_view, name='session_detail'),
     path('session_form/', views.SessionFormView.as_view(
         template_name='session_form.html'), name='session_form'),
+    path('session_edit/<int:pk>/',
+         views.SessionEditView.as_view(), name='session_edit'),
 ]

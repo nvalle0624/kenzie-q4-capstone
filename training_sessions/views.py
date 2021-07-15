@@ -2,10 +2,13 @@ from django.contrib.auth.models import User
 from admin_users.models import Trainer
 from users.models import Client
 from training_sessions.forms import SessionForm
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import FormView
+from django.views.generic import UpdateView
 from training_sessions.models import Report, Session, Calendar
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.admin.views.decorators import staff_member_required
 
 from datetime import datetime, date, timedelta
 
@@ -96,17 +99,22 @@ def next_month(d):
     return month
 
 
-class SessionFormView(LoginRequiredMixin, FormView):
+class SessionFormView(UserPassesTestMixin, FormView):
 
     template_name = 'session_form.html'
     form_class = SessionForm
     success_url = '/calendar/'
 
+    def test_func(self):
+        return self.request.user.is_staff
+
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['form'] = form
-    # return context
+
+class SessionEditView(UpdateView):
+    model = Session
+    template_name = 'session_edit.html'
+    fields = ['trainer', 'activity_name', 'description', 'dogs_in_session', 'date',
+              'start_time', 'end_time', 'completed', 'max_slots', 'notes', ]
