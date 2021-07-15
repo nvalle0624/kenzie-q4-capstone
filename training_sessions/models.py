@@ -55,7 +55,7 @@ class Session(models.Model):
     trainer = models.ManyToManyField(Trainer)
     activity_name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
-    dogs_in_session = models.ManyToManyField(Dog)
+    dogs_in_session = models.ManyToManyField(Dog, blank=True)
     date = models.DateField(default=timezone.now)
     start_time = models.TimeField(default=timezone.now)
     end_time = models.TimeField(default=timezone.now)
@@ -63,6 +63,7 @@ class Session(models.Model):
     started = models.TimeField(default=timezone.now)
     ended = models.TimeField(default=timezone.now)
     completed = models.BooleanField(default=False)
+    report_submitted = models.BooleanField(default=False)
     max_slots = models.IntegerField(default=0)
     slots_available = models.IntegerField(default=0, editable=False)
     full = models.BooleanField(default=False)
@@ -73,8 +74,7 @@ class Session(models.Model):
 
 
 class Report(models.Model):
-    dog_name = models.ForeignKey(Dog, on_delete=CASCADE)
-
-    sessions = models.ManyToManyField(Session)
-
+    dog_name = models.ForeignKey(Dog, on_delete=models.CASCADE)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
     time_created = models.DateTimeField(default=timezone.now)
+    notes = models.TextField()

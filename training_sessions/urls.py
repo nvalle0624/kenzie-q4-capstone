@@ -13,4 +13,7 @@ urlpatterns = [
          views.SessionEditView.as_view(), name='session_edit'),
     path('session_add_dog/<int:session_id>/',
          views.session_add_dog_view, name='session_add_dog'),
+    path('all_reports/<int:dog_id>/', views.all_reports_view, name='all_reports'),
+    path('report_detail/<int:report_id>/',
+         views.report_detail_view, name='report_detail'),
 ]

@@ -2,13 +2,14 @@ from dogs.models import Dog
 from django.contrib.auth.models import User
 from admin_users.models import Trainer
 from users.models import Client
-from training_sessions.forms import SessionAddDogForm, SessionForm, DateInput, SessionTriggerForm, TimeInput
+from training_sessions.forms import ReportNotesForm, SessionAddDogForm, SessionForm, DateInput, SessionTriggerForm, TimeInput
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.views.generic.edit import FormView
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, ListView
 from training_sessions.models import Report, Session, Calendar
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.utils.timezone import timezone
 from datetime import datetime
 
 
@@ -49,21 +50,20 @@ def session_view(request, session_id: int):
                 this_session.start_check = True
                 this_session.start = datetime.now()
                 this_session.save()
-            else:
+            elif this_session.start_check and not this_session.completed:
                 this_session.completed = True
                 this_session.end = datetime.now()
                 this_session.start_check = False
                 this_session.save()
-
-    if request.method == 'POST' and this_session.completed:
-        form = SessionTriggerForm(request.POST)
-        if form.is_valid():
-            for dog in dogs_in_session:
-                new_report = Report.objects.create(
-                    dog_name=dog,
-                    session=this_session,
-                    time_created=this_session.end_time,
-                )
+            else:
+                for dog in dogs_in_session:
+                    new_report = Report.objects.create(
+                        dog_name=dog,
+                        session=this_session,
+                        time_created=str(datetime.now()),
+                    )
+                    this_session.report_submitted = True
+                    this_session.save()
         form = SessionTriggerForm()
         return HttpResponseRedirect(reverse('calendar'))
     return render(request, 'session_detail.html', {'session': this_session, 'dogs_assigned': dogs_assigned, 'this_user': this_user, 'num_of_dogs': num_of_dogs, 'open_slots': open_slots})
@@ -181,3 +181,24 @@ def session_add_dog_view(request, session_id: int):
     form = SessionAddDogForm()
     form.fields['dogs'].queryset = Dog.objects.filter(owner=this_client)
     return render(request, 'session_add_dog_form.html', {'form': form, 'this_session': this_session})
+
+
+def all_reports_view(request, dog_id: int):
+    this_dog = Dog.objects.get(id=dog_id)
+    all_reports = Report.objects.filter(dog_name=this_dog)
+    return render(request, 'all_reports.html', {'all_reports': all_reports, 'this_dog': this_dog})
+
+
+def report_detail_view(request, report_id: int):
+    this_report = Report.objects.get(id=report_id)
+    this_dog = Dog.objects.get(name=this_report.dog_name)
+
+    if request.method == 'POST':
+        form = ReportNotesForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            this_report.notes = data['notes']
+            this_report.save()
+        return HttpResponseRedirect(reverse('all_reports', args=[this_dog.id]))
+    form = ReportNotesForm()
+    return render(request, 'report_detail.html', {'form': form, 'this_dog': this_dog, 'this_report': this_report})

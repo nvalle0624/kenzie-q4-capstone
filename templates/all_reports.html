@@ -1,0 +1,12 @@
+<h1>All Reports:{{this_dog.name}}</h1>
+
+
+
+<ul>
+{% for report in all_reports %}
+<li>Session:<a href='/session/{{report.session.id}}/'>{{report.session.activity_name}}</a></li>
+<li>Report submitted at:{{report.time_created}}</li>
+<li>Notes: {{report.notes}}</li>
+<a href='/report_detail/{{report.id}}/'>Detail</a>
+{% endfor %}
+

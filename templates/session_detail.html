@@ -4,9 +4,10 @@
 <button><a href='/session_edit/{{session.id}}'>Edit Session</a></button>
 {% else %}
 <button><a href='/client_home/{{this_user.id}}'>Home</a></button>
+<button><a href='/session_add_dog/{{session.id}}'>Book this session</a></button>
 {% endif %}
 <button><a href='/calendar/'>Calendar</a></button>
-<button><a href='/session_add_dog/{{session.id}}'>Book this session</a></button>
+
 
 
 <br>
@@ -79,7 +80,7 @@ end:{{session.end}}
   <input type='submit' value='Start'>
   {% elif session.start_check and not session.completed %}
   <input type='submit' value='End'>
-  {% else %}
+  {% elif session.completed and not session.report_submitted %}
   <input type='submit' value='Submit Reports'>
   {% endif %}
 </form>
