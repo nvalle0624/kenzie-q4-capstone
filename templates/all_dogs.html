@@ -1,6 +1,9 @@
-<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
+{% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% block content %}
+<!-- <button><a href='/trainer_home/{{this_user.id}}'>Home</a></button> -->
 
 <h1>All Dogs</h1>
 {% for d in dogs %}
 <a href='/dog_profile/{{d.id}}/'>{{d.name}}</a>
 {% endfor %}
+{% endblock %}

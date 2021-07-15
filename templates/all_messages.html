@@ -1,8 +1,10 @@
-{% if request.user.is_staff %}
+{% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% block content %}
+<!-- {% if request.user.is_staff %}
 <button><a href='/trainer_home/{{request.user.id}}'>Home</a></button>
 {% else %}
 <button><a href='/client_home/{{request.user.id}}'>Home</a></button>
-{% endif %}
+{% endif %} -->
 
 <div>
   <form method="post" action="">
@@ -28,7 +30,9 @@
   <p>{{message.time_posted}}</p>
   
 </div>
+
 {% endif %}
 
 {% endfor %}
 
+{% endblock %}

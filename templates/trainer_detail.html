@@ -1,9 +1,12 @@
-{% if request.user.is_staff %}
+{% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% block content %}
+
+<!-- {% if request.user.is_staff %}
 <button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
 {% else %}
 <button><a href='/client_home/{{this_user.id}}'>Home</a></button>
 {% endif %}
-<button><a href='/logout/'>Logout</a></button>
+<button><a href='/logout/'>Logout</a></button> -->
 
 <p>Name: {{this_trainer.full_name}}</p>
 <p>Phone: {{this_trainer.phone}}</p>
@@ -17,3 +20,4 @@
 </p>
 <p>Certifications: {{this_trainer.cert}}</p>
 
+{% endblock %}

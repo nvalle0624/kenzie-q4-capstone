@@ -1,4 +1,8 @@
-<button><a href='/logout/'>Logout</a></button>
+{% extends 'client_navbar.html' %}
+{% block content %}
+
+
+<!-- <button><a href='/logout/'>Logout</a></button> -->
 
 <p>Name: {{client.full_name}}</p>
 <p>Email: {{client.email}}</p>
@@ -11,7 +15,7 @@
 <li><a href='/dog_profile/{{dog.id}}'>{{dog.name}}</a></li>
 {%endfor%}
 </ul>
-{% if request.user.is_authenticated and not request.user.is_staff %}
+<!-- {% if request.user.is_authenticated and not request.user.is_staff %}
 <br>
 <button><a href='/dog_form/'>Add dog</a></button>
 <br>
@@ -24,4 +28,6 @@
 <button><a href='/notifications/{{request.user.id}}'>Notifications</a></button>
 <br>
 <button><a href='/message_form/'>Write Message</a></button>
-{% endif %}
+{% endif %} -->
+
+{% endblock %}
