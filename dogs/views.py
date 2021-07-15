@@ -83,6 +83,6 @@ def delete_media_view(request, mediafile_id: int):
 
 
 def all_dogs_view(request):
-    all_dogs = Dog.objects.all()
+    all_dogs = Dog.objects.all().order_by('name')
     this_user = User.objects.get(id=request.user.id)
     return render(request, 'all_dogs.html', {'dogs': all_dogs, 'this_user': this_user})
