@@ -1,9 +1,10 @@
-
-{% if request.user.is_staff %}
+{% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html'%}
+{% block content %}
+<!-- {% if request.user.is_staff %}
 <button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
 {% else %}
 <button><a href='/client_home/{{this_user.id}}'>Home</a></button>
-{% endif %}
+{% endif %} -->
 
 <h1>All Trainers</h1>
 
@@ -19,3 +20,4 @@
 </ul>
 <br>
 {% endfor %}
+{% endblock %}

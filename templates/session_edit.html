@@ -1,3 +1,6 @@
+{% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% block content %}
+
 <h>Edit Session</h>
 
 <form method='post' action="">
@@ -5,3 +8,4 @@
   {{form.as_p}}
   <input type='submit' value='Submit'>
 </form>
+{% endblock %}

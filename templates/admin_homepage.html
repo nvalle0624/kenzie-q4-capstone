@@ -1,4 +1,6 @@
-<button><a href='/logout/'>Logout</a></button>
+{% extends 'admin_navbar.html' %}
+{% block content %}
+<!-- <button><a href='/logout/'>Logout</a></button> -->
 
 <p>Name: {{trainer.full_name}}</p>
 <p>Phone: {{trainer.phone}}</p>
@@ -6,7 +8,7 @@
 <p>Certifications: {{trainer.cert}}</p>
 <p>Role: {{trainer.field_of_expertise}}</p>
 <br>
-<button><a href='/calendar/'>Calendar</a></button>
+<!-- <button><a href='/calendar/'>Calendar</a></button>
 <br>
 <button><a href='/all_clients/'>All Clients</a></button>
 <br>
@@ -18,4 +20,5 @@
 <br>
 <button><a href='/notifications/{{request.user.id}}'>Notifications</a></button>
 <br>
-<button><a href='/message_form/'>Write Message</a></button>
+<button><a href='/message_form/'>Write Message</a></button> -->
+{% endblock %}

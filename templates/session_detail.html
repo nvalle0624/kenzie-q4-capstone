@@ -1,4 +1,5 @@
-
+{% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% block content %}
 {% if request.user.is_staff %}
 <button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
 <button><a href='/session_edit/{{session.id}}'>Edit Session</a></button>
@@ -85,3 +86,4 @@ end:{{session.end}}
   {% endif %}
 </form>
 {% endif %}
+{% endblock %}
