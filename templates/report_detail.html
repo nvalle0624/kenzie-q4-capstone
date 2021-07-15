@@ -1,0 +1,16 @@
+<h1>Report Detail for {{this_dog.name}}</h1>
+
+<p>Session:<a href='/session/{{this_report.session.id}}/'>{{this_report.session.activity_name}}</a></li></p>
+<p>Report submitted at:{{this_report.time_created}}</p>
+<p>Notes: {{this_report.notes}}</p>
+
+
+
+{% if request.user.is_staff %}
+<div >
+  <form method="post" action="">
+    {% csrf_token%} {{form.as_p}}
+    <input type="submit" value="submit" />
+  </form>
+</div>
+{% endif %}

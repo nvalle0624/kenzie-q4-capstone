@@ -1,7 +1,7 @@
-from django.forms import ModelForm, widgets
 from django import forms
 from training_sessions.models import Session
 from dogs.models import Dog
+from django.forms.widgets import Textarea
 
 
 class DateInput(forms.DateInput):
@@ -42,3 +42,7 @@ class SessionAddDogForm(forms.Form):
 
 class SessionTriggerForm(forms.Form):
     ...
+
+
+class ReportNotesForm(forms.Form):
+    notes = forms.CharField(widget=Textarea)
