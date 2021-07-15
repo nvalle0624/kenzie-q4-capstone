@@ -2,17 +2,17 @@ from dogs.models import Dog
 from django.contrib.auth.models import User
 from admin_users.models import Trainer
 from users.models import Client
-from training_sessions.forms import SessionAddDogForm, SessionForm, DateInput, TimeInput
+from training_sessions.forms import SessionAddDogForm, SessionForm, DateInput, SessionTriggerForm, TimeInput
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.views.generic.edit import FormView
 from django.views.generic import UpdateView
 from training_sessions.models import Report, Session, Calendar
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.contrib.admin.views.decorators import staff_member_required
-from django.forms.models import modelform_factory
+from datetime import datetime
 
-from datetime import datetime, date, timedelta
+
+from datetime import datetime, date, timedelta, timezone
 
 from django.http import HttpResponse, request
 from django.views import generic
@@ -24,29 +24,49 @@ import calendar
 
 def session_view(request, session_id: int):
     this_user = User.objects.get(id=request.user.id)
-    session = Session.objects.get(id=session_id)
-    dogs_in_session = session.dogs_in_session.all()
+    this_session = Session.objects.get(id=session_id)
+    dogs_in_session = this_session.dogs_in_session.all()
     dogs_assigned = []
 
     for dog in dogs_in_session:
         dogs_assigned.append(dog)
     # this is for demo purposes. ideally, there would be different types of sessions with different limits
-    if len(dogs_assigned) >= session.max_slots:
-        session.full = True
+    if len(dogs_assigned) >= this_session.max_slots:
+        this_session.full = True
         print('session is full')
     else:
-        session.full = False
-    if session.completed:
-        for dog in dogs_assigned:
-            new_report = Report.objects.create(
-                dog_name=dog,
-                time_created=session.end_time,
-            )
+        this_session.full = False
+
     num_of_dogs = len(dogs_assigned)
-    open_slots = session.max_slots - num_of_dogs
-    session.slots_available = open_slots
-    session.save()
-    return render(request, 'session_detail.html', {'session': session, 'dogs_assigned': dogs_assigned, 'this_user': this_user, 'num_of_dogs': num_of_dogs, 'open_slots': open_slots})
+    open_slots = this_session.max_slots - num_of_dogs
+    this_session.slots_available = open_slots
+    this_session.save()
+
+    if request.method == 'POST':
+        form = SessionTriggerForm(request.POST)
+        if form.is_valid():
+            if this_session.start_check == False and not this_session.completed:
+                this_session.start_check = True
+                this_session.start = datetime.now()
+                this_session.save()
+            else:
+                this_session.completed = True
+                this_session.end = datetime.now()
+                this_session.start_check = False
+                this_session.save()
+
+    if request.method == 'POST' and this_session.completed:
+        form = SessionTriggerForm(request.POST)
+        if form.is_valid():
+            for dog in dogs_in_session:
+                new_report = Report.objects.create(
+                    dog_name=dog,
+                    session=this_session,
+                    time_created=this_session.end_time,
+                )
+        form = SessionTriggerForm()
+        return HttpResponseRedirect(reverse('calendar'))
+    return render(request, 'session_detail.html', {'session': this_session, 'dogs_assigned': dogs_assigned, 'this_user': this_user, 'num_of_dogs': num_of_dogs, 'open_slots': open_slots})
 
 
 def reports(request):
