@@ -23,4 +23,4 @@ class Trainer(models.Model):
         max_length=11, choices=EXPERTISE_CHOICES)
 
     def __str__(self):
-        return self.name
+        return self.full_name

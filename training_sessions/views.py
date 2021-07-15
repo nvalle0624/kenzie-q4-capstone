@@ -1,9 +1,16 @@
+from dogs.models import Dog
 from django.contrib.auth.models import User
 from admin_users.models import Trainer
 from users.models import Client
-from django.shortcuts import render
-
+from training_sessions.forms import SessionAddDogForm, SessionForm, DateInput, TimeInput
+from django.shortcuts import render, HttpResponseRedirect, reverse
+from django.views.generic.edit import FormView
+from django.views.generic import UpdateView
 from training_sessions.models import Report, Session, Calendar
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.admin.views.decorators import staff_member_required
+from django.forms.models import modelform_factory
 
 from datetime import datetime, date, timedelta
 
@@ -24,16 +31,22 @@ def session_view(request, session_id: int):
     for dog in dogs_in_session:
         dogs_assigned.append(dog)
     # this is for demo purposes. ideally, there would be different types of sessions with different limits
-    if dogs_assigned == 4:
+    if len(dogs_assigned) >= session.max_slots:
         session.full = True
+        print('session is full')
+    else:
+        session.full = False
     if session.completed:
         for dog in dogs_assigned:
-            Report.objects.create(
+            new_report = Report.objects.create(
                 dog_name=dog,
                 time_created=session.end_time,
             )
     num_of_dogs = len(dogs_assigned)
-    return render(request, 'session_detail.html', {'session': session, 'dogs_assigned': dogs_assigned, 'this_user': this_user, 'num_of_dogs': num_of_dogs})
+    open_slots = session.max_slots - num_of_dogs
+    session.slots_available = open_slots
+    session.save()
+    return render(request, 'session_detail.html', {'session': session, 'dogs_assigned': dogs_assigned, 'this_user': this_user, 'num_of_dogs': num_of_dogs, 'open_slots': open_slots})
 
 
 def reports(request):
@@ -92,3 +105,59 @@ def next_month(d):
     next_month = last + timedelta(days=1)
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
+
+
+class SessionFormView(UserPassesTestMixin, FormView):
+
+    template_name = 'session_form.html'
+    form_class = SessionForm
+    success_url = '/calendar/'
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+# editability from: https://www.youtube.com/watch?v=J7xaESAddDQ&list=RDCMUCFB0dxMudkws1q8w5NJEAmw&index=1
+
+
+class SessionEditView(UserPassesTestMixin, UpdateView):
+    model = Session
+    form_class = SessionForm
+    template_name = 'session_edit.html'
+    success_url = '/calendar/'
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+def session_add_dog_view(request, session_id: int):
+    this_client = Client.objects.get(user=request.user)
+    this_session = Session.objects.get(id=session_id)
+    if request.method == 'POST':
+        form = SessionAddDogForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            dogs = data['dogs']
+
+            for dog in dogs:
+                if len(dogs) <= this_session.slots_available:
+                    this_session.dogs_in_session.add(dog)
+                    this_session.save()
+                else:
+                    slots_full_message = "Sorry! This session doesn't have enough space."
+                    form = SessionAddDogForm()
+                    form.fields['dogs'].queryset = Dog.objects.filter(
+                        owner=this_client)
+                    return render(request, 'session_add_dog_form.html', {'form': form, 'this_session': this_session, 'slots_full_message': slots_full_message})
+            return HttpResponseRedirect(reverse('session_detail', args=[this_session.id]))
+    form = SessionAddDogForm()
+    form.fields['dogs'].queryset = Dog.objects.filter(owner=this_client)
+    return render(request, 'session_add_dog_form.html', {'form': form, 'this_session': this_session})
