@@ -47,6 +47,11 @@ def dog_profile_view(request, dog_id: int):
                 dog=this_dog,
                 image=data['media'],
             )
+            this_user = ''
+            if request.user.is_staff:
+                this_user = Trainer.objects.get(admin_user=request.user)
+            else:
+                this_user = Client.objects.get(user=request.user)
             return render(request, 'dog_profile_view.html',
                           {'dog': this_dog,
                            'image_form': image_form,
