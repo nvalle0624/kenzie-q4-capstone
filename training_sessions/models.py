@@ -78,3 +78,6 @@ class Report(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     time_created = models.DateTimeField(default=timezone.now)
     notes = models.TextField()
+
+    def __str__(self):
+        return self.dog_name.name

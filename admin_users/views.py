@@ -108,6 +108,7 @@ def my_sessions_view(request, user_id: int):
     my_reports = []
     for each_session in my_sessions:
         my_report = Report.objects.filter(session=each_session)
-        my_reports.append(my_report)
-
-    return render(request, 'my_sessions.html', {'my_sessions': my_sessions, 'all_trainers': all_trainers, 'my_reports': my_reports})
+        for item in my_report:
+            my_reports.append(item)
+    print('hello')
+    return render(request, 'my_sessions.html', {'my_sessions': my_sessions, 'all_trainers': all_trainers, 'my_reports': my_reports, 'this_trainer': this_trainer})

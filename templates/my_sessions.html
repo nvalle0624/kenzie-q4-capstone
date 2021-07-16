@@ -2,13 +2,17 @@
 {% block content %}
 {% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 <h1>My Sessions</h1>
-<h2>{{this_trainer.full_name}}</h2>
+<h2>{{this_trainer}}</h2>
 <ul>
   {% for session in my_sessions %}
   <li><a href='/session/{{session.id}}'>{{session.activity_name}}</a>: {{session.date}}</li>
   <ul>
     {% for dog in session.dogs_in_session.all %}
-    <li><a href='/report_detail/{{session.id}}'>{{dog.name}}</a>: {{session.date}}</li>
+      {% for report in my_reports %}
+        {% if dog == report.dog_name and session == report.session%}
+    <li><a href='/report_detail/{{report.id}}'>{{report}}</a>: {{session.date}}</li>
+        {% endif %}
+      {% endfor %}
     {% endfor %}
   </ul>
 {% endfor %}
