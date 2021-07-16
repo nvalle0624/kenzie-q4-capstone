@@ -13,4 +13,6 @@ urlpatterns = [
          views.my_sessions_view, name='my_sessions'),
     path('delete_user_media/<int:usermediafile_id>/',
          views.delete_user_media_view, name='delete_user_media_view'),
+    path('trainer_edit/<int:pk>/',
+         views.TrainerEditView.as_view(), name='trainer_edit'),
 ]

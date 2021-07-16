@@ -11,4 +11,8 @@ urlpatterns = [
     path('all_trainers/', views.all_trainers_view, name='all_trainers'),
     path('trainer_detail/<int:trainer_id>',
          views.trainer_detail_view, name='trainer_detail'),
+    path('client_edit/<int:pk>/',
+         views.ClientEditView.as_view(), name='client_edit'),
+    path('user_edit/<int:pk>/',
+         views.UserEditView.as_view(), name='user_edit'),
 ]

@@ -4,6 +4,7 @@ from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.contrib.auth import login, logout, authenticate
 
 from users.forms import LoginForm, SignUpForm, ClientForm
+from django.views.generic import UpdateView
 
 from users.models import Client
 from notifications.models import Notification
@@ -142,3 +143,59 @@ def trainer_detail_view(request, trainer_id: int):
     for notification in user_notifications:
         num_notifications += 1
     return render(request, 'trainer_detail.html', {'this_trainer': this_trainer, 'this_user': this_user, 'all_trainers': all_trainers, 'num_notifications': num_notifications})
+
+
+class ClientEditView(UpdateView):
+    model = Client
+    # form_class = ClientForm
+
+    template_name = 'edit_profile_form.html'
+    success_url = '/'
+    fields = [
+        'full_name',
+        'address',
+        'phone_contact'
+    ]
+
+    def get_context_data(self, **kwargs):
+        all_trainers = Trainer.objects.all()
+        user_notifications = Notification.objects.filter(
+            send_to=self.request.user).exclude(seen_by_user=True)
+        num_notifications = 0
+        for notification in user_notifications:
+            num_notifications += 1
+        context = super().get_context_data(**kwargs)
+        context['all_trainers'] = all_trainers
+        context['num_notifications'] = num_notifications
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+class UserEditView(UpdateView):
+    model = User
+    template_name = 'edit_profile_form.html'
+    success_url = '/'
+    fields = [
+        'username',
+        'password',
+        'email',
+    ]
+
+    def get_context_data(self, **kwargs):
+        all_trainers = Trainer.objects.all()
+        user_notifications = Notification.objects.filter(
+            send_to=self.request.user).exclude(seen_by_user=True)
+        num_notifications = 0
+        for notification in user_notifications:
+            num_notifications += 1
+        context = super().get_context_data(**kwargs)
+        context['all_trainers'] = all_trainers
+        context['num_notifications'] = num_notifications
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

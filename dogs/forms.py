@@ -10,5 +10,5 @@ class DogProfileForm(forms.Form):
     vet_name = forms.CharField(max_length=30)
     vet_number = forms.CharField()
     vet_address = forms.CharField(max_length=200)
-    special_needs = forms.CharField(widget=Textarea)
-    extra_notes = forms.CharField(widget=Textarea)
+    special_needs = forms.CharField(widget=Textarea, required=False)
+    extra_notes = forms.CharField(widget=Textarea, required=False)

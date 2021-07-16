@@ -1,6 +1,8 @@
 {% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 {% block content %}
 {% load static %}
+<a class="nav-item nav-link" href="/dog_edit/{{dog.id}}/">Edit Dog Profile</a>
+
 <div>
   <p>Name: {{dog.name}}</p>
   {% if this_user.is_staff %}

@@ -7,6 +7,7 @@ from dogs.forms import DogProfileForm
 from media_files.models import DogMediaFile
 from media_files.forms import MediaForm
 from notifications.models import Notification
+from django.views.generic import UpdateView
 import os
 
 # Create your views here.
@@ -40,6 +41,7 @@ def dog_profile_form_view(request):
 def dog_profile_view(request, dog_id: int):
     this_dog = Dog.objects.get(id=dog_id)
     image_files = DogMediaFile.objects.filter(dog=this_dog)
+    all_trainers = Trainer.objects.all()
     user_notifications = Notification.objects.filter(
         send_to=request.user).exclude(seen_by_user=True)
     num_notifications = 0
@@ -63,7 +65,8 @@ def dog_profile_view(request, dog_id: int):
                            'image_form': image_form,
                            'image_files': image_files,
                            'this_user': this_user,
-                           'num_notifications': num_notifications
+                           'num_notifications': num_notifications,
+                           'all_trainers': all_trainers
                            })
 
     image_form = MediaForm()
@@ -77,7 +80,8 @@ def dog_profile_view(request, dog_id: int):
                    'image_form': image_form,
                    'image_files': image_files,
                    'this_user': this_user,
-                   'num_notifications': num_notifications
+                   'num_notifications': num_notifications,
+                   'all_trainers': all_trainers
                    })
 
 
@@ -105,3 +109,37 @@ def all_dogs_view(request):
     for notification in user_notifications:
         num_notifications += 1
     return render(request, 'all_dogs.html', {'dogs': all_dogs, 'this_user': this_user, 'all_trainers': all_trainers, 'num_notifications': num_notifications})
+
+
+class DogEditView(UpdateView):
+    model = Dog
+    template_name = 'edit_profile_form.html'
+    success_url = '/'
+    fields = [
+        'name',
+        'breed',
+        'age_years',
+        'age_months',
+        'vet_name',
+        'vet_number',
+        'vet_address',
+        'special_needs',
+        'extra_notes',
+        'no_match_dogs',
+    ]
+
+    def get_context_data(self, **kwargs):
+        all_trainers = Trainer.objects.all()
+        user_notifications = Notification.objects.filter(
+            send_to=self.request.user).exclude(seen_by_user=True)
+        num_notifications = 0
+        for notification in user_notifications:
+            num_notifications += 1
+        context = super().get_context_data(**kwargs)
+        context['all_trainers'] = all_trainers
+        context['num_notifications'] = num_notifications
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
