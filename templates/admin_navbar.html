@@ -28,6 +28,8 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-item nav-link" href="/calendar/">Calendar</a> 
+            <a class="nav-item nav-link" href="/all_messages/{{request.user.id}}">Messages</a>
+            <a class="nav-item nav-link" href="/notifications/{{request.user.id}}">Notifications<span class="badge badge-light">{{num_notifications}}</span></a>
             <a class="nav-item nav-link" href='/my_sessions/{{request.user.id}}'>My Sessions</a>
             <a class="nav-item nav-link" href='/session_form/'>New Session</a>
             <a class="nav-item nav-link " href="/all_clients/">All Clients</a>
@@ -45,9 +47,6 @@
             </div>
             <a class="nav-item nav-link" href="/all_dogs/">All Dogs</a>
             <a class="nav-item nav-link" href="/add_admin_user/">Add Trainer</a>
-            <a class="nav-item nav-link" href="/all_messages/{{request.user.id}}">Messages</a>
-            <a class="nav-item nav-link" href="/notifications/{{request.user.id}}">Notifications</a>
-            <a class="nav-item nav-link" href="/message_form/">Write A Message</a>
             <a class="nav-item nav-link" href="/logout/">Logout</a>
           </div>
         </div>

@@ -136,6 +136,12 @@ class SessionFormView(UserPassesTestMixin, FormView):
     form_class = SessionForm
     success_url = '/calendar/'
 
+    def get_context_data(self, **kwargs):
+        all_trainers = Trainer.objects.all()
+        context = super().get_context_data(**kwargs)
+        context['all_trainers'] = all_trainers
+        return context
+
     def test_func(self):
         return self.request.user.is_staff
 
@@ -149,9 +155,36 @@ class SessionFormView(UserPassesTestMixin, FormView):
 
 class SessionEditView(UserPassesTestMixin, UpdateView):
     model = Session
-    form_class = SessionForm
+    # form_class = SessionForm
     template_name = 'session_edit.html'
     success_url = '/calendar/'
+    fields = [
+        'trainer',
+        'activity_name',
+        'description',
+        'dogs_in_session',
+        'date',
+        'start_time',
+        'end_time',
+        'completed',
+        'max_slots',
+        'notes',
+    ]
+
+    widgets = {
+        'date': DateInput(),
+        'start_time': TimeInput(),
+        'end_time': TimeInput(),
+    }
+
+    def get_context_data(self):
+        all_trainers = Trainer.objects.all()
+        # this_session = self.get_object()
+        context = super().get_context_data()
+        context['all_trainers'] = all_trainers
+        # context['start_time'] = this_session.start_time
+        # context['end_time'] = this_session.end_time
+        return context
 
     def test_func(self):
         return self.request.user.is_staff
@@ -164,6 +197,7 @@ class SessionEditView(UserPassesTestMixin, UpdateView):
 def session_add_dog_view(request, session_id: int):
     this_client = Client.objects.get(user=request.user)
     this_session = Session.objects.get(id=session_id)
+    all_trainers = Trainer.objects.all()
     if request.method == 'POST':
         form = SessionAddDogForm(request.POST)
         if form.is_valid():
@@ -179,7 +213,7 @@ def session_add_dog_view(request, session_id: int):
                     form = SessionAddDogForm()
                     form.fields['dogs'].queryset = Dog.objects.filter(
                         owner=this_client)
-                    return render(request, 'session_add_dog_form.html', {'form': form, 'this_session': this_session, 'slots_full_message': slots_full_message})
+                    return render(request, 'session_add_dog_form.html', {'form': form, 'this_session': this_session, 'slots_full_message': slots_full_message, 'all_trainers': all_trainers})
             return HttpResponseRedirect(reverse('session_detail', args=[this_session.id]))
     form = SessionAddDogForm()
     form.fields['dogs'].queryset = Dog.objects.filter(owner=this_client)
@@ -190,6 +224,7 @@ def all_reports_view(request, dog_id: int):
     this_user = User.objects.get(id=request.user.id)
     this_client = ''
     this_trainer = ''
+    all_trainers = Trainer.objects.all()
     if this_user.is_staff:
         this_trainer = Trainer.objects.get(admin_user=this_user)
     else:
@@ -197,13 +232,13 @@ def all_reports_view(request, dog_id: int):
 
     this_dog = Dog.objects.get(id=dog_id)
     all_reports = Report.objects.filter(dog_name=this_dog)
-    return render(request, 'all_reports.html', {'all_reports': all_reports, 'this_dog': this_dog, 'this_client': this_client, 'this_trainer': this_trainer, 'this_user': this_user})
+    return render(request, 'all_reports.html', {'all_reports': all_reports, 'this_dog': this_dog, 'this_client': this_client, 'this_trainer': this_trainer, 'this_user': this_user, 'all_trainers': all_trainers})
 
 
 def report_detail_view(request, report_id: int):
     this_report = Report.objects.get(id=report_id)
     this_dog = Dog.objects.get(name=this_report.dog_name)
-
+    all_trainers = Trainer.objects.all()
     if request.method == 'POST':
         form = ReportNotesForm(request.POST)
         if form.is_valid():
@@ -211,5 +246,5 @@ def report_detail_view(request, report_id: int):
             this_report.notes = data['notes']
             this_report.save()
         return HttpResponseRedirect(reverse('all_reports', args=[this_dog.id]))
-    form = ReportNotesForm()
-    return render(request, 'report_detail.html', {'form': form, 'this_dog': this_dog, 'this_report': this_report})
+    form = ReportNotesForm({'notes': this_report.notes})
+    return render(request, 'report_detail.html', {'form': form, 'this_dog': this_dog, 'this_report': this_report, 'all_trainers': all_trainers})

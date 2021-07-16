@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from media_files.forms import MediaForm
 from media_files.models import UserMediaFile
+from notifications.models import Notification
 
 
 # Create your views here.
@@ -20,6 +21,11 @@ from media_files.models import UserMediaFile
 @staff_member_required
 def trainer_home(request, user_id: int):
     if request.user.is_authenticated:
+        trainer_notifications = Notification.objects.filter(
+            send_to=request.user).exclude(seen_by_user=True)
+        num_notifications = 0
+        for notification in trainer_notifications:
+            num_notifications += 1
         image_files = UserMediaFile.objects.filter(user=request.user)
         trainer = Trainer.objects.get(admin_user=request.user)
         all_trainers = Trainer.objects.all()
@@ -32,7 +38,7 @@ def trainer_home(request, user_id: int):
                     image=data['media'],
                 )
         image_form = MediaForm()
-        return render(request, 'admin_homepage.html', {'trainer': trainer, 'all_trainers': all_trainers, 'image_form': image_form, 'image_files': image_files})
+        return render(request, 'admin_homepage.html', {'trainer': trainer, 'all_trainers': all_trainers, 'image_form': image_form, 'image_files': image_files, 'num_notifications': num_notifications})
     return HttpResponseRedirect(reverse('add_trainer'))
 
 

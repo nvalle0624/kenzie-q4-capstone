@@ -28,6 +28,8 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-item nav-link" href="/calendar/">Calendar</a>
+            <a class="nav-item nav-link" href="/all_messages/{{request.user.id}}">Messages</a>
+            <a class="nav-item nav-link" href="/notifications/{{request.user.id}}">Notifications<span class="badge badge-light">{{num_notifications}}</span></a>
 
             <div class="dropdown">
               <a class="nav-item nav-link dropdown-toggle" href="/all_trainers/" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -42,9 +44,6 @@
               </div>
             </div>
 
-            <a class="nav-item nav-link" href="/all_messages/{{request.user.id}}">Messages</a>
-            <a class="nav-item nav-link" href="/notifications/{{request.user.id}}">Notifications<span class="badge badge-light">{{num_notifications}}</span></a>
-            <a class="nav-item nav-link" href="/message_form/">Write A Message</a>
             <a class="nav-item nav-link" href="/logout/">Logout</a>
             {% endif %}
           </div>

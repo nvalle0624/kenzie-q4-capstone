@@ -1,6 +1,6 @@
 
-{% extends 'base.html' %}
 {% block content %}
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 
 {% load crispy_forms_tags %}
 
