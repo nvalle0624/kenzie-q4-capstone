@@ -1,3 +1,7 @@
+
+{% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% block content %}
+
 <h1>Report Detail for {{this_dog.name}}</h1>
 
 <p>Session:<a href='/session/{{this_report.session.id}}/'>{{this_report.session.activity_name}}</a></li></p>
@@ -14,3 +18,5 @@
   </form>
 </div>
 {% endif %}
+
+{% endblock %}
