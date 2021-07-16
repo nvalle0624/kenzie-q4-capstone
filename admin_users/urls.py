@@ -10,5 +10,7 @@ urlpatterns = [
     path('client_detail/<int:client_id>/',
          views.client_detail_view, name='client_detail'),
     path('my_sessions/<int:user_id>/',
-         views.my_sessions_view, name='my_sessions')
+         views.my_sessions_view, name='my_sessions'),
+    path('delete_user_media/<int:usermediafile_id>/',
+         views.delete_user_media_view, name='delete_user_media_view'),
 ]

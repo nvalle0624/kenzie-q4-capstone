@@ -22,11 +22,11 @@ def all_messages_view(request, user_id: int):
         all_messages.append(item)
     for item in all_recieved_messages:
         all_messages.append(item)
-    all_notifications = Notification.objects.all().filter(
-        send_to=this_user).exclude(seen_by_user=True)
-    count = 0
-    for item in all_notifications:
-        count += 1
+    user_notifications = Notification.objects.filter(
+        send_to=request.user).exclude(seen_by_user=True)
+    num_notifications = 0
+    for notification in user_notifications:
+        num_notifications += 1
 
     user_filter = []
 
@@ -40,8 +40,7 @@ def all_messages_view(request, user_id: int):
             else:
                 user_filter.append(data['name'])
             return render(request, 'all_messages.html', {'all_messages': all_messages,
-                                                         'all_notifications': all_notifications,
-                                                         'count': count,
+                                                         'num_notifications': num_notifications,
                                                          'form': form,
                                                          'all_trainers': all_trainers,
                                                          'user_filter': user_filter[0],
@@ -73,8 +72,7 @@ def all_messages_view(request, user_id: int):
                 user_filter.append(data['name'])
             form2 = TrainerMessageForm()
             return render(request, 'all_messages.html', {'all_messages': all_messages,
-                                                         'all_notifications': all_notifications,
-                                                         'count': count,
+                                                         'num_notifications': num_notifications,
                                                          'form': form,
                                                          'all_trainers': all_trainers,
                                                          'user_filter': user_filter[0],
@@ -99,8 +97,7 @@ def all_messages_view(request, user_id: int):
         form = ClientMessageFilterForm()
         form2 = ClientMessageForm()
         return render(request, 'all_messages.html', {'all_messages': all_messages,
-                                                     'all_notifications': all_notifications,
-                                                     'count': count,
+                                                     'num_notifications': num_notifications,
                                                      'all_trainers': all_trainers,
                                                      'form': form,
                                                      'form2': form2})
@@ -108,8 +105,7 @@ def all_messages_view(request, user_id: int):
         form = TrainerMessageFilterForm()
         form2 = TrainerMessageForm()
         return render(request, 'all_messages.html', {'all_messages': all_messages,
-                                                     'all_notifications': all_notifications,
-                                                     'count': count,
+                                                     'num_notifications': num_notifications,
                                                      'all_trainers': all_trainers,
                                                      'form': form,
                                                      'form2': form2})
@@ -119,6 +115,12 @@ def all_messages_view(request, user_id: int):
 def client_message_form_view(request):
     all_trainers = Trainer.objects.all()
     this_user = User.objects.get(id=request.user.id)
+    trainer_notifications = Notification.objects.filter(
+        send_to=request.user).exclude(seen_by_user=True)
+    num_notifications = 0
+    for notification in trainer_notifications:
+        num_notifications += 1
+
     if request.method == 'POST' and this_user.is_staff == False:
         form2 = ClientMessageForm(request.POST)
         if form2.is_valid():
@@ -152,9 +154,10 @@ def client_message_form_view(request):
             return HttpResponseRedirect(reverse('all_messages_view', args=[this_user.id]))
     if this_user.is_staff != True:
         this_client = Client.objects.get(user=this_user)
+
         form2 = ClientMessageForm()
-        return render(request, 'all_messages.html', {'form2': form2, 'this_client': this_client, 'all_trainers': all_trainers})
+        return render(request, 'all_messages.html', {'form2': form2, 'this_client': this_client, 'all_trainers': all_trainers, 'num_notifications': num_notifications})
     else:
         this_trainer = Trainer.objects.get(admin_user=this_user)
         form2 = TrainerMessageForm()
-        return render(request, 'all_messages.html', {'form2': form2, 'this_trainer': this_trainer, 'all_trainers': all_trainers})
+        return render(request, 'all_messages.html', {'form2': form2, 'this_trainer': this_trainer, 'all_trainers': all_trainers, 'num_notifications': num_notifications})
