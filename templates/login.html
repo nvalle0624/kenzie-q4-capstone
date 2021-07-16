@@ -1,19 +1,31 @@
-{% if request.user.is_authenticated and request.user.is_staff%}
-<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
-{% elif request.user.is_authenticated and not request.user.is_staff %}
-<button><a href='/client_home/{{this_user.id}}'>Home</a></button>
-{% else %}
-<button><a href="/">Home</a></button>  
-{% endif %}
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'forms/forms.css' %}">
+
 
 <form method='post' action=''>
 
-
+  <img class="profilePic" src="{%static 'forms/user.svg' %}"/>
+  <h2> Sign Into Your Account </h2>
     {% csrf_token %}
   
-    {{ form.as_p }}
+    {{ form }}
   
-    <input type="submit" value="Submit">
+    <input type="submit" value="Sign In">
+    <ul class="formNav">
+      <li>
+        {% if request.user.is_authenticated and request.user.is_staff%}
+        <a href='/trainer_home/{{this_user.id}}'>Home</a>
+        {% elif request.user.is_authenticated and not request.user.is_staff %}
+        <a href='/client_home/{{this_user.id}}'>Home</a>
+        {% else %}
+        <a href="/">Home</a>
+        {% endif %}
+      </li>
+      <li>
+        <a href="/signup/">Sign Up</a>
+      </li>
+    </ul>
   </form>
   
-  <button><a style='text-decoration: none;' href='/signup/'>Sign Up</a></button>
+  

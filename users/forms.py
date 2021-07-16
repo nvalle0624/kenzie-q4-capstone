@@ -10,9 +10,12 @@ class LoginForm(forms.Form):
 
 class SignUpForm(forms.Form):
 
-    username = forms.CharField(max_length=50)
-    email = forms.EmailField(max_length=100)
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(max_length=50, widget=forms.TextInput(
+        attrs={'placeholder': 'Username', 'autocomplete': 'off'}))
+    email = forms.EmailField(max_length=100, widget=forms.TextInput(
+        attrs={'placeholder': 'Email'}))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'placeholder': 'Password'}))
 
 
 class ClientForm(forms.Form):

@@ -1,12 +1,19 @@
-<button><a href="/">Home</a></button>
 
-<form method='post' action=''>
-
-
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'forms/forms.css' %}">
+<form method='post' action='' autocomplete="off">
+    <img class="profilePic" src="{%static 'forms/user.svg' %}"/>
+    <h2> Create Your Account </h2>
     {% csrf_token %}
-  
-    {{ form.as_p }}
+
+    {{ form}}
 
   
-    <input type="submit" value="Submit">
+    <input type="submit" value="Sign Up">
+    <ul class="formNav">
+      <li>
+        <a href="/">Home</a>
+      </li>
+    </ul>
   </form>
+ 

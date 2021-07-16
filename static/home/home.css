@@ -36,20 +36,3 @@ body {
 #titleLink > h1 {
   padding: 1em;
 }
-#slideshow {
-  position: absolute;
-  top: 10vh;
-  width: 100%;
-  height: 40vw;
-  overflow: hidden;
-  object-fit: contain;
-}
-#slideshow > div > img {
-  position: absolute;
-  width: 100%;
-  z-index: 1;
-}
-#slideshow > div > p {
-  position: absolute;
-  z-index: 2;
-}
