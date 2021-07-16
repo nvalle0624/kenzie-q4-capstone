@@ -1,10 +1,13 @@
+{% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% block content %}
+
 {% load static %}
 
-{% if request.user.is_staff %}
+<!-- {% if request.user.is_staff %}
 <button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
 {% else %}
 <button><a href='/client_home/{{this_user.id}}'>Home</a></button>
-{% endif %}
+{% endif %} -->
 
 <div>
   <p>Name: {{dog.name}}</p>
@@ -23,9 +26,10 @@
   </div>
   <br>
   <div>
-<br>
-<buton><a href='/all_reports/{{dog.id}}'>All Reports</a></buton>
-<br>
+
+    
+
+
     
     <form method='POST' action="" enctype="multipart/form-data">
       {% csrf_token %}
@@ -52,4 +56,4 @@
   {% endif %}
   {% endfor %}
   </div>
-
+{% endblock %}

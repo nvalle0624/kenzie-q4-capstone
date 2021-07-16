@@ -1,0 +1,14 @@
+<button><a href='/trainer_home/{{request.user.id}}'>Home</a></button>
+
+<h1>My Sessions</h1>
+
+<h2>{{this_trainer.full_name}}</h2>
+
+<ul>
+
+  {% for session in my_sessions %}
+
+  <li><a href='/session/{{session.id}}'>{{session.activity_name}}</a>: {{session.date}}</li>
+
+{% endfor %}
+</ul>

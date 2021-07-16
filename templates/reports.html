@@ -1,3 +1,5 @@
+{% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% block content %}
 {%for r in report%}
 <p>Dog Name: {{r.dog_name}}</p>
 {%for s in r.sessions.all%} {%for t in s.trainer.all%}
@@ -12,3 +14,4 @@
 <p>Report created: {{r.time_created}}</p>
 <hr />
 {%endfor%} {%endfor%} {%endfor%}
+{% endblock %}

@@ -1,3 +1,4 @@
+from training_sessions.models import Session
 from users.models import Client
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from admin_users.models import Trainer
@@ -75,3 +76,9 @@ def client_detail_view(request, client_id: int):
     this_client = Client.objects.get(id=client_id)
     this_user = User.objects.get(id=request.user.id)
     return render(request, 'client_detail.html', {'this_client': this_client, 'this_user': this_user})
+
+
+def my_sessions_view(request, user_id: int):
+    this_trainer = Trainer.objects.get(id=user_id)
+    my_sessions = Session.objects.filter(trainer=this_trainer)
+    return render(request, 'my_sessions.html', {'my_sessions': my_sessions})
