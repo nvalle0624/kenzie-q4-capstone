@@ -1,33 +1,21 @@
 {% extends 'client_navbar.html' %}
 {% block content %}
 
-
-<!-- <button><a href='/logout/'>Logout</a></button> -->
-
 <p>Name: {{client.full_name}}</p>
 <p>Email: {{client.email}}</p>
 <p>Address: {{client.address}}</p>
 <p>Phone: {{client.phone_contact}}</p>
 <br>
-<p>Dogs:</p>
-<ul>
-{%for dog in client.dogs_owned.all%}
-<li><a href='/dog_profile/{{dog.id}}'>{{dog.name}}</a></li>
-{%endfor%}
-</ul>
-<!-- {% if request.user.is_authenticated and not request.user.is_staff %}
-<br>
-<button><a href='/dog_form/'>Add dog</a></button>
-<br>
-<button><a href='/calendar/'>Calendar</a></button>
-<br>
-<button><a href='/all_trainers/'>All Trainers</a></button>
-<br>
-<button><a href='/all_messages/{{request.user.id}}'>Messages</a></button>
-<br>
-<button><a href='/notifications/{{request.user.id}}'>Notifications</a></button>
-<br>
-<button><a href='/message_form/'>Write Message</a></button>
-{% endif %} -->
 
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    My Dogs
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {%for dog in client.dogs_owned.all%}
+    <a class="dropdown-item"  href='/dog_profile/{{dog.id}}'>{{dog.name}}</a>
+    {%endfor%}
+    <a class="dropdown-item" href="/dog_form/"><b>Add a new Dog!</b></a>
+  </div>
+</div>
 {% endblock %}

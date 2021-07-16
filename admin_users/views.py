@@ -9,6 +9,8 @@ from users.forms import SignUpForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
+from media_files.forms import MediaForm
+# from media_files.models import UserMediaFile
 
 
 # Create your views here.
@@ -19,6 +21,16 @@ from django.contrib.auth import login, logout, authenticate
 def trainer_home(request, user_id: int):
     if request.user.is_authenticated:
         trainer = Trainer.objects.get(admin_user=request.user)
+
+        # if request.method == 'POST':
+        #     image_form = MediaForm(request.POST, request.FILES)
+        #     if image_form.is_valid():
+        #         data = image_form.cleaned_data
+        #         new_image = UserMediaFile.objects.create(
+        #         dog=this_dog,
+        #         image=data['media'],
+        #     )
+
         return render(request, 'admin_homepage.html', {'trainer': trainer})
     return HttpResponseRedirect(reverse('add_trainer'))
 

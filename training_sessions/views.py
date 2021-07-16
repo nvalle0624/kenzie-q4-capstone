@@ -184,9 +184,17 @@ def session_add_dog_view(request, session_id: int):
 
 
 def all_reports_view(request, dog_id: int):
+    this_user = User.objects.get(id=request.user.id)
+    this_client = ''
+    this_trainer = ''
+    if this_user.is_staff:
+        this_trainer = Trainer.objects.get(admin_user=this_user)
+    else:
+        this_client = Client.objects.get(user=this_user)
+
     this_dog = Dog.objects.get(id=dog_id)
     all_reports = Report.objects.filter(dog_name=this_dog)
-    return render(request, 'all_reports.html', {'all_reports': all_reports, 'this_dog': this_dog})
+    return render(request, 'all_reports.html', {'all_reports': all_reports, 'this_dog': this_dog, 'this_client': this_client, 'this_trainer': this_trainer, 'this_user': this_user})
 
 
 def report_detail_view(request, report_id: int):
