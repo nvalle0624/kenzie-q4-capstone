@@ -67,33 +67,5 @@
     {% endfor %}
   </div>
 </div>
-
-<!-- 
-    <h2 class="card-title">Pics</h2>
-  {% for image in image_files %}
-  {% if '.jpg' in image.image.url %}
-  <div class="card" style="width: 10rem;">
-      <img class="card-img-top" src={{image.image.url}} style="height: 12rem;" >
-      <a class="btn btn-primary" href='/delete_media/{{image.id}}'>Delete</a>
-    </div>
-  </div>
-  {% endif %}
-  {% endfor %} -->
-
-
-
-    <!-- <h2 class="card-title">Vids</h2>
-  {% for file in image_files %}
-  {% if '.m4v' in file.image.url %}
-  <p>{{file.file}}</p>
-  <div class="card" style="width: 18rem;">
-    <video class="card-img-top" controls >
-      <source src={{file.image.url}} type="video/mp4">
-    </video>
-    <a class="btn btn-primary" href='/delete_media/{{file.id}}'>Delete</a>
-  </div>
-</div>
-  {% endif %}
-  {% endfor %} -->
   </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+
 {% block content %}
 {% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 <h1>My Sessions</h1>

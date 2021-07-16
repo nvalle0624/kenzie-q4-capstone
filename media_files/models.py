@@ -13,7 +13,7 @@ class DogMediaFile(models.Model):
     #     return self.image
 
 
-# class UserMediaFile(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     image = models.FileField(
-#         upload_to='static/image_media/', null=True, blank=True)
+class UserMediaFile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.FileField(
+        upload_to='static/image_media/', null=True, blank=True)

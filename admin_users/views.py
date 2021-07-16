@@ -10,7 +10,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from media_files.forms import MediaForm
-# from media_files.models import UserMediaFile
+from media_files.models import UserMediaFile
 
 
 # Create your views here.
@@ -20,18 +20,19 @@ from media_files.forms import MediaForm
 @staff_member_required
 def trainer_home(request, user_id: int):
     if request.user.is_authenticated:
+        image_files = UserMediaFile.objects.filter(user=request.user)
         trainer = Trainer.objects.get(admin_user=request.user)
         all_trainers = Trainer.objects.all()
-        # if request.method == 'POST':
-        #     image_form = MediaForm(request.POST, request.FILES)
-        #     if image_form.is_valid():
-        #         data = image_form.cleaned_data
-        #         new_image = UserMediaFile.objects.create(
-        #         dog=this_dog,
-        #         image=data['media'],
-        #     )
-
-        return render(request, 'admin_homepage.html', {'trainer': trainer, 'all_trainers': all_trainers})
+        if request.method == 'POST':
+            image_form = MediaForm(request.POST, request.FILES)
+            if image_form.is_valid():
+                data = image_form.cleaned_data
+                new_image = UserMediaFile.objects.create(
+                    user=request.user,
+                    image=data['media'],
+                )
+        image_form = MediaForm()
+        return render(request, 'admin_homepage.html', {'trainer': trainer, 'all_trainers': all_trainers, 'image_form': image_form, 'image_files': image_files})
     return HttpResponseRedirect(reverse('add_trainer'))
 
 
