@@ -41,6 +41,7 @@ def dog_profile_form_view(request):
 def dog_profile_view(request, dog_id: int):
     this_dog = Dog.objects.get(id=dog_id)
     image_files = DogMediaFile.objects.filter(dog=this_dog)
+    all_trainers = Trainer.objects.all()
     user_notifications = Notification.objects.filter(
         send_to=request.user).exclude(seen_by_user=True)
     num_notifications = 0
@@ -64,7 +65,8 @@ def dog_profile_view(request, dog_id: int):
                            'image_form': image_form,
                            'image_files': image_files,
                            'this_user': this_user,
-                           'num_notifications': num_notifications
+                           'num_notifications': num_notifications,
+                           'all_trainers': all_trainers
                            })
 
     image_form = MediaForm()
@@ -78,7 +80,8 @@ def dog_profile_view(request, dog_id: int):
                    'image_form': image_form,
                    'image_files': image_files,
                    'this_user': this_user,
-                   'num_notifications': num_notifications
+                   'num_notifications': num_notifications,
+                   'all_trainers': all_trainers
                    })
 
 
@@ -124,6 +127,18 @@ class DogEditView(UpdateView):
         'extra_notes',
         'no_match_dogs',
     ]
+
+    def get_context_data(self, **kwargs):
+        all_trainers = Trainer.objects.all()
+        user_notifications = Notification.objects.filter(
+            send_to=self.request.user).exclude(seen_by_user=True)
+        num_notifications = 0
+        for notification in user_notifications:
+            num_notifications += 1
+        context = super().get_context_data(**kwargs)
+        context['all_trainers'] = all_trainers
+        context['num_notifications'] = num_notifications
+        return context
 
     def form_valid(self, form):
         form.save()

@@ -152,6 +152,18 @@ class TrainerEditView(UpdateView):
         'field_of_expertise',
     ]
 
+    def get_context_data(self, **kwargs):
+        all_trainers = Trainer.objects.all()
+        user_notifications = Notification.objects.filter(
+            send_to=self.request.user).exclude(seen_by_user=True)
+        num_notifications = 0
+        for notification in user_notifications:
+            num_notifications += 1
+        context = super().get_context_data(**kwargs)
+        context['all_trainers'] = all_trainers
+        context['num_notifications'] = num_notifications
+        return context
+
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
