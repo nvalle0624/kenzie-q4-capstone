@@ -1,0 +1,29 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    
+    margin:20px;
+    color: #F9E54E;
+    padding :20px;
+    background-image:url('banana_dog.jpeg') ;
+}
+
+form{
+    background-color: #5BBDC8;
+    padding:100px;
+    border-radius: 2%;
+}
+h1{
+    color:#5BBDC8;
+    background-color:#F9E54E ;
+    border-radius: 10px;
+    padding-left:10px;
+    
+}
+
+td, th, a.btn{
+    background-color: white;
+}
+

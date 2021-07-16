@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block content %}
+=======
 
 {% extends 'base.html' %}
 
@@ -6,6 +9,7 @@
 {% block content %}
 {% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 
+>>>>>>> 427c31537f3400fd68f6ab82795c770704bccf99
 <div id="trainer_form_container">
   <form id="trainer_form" method="post" action="">
     {% csrf_token%} {{ form|crispy }}
