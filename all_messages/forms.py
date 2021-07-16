@@ -17,8 +17,9 @@ class ClientMessageForm(forms.Form):
 
 class ClientMessageFilterForm(forms.Form):
     name = forms.ModelChoiceField(
-        queryset=User.objects.all().filter(is_staff=True))
+        queryset=User.objects.all().filter(is_staff=True), label="Trainer")
 
 
 class TrainerMessageFilterForm(forms.Form):
-    name = forms.ModelChoiceField(queryset=User.objects.all())
+    name = forms.ModelChoiceField(
+        queryset=User.objects.all(), label='Trainer/Client')

@@ -6,6 +6,7 @@ from django.contrib.auth import login, logout, authenticate
 from users.forms import LoginForm, SignUpForm, ClientForm
 
 from users.models import Client
+from notifications.models import Notification
 
 from django.contrib.auth.models import User
 from admin_users.models import Trainer
@@ -28,7 +29,16 @@ def app_home(request):
 def client_home(request, user_id: int):
     if request.user.is_authenticated:
         client = Client.objects.get(user=request.user)
-        return render(request, 'client_homepage.html', {'client': client})
+        client_notifications = Notification.objects.filter(
+            send_to=request.user).exclude(seen_by_user=True)
+        num_notifications = 0
+        for notification in client_notifications:
+            num_notifications += 1
+        all_trainers = Trainer.objects.all()
+        return render(request, 'client_homepage.html', {'client': client,
+                                                        'client_notifications': client_notifications,
+                                                        'num_notifications': num_notifications,
+                                                        'all_trainers': all_trainers})
     return HttpResponseRedirect(reverse('sign_up'))
 
 
@@ -120,4 +130,5 @@ def all_trainers_view(request):
 def trainer_detail_view(request, trainer_id: int):
     this_trainer = Trainer.objects.get(id=trainer_id)
     this_user = User.objects.get(id=request.user.id)
-    return render(request, 'trainer_detail.html', {'this_trainer': this_trainer, 'this_user': this_user})
+    all_trainers = Trainer.objects.all()
+    return render(request, 'trainer_detail.html', {'this_trainer': this_trainer, 'this_user': this_user, 'all_trainers': all_trainers})

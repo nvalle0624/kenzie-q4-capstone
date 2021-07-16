@@ -1,15 +1,57 @@
-<h1>BananaDog Home Page</h1>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{% if request.user.is_authenticated and request.user.is_staff%}
-<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
-{% elif request.user.is_authenticated and not request.user.is_staff %}
-<button><a href='/client_home/{{this_user.id}}'>Home</a></button>
-{% endif %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>BananaDog</title>
+  </head>
+  <body>
 
-<button><a href='/signup/'>Client Sign Up</a></button>
+  <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <h1 class="mt-2">BananaDog</h1>
+            <hr class="mt-0 mb-4">
 
-{% if request.user.is_authenticated %}
-<button><a href='/logout/'>Logout</a></button>
-{% elif not request.user.is_authenticated %}
-<button><a href='/login/'>Login</a></button>
-{% endif %}
+
+    {% if request.user.is_authenticated and request.user.is_staff%}
+    <a href='/trainer_home/{{this_user.id}}'>Home</a>
+    {% elif request.user.is_authenticated and not request.user.is_staff %}
+    <a href='/client_home/{{this_user.id}}'>Home</a>
+    {% endif %}
+
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        {% if request.user.is_authenticated %}
+        <h5 class="card-title">Log Out</h5>
+        <a href='/logout/' class="btn btn-primary">Logout</a>
+        {% elif not request.user.is_authenticated %}
+        <h5 class="card-title">Log In</h5>
+        <p class="card-text">Returning Trainers and Clients</p>
+        <a href='/login/' class="btn btn-primary">Login</a>
+        {% endif %}
+      </div>
+    </div>
+
+
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">New Client?</h5>
+        <p class="card-text">If you're new to BananaDog, start here</p>
+        <a href='/signup/' class="btn btn-primary">Client Sign Up</a>
+      </div>
+    </div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -35,7 +35,7 @@ urlpatterns = [
     path('dog_profile/<int:dog_id>/',
          dog_views.dog_profile_view, name='dog_profile_view'),
     path('delete_media/<int:mediafile_id>/',
-         dog_views.delete_media_view, name='delete_media_view'),
+         dog_views.delete_dog_media_view, name='delete_media_view'),
     path('message_form/', message_views.client_message_form_view,
          name='message_form_view'),
     path('all_messages/<int:user_id>/', message_views.all_messages_view,

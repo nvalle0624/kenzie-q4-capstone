@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render, HttpResponseRedirect, reverse
 from dogs.models import Dog
 from dogs.forms import DogProfileForm
-from media_files.models import MediaFile
+from media_files.models import DogMediaFile
 from media_files.forms import MediaForm
 import os
 
@@ -38,12 +38,12 @@ def dog_profile_form_view(request):
 
 def dog_profile_view(request, dog_id: int):
     this_dog = Dog.objects.get(id=dog_id)
-    image_files = MediaFile.objects.filter(dog=this_dog)
+    image_files = DogMediaFile.objects.filter(dog=this_dog)
     if request.method == 'POST':
         image_form = MediaForm(request.POST, request.FILES)
         if image_form.is_valid():
             data = image_form.cleaned_data
-            new_image = MediaFile.objects.create(
+            new_image = DogMediaFile.objects.create(
                 dog=this_dog,
                 image=data['media'],
             )
@@ -73,8 +73,8 @@ def dog_profile_view(request, dog_id: int):
                    })
 
 
-def delete_media_view(request, mediafile_id: int):
-    this_file = MediaFile.objects.get(id=mediafile_id)
+def delete_dog_media_view(request, dogmediafile_id: int):
+    this_file = DogMediaFile.objects.get(id=dogmediafile_id)
     this_dog = Dog.objects.get(id=this_file.dog.id)
     if request.method == "POST":
         this_file.delete()
@@ -83,6 +83,7 @@ def delete_media_view(request, mediafile_id: int):
 
 
 def all_dogs_view(request):
-    all_dogs = Dog.objects.all()
+    all_dogs = Dog.objects.all().order_by('name')
     this_user = User.objects.get(id=request.user.id)
-    return render(request, 'all_dogs.html', {'dogs': all_dogs, 'this_user': this_user})
+    all_trainers = Trainer.objects.all()
+    return render(request, 'all_dogs.html', {'dogs': all_dogs, 'this_user': this_user, 'all_trainers': all_trainers})
