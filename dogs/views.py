@@ -7,6 +7,7 @@ from dogs.forms import DogProfileForm
 from media_files.models import DogMediaFile
 from media_files.forms import MediaForm
 from notifications.models import Notification
+from django.views.generic import UpdateView
 import os
 
 # Create your views here.
@@ -105,3 +106,25 @@ def all_dogs_view(request):
     for notification in user_notifications:
         num_notifications += 1
     return render(request, 'all_dogs.html', {'dogs': all_dogs, 'this_user': this_user, 'all_trainers': all_trainers, 'num_notifications': num_notifications})
+
+
+class DogEditView(UpdateView):
+    model = Dog
+    template_name = 'edit_profile_form.html'
+    success_url = '/'
+    fields = [
+        'name',
+        'breed',
+        'age_years',
+        'age_months',
+        'vet_name',
+        'vet_number',
+        'vet_address',
+        'special_needs',
+        'extra_notes',
+        'no_match_dogs',
+    ]
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

@@ -41,5 +41,8 @@ urlpatterns = [
     path('all_messages/<int:user_id>/', message_views.all_messages_view,
          name='all_messages_view'),
     path('notifications/<int:user_id>/',
-         notifications_view.notifications_view, name='notifications_view')
+         notifications_view.notifications_view, name='notifications_view'),
+    path('dog_edit/<int:pk>/',
+         dog_views.DogEditView.as_view(), name='dog_edit'),
+
 ]

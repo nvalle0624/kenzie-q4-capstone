@@ -12,6 +12,7 @@ from django.contrib.auth import login, logout, authenticate
 from media_files.forms import MediaForm
 from media_files.models import UserMediaFile
 from notifications.models import Notification
+from django.views.generic import UpdateView
 
 
 # Create your views here.
@@ -138,3 +139,19 @@ def delete_user_media_view(request, usermediafile_id: int):
         this_file.delete()
         return HttpResponseRedirect(reverse('admin_homepage', args=[request.user.id]))
     return render(request, 'delete_user_media.html', {'this_file': this_file, 'this_user': this_user, 'num_notifications': num_notifications})
+
+
+class TrainerEditView(UpdateView):
+    model = Trainer
+    template_name = 'edit_profile_form.html'
+    success_url = '/'
+    fields = [
+        'full_name',
+        'phone',
+        'cert',
+        'field_of_expertise',
+    ]
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
