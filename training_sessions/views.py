@@ -50,20 +50,26 @@ def session_view(request, session_id: int):
                 this_session.start_check = True
                 this_session.start = datetime.now()
                 this_session.save()
-            elif this_session.start_check and not this_session.completed:
-                this_session.completed = True
-                this_session.end = datetime.now()
-                this_session.start_check = False
-                this_session.save()
-            else:
                 for dog in dogs_in_session:
                     new_report = Report.objects.create(
                         dog_name=dog,
                         session=this_session,
                         time_created=str(datetime.now()),
                     )
-                    this_session.report_submitted = True
-                    this_session.save()
+            elif this_session.start_check and not this_session.completed:
+                this_session.completed = True
+                this_session.end = datetime.now()
+                this_session.start_check = False
+                this_session.save()
+            else:
+                # for dog in dogs_in_session:
+                #     new_report = Report.objects.create(
+                #         dog_name=dog,
+                #         session=this_session,
+                #         time_created=str(datetime.now()),
+                #     )
+                this_session.report_submitted = True
+                this_session.save()
         form = SessionTriggerForm()
         return HttpResponseRedirect(reverse('calendar'))
     return render(request, 'session_detail.html', {'session': this_session, 'dogs_assigned': dogs_assigned, 'this_user': this_user, 'num_of_dogs': num_of_dogs, 'open_slots': open_slots})

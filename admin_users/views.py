@@ -1,4 +1,4 @@
-from training_sessions.models import Session
+from training_sessions.models import Report, Session
 from users.models import Client
 from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from admin_users.models import Trainer
@@ -105,5 +105,9 @@ def my_sessions_view(request, user_id: int):
     this_trainer = Trainer.objects.get(id=user_id)
     my_sessions = Session.objects.filter(trainer=this_trainer)
     all_trainers = Trainer.objects.all()
+    my_reports = []
+    for each_session in my_sessions:
+        my_report = Report.objects.filter(session=each_session)
+        my_reports.append(my_report)
 
-    return render(request, 'my_sessions.html', {'my_sessions': my_sessions, 'all_trainers': all_trainers})
+    return render(request, 'my_sessions.html', {'my_sessions': my_sessions, 'all_trainers': all_trainers, 'my_reports': my_reports})

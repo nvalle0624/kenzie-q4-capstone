@@ -6,6 +6,11 @@
 <ul>
   {% for session in my_sessions %}
   <li><a href='/session/{{session.id}}'>{{session.activity_name}}</a>: {{session.date}}</li>
+  <ul>
+    {% for dog in session.dogs_in_session.all %}
+    <li><a href='/report_detail/{{session.id}}'>{{dog.name}}</a>: {{session.date}}</li>
+    {% endfor %}
+  </ul>
 {% endfor %}
 </ul>
 {% endblock %}
