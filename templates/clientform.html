@@ -3,11 +3,8 @@
 {% load crispy_forms_tags %}
 
 
-{% if request.user.is_staff %}
-<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
-{% endif %}
-
 {% block content %}
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 
 <form method='post' action=''>
 

@@ -34,8 +34,11 @@ def client_home(request, user_id: int):
         num_notifications = 0
         for notification in client_notifications:
             num_notifications += 1
-
-        return render(request, 'client_homepage.html', {'client': client, 'client_notifications': client_notifications, 'num_notifications': num_notifications})
+        all_trainers = Trainer.objects.all()
+        return render(request, 'client_homepage.html', {'client': client,
+                                                        'client_notifications': client_notifications,
+                                                        'num_notifications': num_notifications,
+                                                        'all_trainers': all_trainers})
     return HttpResponseRedirect(reverse('sign_up'))
 
 
@@ -127,4 +130,5 @@ def all_trainers_view(request):
 def trainer_detail_view(request, trainer_id: int):
     this_trainer = Trainer.objects.get(id=trainer_id)
     this_user = User.objects.get(id=request.user.id)
-    return render(request, 'trainer_detail.html', {'this_trainer': this_trainer, 'this_user': this_user})
+    all_trainers = Trainer.objects.all()
+    return render(request, 'trainer_detail.html', {'this_trainer': this_trainer, 'this_user': this_user, 'all_trainers': all_trainers})

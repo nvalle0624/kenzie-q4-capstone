@@ -12,11 +12,11 @@ from django.shortcuts import render, HttpResponseRedirect, reverse
 # Create your views here.
 # @login_required
 def all_messages_view(request, user_id: int):
-    all_trainers = User.objects.all().filter(is_staff=True)
     this_user = User.objects.get(id=request.user.id)
     all_sent_messages = Message.objects.all().filter(sent_by=this_user)
     all_recieved_messages = Message.objects.all().filter(send_to=this_user)
     all_messages = []
+    all_trainers = Trainer.objects.all()
 
     for item in all_sent_messages:
         all_messages.append(item)
@@ -41,9 +41,10 @@ def all_messages_view(request, user_id: int):
             return render(request, 'all_messages.html', {'all_messages': all_messages,
                                                          'all_notifications': all_notifications,
                                                          'count': count,
-                                                         'all_trainers': all_trainers,
                                                          'form': form,
-                                                         'user_filter': user_filter[0]})
+                                                         'all_trainers': all_trainers,
+                                                         'user_filter': user_filter[0],
+                                                         })
 
     elif request.method == 'POST' and this_user.is_staff == True:
         form = TrainerMessageFilterForm(request.POST)
@@ -57,8 +58,8 @@ def all_messages_view(request, user_id: int):
             return render(request, 'all_messages.html', {'all_messages': all_messages,
                                                          'all_notifications': all_notifications,
                                                          'count': count,
-                                                         'all_trainers': all_trainers,
                                                          'form': form,
+                                                         'all_trainers': all_trainers,
                                                          'user_filter': user_filter[0]})
     if this_user.is_staff != True:
         form = ClientMessageFilterForm()
@@ -78,6 +79,7 @@ def all_messages_view(request, user_id: int):
 
 # @login_required
 def client_message_form_view(request):
+    all_trainers = Trainer.objects.all()
     this_user = User.objects.get(id=request.user.id)
     if request.method == 'POST' and this_user.is_staff == False:
         form = ClientMessageForm(request.POST)
@@ -113,8 +115,8 @@ def client_message_form_view(request):
     if this_user.is_staff != True:
         this_client = Client.objects.get(user=this_user)
         form = ClientMessageForm()
-        return render(request, 'message_form.html', {'form': form, 'this_client': this_client})
+        return render(request, 'message_form.html', {'form': form, 'this_client': this_client, 'all_trainers': all_trainers})
     else:
         this_trainer = Trainer.objects.get(admin_user=this_user)
         form = TrainerMessageForm()
-        return render(request, 'message_form.html', {'form': form, 'this_trainer': this_trainer})
+        return render(request, 'message_form.html', {'form': form, 'this_trainer': this_trainer, 'all_trainers': all_trainers})

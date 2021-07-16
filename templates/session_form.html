@@ -1,9 +1,11 @@
 
 {% extends 'base.html' %}
 
+
 {% load crispy_forms_tags %}
 
 {% block content %}
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 <h1>Schedule a Session</h1>
 <form method='post' action="">
   {% csrf_token %}

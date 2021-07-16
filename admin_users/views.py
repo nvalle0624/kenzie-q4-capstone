@@ -21,7 +21,7 @@ from media_files.forms import MediaForm
 def trainer_home(request, user_id: int):
     if request.user.is_authenticated:
         trainer = Trainer.objects.get(admin_user=request.user)
-
+        all_trainers = Trainer.objects.all()
         # if request.method == 'POST':
         #     image_form = MediaForm(request.POST, request.FILES)
         #     if image_form.is_valid():
@@ -31,13 +31,14 @@ def trainer_home(request, user_id: int):
         #         image=data['media'],
         #     )
 
-        return render(request, 'admin_homepage.html', {'trainer': trainer})
+        return render(request, 'admin_homepage.html', {'trainer': trainer, 'all_trainers': all_trainers})
     return HttpResponseRedirect(reverse('add_trainer'))
 
 
 @staff_member_required
 def add_admin_user(request):
     this_user = Trainer.objects.get(admin_user=request.user)
+    all_trianers = Trainer.objects.all()
     if request.method == "POST":
         form = SignUpForm(request.POST)
         print('Form', form.errors)
@@ -50,11 +51,12 @@ def add_admin_user(request):
                 is_staff=True)
             return HttpResponseRedirect(reverse('login'))
     form = SignUpForm()
-    return render(request, "clientform.html", {"form": form, "this_user": this_user})
+    return render(request, "clientform.html", {"form": form, "this_user": this_user, 'all_trainers': all_trianers})
 
 
 @staff_member_required
 def add_trainer(request):
+    all_trainers = Trainer.objects.all()
     if request.method == "POST":
         form = TrainerForm(request.POST)
         print('Form', form.errors)
@@ -73,24 +75,28 @@ def add_trainer(request):
 
             return HttpResponseRedirect(reverse("trainer_home", args=[new_trainer.id]))
     form = TrainerForm()
-    return render(request, "trainer_form.html", {"form": form})
+    return render(request, "trainer_form.html", {"form": form, 'all_trainers': all_trainers})
 
 
 @staff_member_required
 def all_clients_view(request):
     this_user = User.objects.get(id=request.user.id)
     all_clients = Client.objects.all()
-    return render(request, 'all_clients_view.html', {'all_clients': all_clients, 'this_user': this_user})
+    all_trainers = Trainer.objects.all()
+    return render(request, 'all_clients_view.html', {'all_clients': all_clients, 'this_user': this_user, 'all_trainers': all_trainers})
 
 
 @staff_member_required
 def client_detail_view(request, client_id: int):
     this_client = Client.objects.get(id=client_id)
     this_user = User.objects.get(id=request.user.id)
-    return render(request, 'client_detail.html', {'this_client': this_client, 'this_user': this_user})
+    all_trainers = Trainer.objects.all()
+    return render(request, 'client_detail.html', {'this_client': this_client, 'this_user': this_user, 'all_trainers': all_trainers})
 
 
 def my_sessions_view(request, user_id: int):
     this_trainer = Trainer.objects.get(id=user_id)
     my_sessions = Session.objects.filter(trainer=this_trainer)
-    return render(request, 'my_sessions.html', {'my_sessions': my_sessions})
+    all_trainers = Trainer.objects.all()
+
+    return render(request, 'my_sessions.html', {'my_sessions': my_sessions, 'all_trainers': all_trainers})

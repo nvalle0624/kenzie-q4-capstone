@@ -1,4 +1,5 @@
 <!-- from : https://www.youtube.com/watch?v=EX6Tt-ZW0so -->
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 
 {% load static %}
 <p>Are you sure you want to delete "{{this_file.image}}"?</p>

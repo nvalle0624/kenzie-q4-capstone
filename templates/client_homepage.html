@@ -1,21 +1,32 @@
 {% extends 'client_navbar.html' %}
 {% block content %}
 
-<p>Name: {{client.full_name}}</p>
-<p>Email: {{client.email}}</p>
-<p>Address: {{client.address}}</p>
-<p>Phone: {{client.phone_contact}}</p>
-<br>
+<div>
+  <div class="card-body">
+    <h5 class="card-title">{{client.full_name}}</h5>
+      
+        <p class="card-text">Email: {{client.email}}</p>
+        <p class="card-text">Address: {{client.address}}</p>
+        <p class="card-text">Phone: {{client.phone_contact}}</p>
+      
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            My Dogs
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {%for dog in client.dogs_owned.all%}
+            <a class="dropdown-item"  href='/dog_profile/{{dog.id}}'>{{dog.name}}</a>
+            {%endfor%}
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/dog_form/"><b>Add a new Dog!</b></a>
+          </div>
+        </div>
 
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    My Dogs
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    {%for dog in client.dogs_owned.all%}
-    <a class="dropdown-item"  href='/dog_profile/{{dog.id}}'>{{dog.name}}</a>
-    {%endfor%}
-    <a class="dropdown-item" href="/dog_form/"><b>Add a new Dog!</b></a>
   </div>
 </div>
+
+
+
+
+
 {% endblock %}

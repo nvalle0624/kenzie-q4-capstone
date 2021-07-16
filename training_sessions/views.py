@@ -99,9 +99,12 @@ class CalendarView(generic.ListView):
         html_cal = cal.formatmonth(withyear=True)
         context['calendar'] = mark_safe(html_cal)
 
+        all_trainers = Trainer.objects.all()
+
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
         context['this_user'] = this_user
+        context['all_trainers'] = all_trainers
         return context
 
 
