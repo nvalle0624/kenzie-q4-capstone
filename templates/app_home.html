@@ -1,15 +1,18 @@
-<h1>BananaDog Home Page</h1>
-
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'home/home.css' %}">
+<title>BananaDog</title>
 {% if request.user.is_authenticated and request.user.is_staff%}
 <button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
 {% elif request.user.is_authenticated and not request.user.is_staff %}
 <button><a href='/client_home/{{this_user.id}}'>Home</a></button>
 {% endif %}
 
-<button><a href='/signup/'>Client Sign Up</a></button>
-
 {% if request.user.is_authenticated %}
 <button><a href='/logout/'>Logout</a></button>
 {% elif not request.user.is_authenticated %}
-<button><a href='/login/'>Login</a></button>
+<ul class="navbar">
+    <li><a href="/" id="titleLink"><h1>BananaDog</h1></a></li>
+    <li id="rightCont"><a href='/signup/' >Sign Up </a> / <a href="/login/"> Log In</a></li>
+</ul>
+
 {% endif %}
