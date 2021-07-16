@@ -6,15 +6,19 @@
 <h1>All Clients</h1>
 
 {% for client in all_clients %}
-<br>
-<h3>Client</h3>
-<a href='/client_detail/{{client.id}}'>{{client.full_name}}</a>
-<ul>
-  <h4>Dogs</h4>
-{% for dog in client.dogs_owned.all %}
-<li><a href='/dog_profile/{{dog.id}}'>{{dog.name}}</a></li>
-{% endfor %}
-</ul>
-<br>
+<div class="card-body">
+  <h5 class="card-title"><a href='/client_detail/{{client.id}}'>{{client.full_name}}</a></h5>
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          My Dogs
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {%for dog in client.dogs_owned.all%}
+          <a class="dropdown-item"  href='/dog_profile/{{dog.id}}'>{{dog.name}}</a>
+          {%endfor%}
+        </div>
+      </div>
+
+</div>
 {% endfor %}
 {% endblock %}

@@ -1,0 +1,12 @@
+<!-- from : https://www.youtube.com/watch?v=EX6Tt-ZW0so -->
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+
+{% load static %}
+<p>Are you sure you want to delete this media? <img src={{this_file.image.url}} style="width: 200px ;height: 200px;" ></p>
+
+<form action="" method='POST'>
+  {% csrf_token %}
+<a href="/trainer_home/{{request.user.id}}">Cancel</a>
+<input type="submit" name="submit" value="Delete">
+</form>
+

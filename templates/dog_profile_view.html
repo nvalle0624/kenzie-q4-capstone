@@ -40,7 +40,9 @@
       {% if '.jpg' in image.image.url %}
       <div class="card" style="width: 10rem;">
           <img class="card-img-top" src={{image.image.url}} style="height: 12rem;" >
-          <a class="btn btn-primary" href='/delete_media/{{image.id}}'>Delete</a>
+          {% if not request.user.is_staff %}
+          <a class="btn btn-primary" href='/delete__dog_media/{{image.id}}'>Delete</a>
+          {% endif %}
         </div>
       </div>
       {% endif %}
@@ -60,7 +62,9 @@
       <video class="card-img-top" controls >
         <source src={{file.image.url}} type="video/mp4">
       </video>
-      <a class="btn btn-primary" href='/delete_media/{{file.id}}'>Delete</a>
+      {% if not request.user.is_staff %}
+      <a class="btn btn-primary" href='/delete_dog_media/{{file.id}}'>Delete</a>
+      {% endif %}
     </div>
   </div>
     {% endif %}

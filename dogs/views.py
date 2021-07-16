@@ -6,6 +6,7 @@ from dogs.models import Dog
 from dogs.forms import DogProfileForm
 from media_files.models import DogMediaFile
 from media_files.forms import MediaForm
+from notifications.models import Notification
 import os
 
 # Create your views here.
@@ -39,6 +40,11 @@ def dog_profile_form_view(request):
 def dog_profile_view(request, dog_id: int):
     this_dog = Dog.objects.get(id=dog_id)
     image_files = DogMediaFile.objects.filter(dog=this_dog)
+    user_notifications = Notification.objects.filter(
+        send_to=request.user).exclude(seen_by_user=True)
+    num_notifications = 0
+    for notification in user_notifications:
+        num_notifications += 1
     if request.method == 'POST':
         image_form = MediaForm(request.POST, request.FILES)
         if image_form.is_valid():
@@ -57,6 +63,7 @@ def dog_profile_view(request, dog_id: int):
                            'image_form': image_form,
                            'image_files': image_files,
                            'this_user': this_user,
+                           'num_notifications': num_notifications
                            })
 
     image_form = MediaForm()
@@ -69,21 +76,32 @@ def dog_profile_view(request, dog_id: int):
                   {'dog': this_dog,
                    'image_form': image_form,
                    'image_files': image_files,
-                   'this_user': this_user
+                   'this_user': this_user,
+                   'num_notifications': num_notifications
                    })
 
 
 def delete_dog_media_view(request, dogmediafile_id: int):
     this_file = DogMediaFile.objects.get(id=dogmediafile_id)
     this_dog = Dog.objects.get(id=this_file.dog.id)
+    user_notifications = Notification.objects.filter(
+        send_to=request.user).exclude(seen_by_user=True)
+    num_notifications = 0
+    for notification in user_notifications:
+        num_notifications += 1
     if request.method == "POST":
         this_file.delete()
         return HttpResponseRedirect(reverse('dog_profile_view', args=[this_dog.id]))
-    return render(request, 'delete_media.html', {'this_file': this_file, 'this_dog': this_dog})
+    return render(request, 'delete_dog_media.html', {'this_file': this_file, 'this_dog': this_dog, 'num_notifications': num_notifications})
 
 
 def all_dogs_view(request):
     all_dogs = Dog.objects.all().order_by('name')
     this_user = User.objects.get(id=request.user.id)
     all_trainers = Trainer.objects.all()
-    return render(request, 'all_dogs.html', {'dogs': all_dogs, 'this_user': this_user, 'all_trainers': all_trainers})
+    user_notifications = Notification.objects.filter(
+        send_to=request.user).exclude(seen_by_user=True)
+    num_notifications = 0
+    for notification in user_notifications:
+        num_notifications += 1
+    return render(request, 'all_dogs.html', {'dogs': all_dogs, 'this_user': this_user, 'all_trainers': all_trainers, 'num_notifications': num_notifications})

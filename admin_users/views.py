@@ -90,7 +90,12 @@ def all_clients_view(request):
     this_user = User.objects.get(id=request.user.id)
     all_clients = Client.objects.all()
     all_trainers = Trainer.objects.all()
-    return render(request, 'all_clients_view.html', {'all_clients': all_clients, 'this_user': this_user, 'all_trainers': all_trainers})
+    user_notifications = Notification.objects.filter(
+        send_to=request.user).exclude(seen_by_user=True)
+    num_notifications = 0
+    for notification in user_notifications:
+        num_notifications += 1
+    return render(request, 'all_clients_view.html', {'all_clients': all_clients, 'this_user': this_user, 'all_trainers': all_trainers, 'num_notifications': num_notifications})
 
 
 @staff_member_required
@@ -103,11 +108,33 @@ def client_detail_view(request, client_id: int):
 
 def my_sessions_view(request, user_id: int):
     this_trainer = Trainer.objects.get(id=user_id)
-    my_sessions = Session.objects.filter(trainer=this_trainer)
+    my_sessions = Session.objects.filter(trainer=this_trainer).order_by('date')
     all_trainers = Trainer.objects.all()
+
+    user_notifications = Notification.objects.filter(
+        send_to=request.user).exclude(seen_by_user=True)
+    num_notifications = 0
+    for notification in user_notifications:
+        num_notifications += 1
+
     my_reports = []
     for each_session in my_sessions:
         my_report = Report.objects.filter(session=each_session)
-        my_reports.append(my_report)
+        for item in my_report:
+            my_reports.append(item)
+    print('hello')
+    return render(request, 'my_sessions.html', {'my_sessions': my_sessions, 'all_trainers': all_trainers, 'my_reports': my_reports, 'this_trainer': this_trainer, 'num_notifications': num_notifications})
 
-    return render(request, 'my_sessions.html', {'my_sessions': my_sessions, 'all_trainers': all_trainers, 'my_reports': my_reports})
+
+def delete_user_media_view(request, usermediafile_id: int):
+    this_file = UserMediaFile.objects.get(id=usermediafile_id)
+    this_user = User.objects.get(id=this_file.user.id)
+    user_notifications = Notification.objects.filter(
+        send_to=request.user).exclude(seen_by_user=True)
+    num_notifications = 0
+    for notification in user_notifications:
+        num_notifications += 1
+    if request.method == "POST":
+        this_file.delete()
+        return HttpResponseRedirect(reverse('admin_homepage', args=[request.user.id]))
+    return render(request, 'delete_user_media.html', {'this_file': this_file, 'this_user': this_user, 'num_notifications': num_notifications})

@@ -2,6 +2,7 @@ from dogs.models import Dog
 from django.contrib.auth.models import User
 from admin_users.models import Trainer
 from users.models import Client
+from notifications.models import Notification
 from training_sessions.forms import ReportNotesForm, SessionAddDogForm, SessionForm, DateInput, SessionTriggerForm, TimeInput
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.views.generic.edit import FormView
@@ -144,8 +145,14 @@ class SessionFormView(UserPassesTestMixin, FormView):
 
     def get_context_data(self, **kwargs):
         all_trainers = Trainer.objects.all()
+        user_notifications = Notification.objects.filter(
+            send_to=self.request.user).exclude(seen_by_user=True)
+        num_notifications = 0
+        for notification in user_notifications:
+            num_notifications += 1
         context = super().get_context_data(**kwargs)
         context['all_trainers'] = all_trainers
+        context['num_notifications'] = num_notifications
         return context
 
     def test_func(self):
