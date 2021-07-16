@@ -1,8 +1,7 @@
 
 {% block content %}
 {% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
-<h1>My Sessions</h1>
-<h2>{{this_trainer}}</h2>
+<h1>{{this_trainer}}'s Sessions</h1>
 <ul>
   {% for session in my_sessions %}
   <li><a href='/session/{{session.id}}'>{{session.activity_name}}</a>: {{session.date}}</li>

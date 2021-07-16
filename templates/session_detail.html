@@ -8,26 +8,27 @@
 
 
 
-<br>
-<b>Activity:</b> {{session.activity_name}}
-<br>
-<b>Date</b>
-{{session.date}}
-<br>
-<b>Start:</b>
-{{session.start_time}}
-<br>
-<b>End:</b>
-{{session.end_time}}
-<br>
+
+<div class="card-body">
+    <h5 class="card-title">{{trainer.full_name}}</h5>
+      
+        <h4 class="card-title">Activity:</b> {{session.activity_name}}</h4>
+        <p class="card-text"><b>Date:</b> {{session.date}}</p>
+        <p class="card-text"><b>Start:</b> {{session.start_time}}</p>
+        <p class="card-text"><b>End:</b> {{session.end_time}}</p>
+        <p class="card-text"></p><b>Description:</b> {{session.description}}</p>
+</div>
+
+
+
+
+<div class="card-body" style="float: right;">
 <b>Trainers</b>
-  {% for trainer in session.trainer.all  %}
-  <li>
-    <a href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a>
-  </li>
-  {% endfor %}
-<br>
-<b>Description:</b> {{session.description}}
+{% for trainer in session.trainer.all  %}
+<li>
+  <a href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a>
+</li>
+{% endfor %}
 <br>
 <br>
 <b>Dogs Booked:</b>
@@ -39,6 +40,11 @@
 <br>
 {% endfor %}
 <br>
+</div>
+
+
+
+<div class="card-body" style="float: left;">
 <p>
   <b>Availability:</b>
   {% if session.full %}
@@ -82,5 +88,6 @@ end:{{session.end}}
   <input type='submit' value='Submit Reports'>
   {% endif %}
 </form>
+</div>
 {% endif %}
 {% endblock %}
