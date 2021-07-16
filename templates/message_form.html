@@ -1,20 +1,10 @@
-
-{% extends 'base.html' %}
-
 {% load crispy_forms_tags %}
 
-
-
-{% if request.user.is_staff %}
-<button><a href='/trainer_home/{{this_trainer.id}}'>Home</a></button>
-{% else %}
-<button><a href='/client_home/{{this_client.id}}'>Home</a></button>
-{% endif %}
-
 {% block content %}
+
 <form method='post' action="">
   {% csrf_token %}
-  {{ form|crispy }}
+  {{ form2|crispy }}
   <input type='submit' value='Submit'>
 </form>
 

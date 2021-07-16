@@ -3,16 +3,9 @@
 
 {% load crispy_forms_tags %}
 
-{% if request.user.is_authenticated and request.user.is_staff%}
-<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
-{% elif request.user.is_authenticated and not request.user.is_staff %}
-<button><a href='/client_home/{{this_user.id}}'>Home</a></button>
-{% else %}
-<button><a href="/">Home</a></button>  
-{% endif %}
-
-
 {% block content %}
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+<button><a href="/">Home</a></button>
 <form method='post' action=''>
 <h2>LogIn</h2>
 

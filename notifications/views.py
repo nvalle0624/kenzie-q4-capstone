@@ -8,7 +8,7 @@ from notifications.models import Notification
 
 def notifications_view(request, user_id: int):
     this_user = User.objects.get(id=request.user.id)
-    # mention = f'@{request.user}'
+    all_trainers = Trainer.objects.all()
     all_notifications = Notification.objects.filter(
         send_to=this_user).exclude(seen_by_user=True)
     count = 0
@@ -19,4 +19,7 @@ def notifications_view(request, user_id: int):
     for item in all_notifications:
         if item.seen_by_user == True:
             item.delete()
-    return render(request, 'notifications.html', {'all_notifications': all_notifications, 'count': count, 'this_user': this_user})
+    return render(request, 'notifications.html', {'all_notifications': all_notifications,
+                                                  'count': count,
+                                                  'this_user': this_user,
+                                                  'all_trainers': all_trainers})

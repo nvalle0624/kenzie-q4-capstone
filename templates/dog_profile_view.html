@@ -1,14 +1,6 @@
 {% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 {% block content %}
-
 {% load static %}
-
-<!-- {% if request.user.is_staff %}
-<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
-{% else %}
-<button><a href='/client_home/{{this_user.id}}'>Home</a></button>
-{% endif %} -->
-
 <div>
   <p>Name: {{dog.name}}</p>
   {% if this_user.is_staff %}
@@ -29,31 +21,51 @@
 
     
 
-
+  <button><a href=/all_reports/{{dog.id}}>All Reports</a></button>
     
     <form method='POST' action="" enctype="multipart/form-data">
       {% csrf_token %}
       {{image_form.as_p}}
       <input type='submit' value='Submit'>
     </form>
-    <h2>Pics</h2>
-  {% for image in image_files %}
-  {% if '.jpg' in image.image.url %}
-  <img src={{image.image.url}} width="200" height="200">
-  <a href='/delete_media/{{image.id}}'>Delete</a>
-  {% endif %}
-  {% endfor %}
 
+    
 
-    <h2>Vids</h2>
-  {% for file in image_files %}
-  {% if '.m4v' in file.image.url %}
-  <p>{{file.file}}</p>
-  <video width="320" height="240" controls>
-    <source src={{file.image.url}} type="video/mp4">
-  </video>
-  <a href='/delete_media/{{file.id}}'>Delete</a>
-  {% endif %}
-  {% endfor %}
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#photos-dropdown" aria-expanded="false" aria-controls="collapseExample">
+      Photos
+    </button>
+  <div class="collapse" id="photos-dropdown">
+    <div class="card card-body">
+      {% for image in image_files %}
+      {% if '.jpg' in image.image.url %}
+      <div class="card" style="width: 10rem;">
+          <img class="card-img-top" src={{image.image.url}} style="height: 12rem;" >
+          <a class="btn btn-primary" href='/delete_media/{{image.id}}'>Delete</a>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  <br>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#videos-dropdown" aria-expanded="false" aria-controls="collapseExample">
+    Videos
+  </button>
+<div class="collapse" id="videos-dropdown">
+  <div class="card card-body">
+    {% for file in image_files %}
+    {% if '.m4v' in file.image.url %}
+    <p>{{file.file}}</p>
+    <div class="card" style="width: 18rem;">
+      <video class="card-img-top" controls >
+        <source src={{file.image.url}} type="video/mp4">
+      </video>
+      <a class="btn btn-primary" href='/delete_media/{{file.id}}'>Delete</a>
+    </div>
+  </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
   </div>
 {% endblock %}

@@ -1,26 +1,60 @@
+
 {% extends 'admin_navbar.html' %}
 {% block content %}
-<!-- <button><a href='/logout/'>Logout</a></button> -->
+{% load static %}
 
-<p>Name: {{trainer.full_name}}</p>
-<p>Phone: {{trainer.phone}}</p>
-<p>Email: {{trainer.email}}</p>
-<p>Certifications: {{trainer.cert}}</p>
-<p>Role: {{trainer.field_of_expertise}}</p>
-<br>
-<!-- <button><a href='/calendar/'>Calendar</a></button>
-<br>
-<button><a href='/my_sessions/{{trainer.id}}'>My Sessions</a></button>
-<br>
-<button><a href='/all_clients/'>All Clients</a></button>
-<br>
-<button><a href='/all_dogs/'>All Dogs</a></button>
-<br>
-<button><a href='/add_admin_user/'>Add Trainer</a></button>
-<br>
-<button><a href='/all_messages/{{request.user.id}}'>Messages</a></button>
-<br>
-<button><a href='/notifications/{{request.user.id}}'>Notifications</a></button>
-<br>
-<button><a href='/message_form/'>Write Message</a></button> -->
+<div>
+    <div class="card-body">
+      <h5 class="card-title">{{trainer.full_name}}</h5>
+        
+          <p class="card-text">Email: {{trainer.email}}</p>
+          <p class="card-text">Cert: {{trainer.cert}}</p>
+          <p class="card-text">Phone: {{trainer.phone}}</p>
+        
+
+          <form method='POST' action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{image_form.as_p}}
+            <input type='submit' value='Submit'>
+          </form>
+
+
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#photos-dropdown" aria-expanded="false" aria-controls="collapseExample">
+            Photos
+          </button>
+          <div class="collapse" id="photos-dropdown">
+          <div class="card card-body">
+            {% for image in image_files %}
+            {% if '.jpg' in image.image.url %}
+            <div class="card" style="width: 10rem;">
+                <img class="card-img-top" src={{image.image.url}} style="height: 12rem;" >
+                <a class="btn btn-primary" href='/delete_media/{{image.id}}'>Delete</a>
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+          <br>
+          <br>
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#videos-dropdown" aria-expanded="false" aria-controls="collapseExample">
+          Videos
+          </button>
+          <div class="collapse" id="videos-dropdown">
+          <div class="card card-body">
+          {% for file in image_files %}
+          {% if '.m4v' in file.image.url %}
+          <p>{{file.file}}</p>
+          <div class="card" style="width: 18rem;">
+            <video class="card-img-top" controls >
+              <source src={{file.image.url}} type="video/mp4">
+            </video>
+            <a class="btn btn-primary" href='/delete_media/{{file.id}}'>Delete</a>
+          </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+</div>
 {% endblock %}

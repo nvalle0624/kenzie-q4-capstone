@@ -1,13 +1,5 @@
 {% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 {% block content %}
-<!-- {% if request.user.is_staff %}
-<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
-{% else %}
-<button><a href='/client_home/{{this_user.id}}'>Home</a></button>
-{% endif %} -->
-
-
-<h1>This is {{request.user}}'s notifications page</h1>
 
 {% if all_notifications %}
 <h3>You have {{count}} new notification(s)</h3>

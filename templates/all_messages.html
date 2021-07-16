@@ -1,15 +1,22 @@
 {% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 {% block content %}
-<!-- {% if request.user.is_staff %}
-<button><a href='/trainer_home/{{request.user.id}}'>Home</a></button>
-{% else %}
-<button><a href='/client_home/{{request.user.id}}'>Home</a></button>
-{% endif %} -->
 
+{% load crispy_forms_tags %}
+
+<h3>Write New Message</h3>
 <div>
-  <form method="post" action="">
+  <form method='post' action="">
+    {% csrf_token %}
+    {{ form2|crispy }}
+    <input type='submit' value='Send'>
+  </form>
+
+
+<br>
+<br>
+  <form method="get" action=''>
     {% csrf_token%} {{form.as_p}}
-    <input type="submit" value="submit" />
+    <input type="submit" value="Filter by Name" />
   </form>
 </div>
 
