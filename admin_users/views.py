@@ -10,7 +10,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from media_files.forms import MediaForm
-from media_files.models import UserMediaFile
+from media_files.models import UserMediaFile, UserProfilePic
 from notifications.models import Notification
 from django.views.generic import UpdateView
 
@@ -27,6 +27,9 @@ def trainer_home(request, user_id: int):
         num_notifications = 0
         for notification in trainer_notifications:
             num_notifications += 1
+        profile_pic = ''
+        if UserProfilePic.objects.filter(user=request.user):
+            profile_pic = UserProfilePic.objects.get(user=request.user)
         image_files = UserMediaFile.objects.filter(user=request.user)
         trainer = Trainer.objects.get(admin_user=request.user)
         all_trainers = Trainer.objects.all()
@@ -39,7 +42,10 @@ def trainer_home(request, user_id: int):
                     image=data['media'],
                 )
         image_form = MediaForm()
-        return render(request, 'admin_homepage.html', {'trainer': trainer, 'all_trainers': all_trainers, 'image_form': image_form, 'image_files': image_files, 'num_notifications': num_notifications})
+        return render(request, 'admin_homepage.html', {'trainer': trainer,
+                                                       'all_trainers': all_trainers, 'image_form': image_form,
+                                                       'image_files': image_files, 'num_notifications': num_notifications,
+                                                       'profile_pic': profile_pic})
     return HttpResponseRedirect(reverse('add_trainer'))
 
 
@@ -78,7 +84,6 @@ def add_trainer(request):
                 email=request.user.email,
                 cert=data['cert'],
                 field_of_expertise=data['field_of_expertise']
-
             )
 
             return HttpResponseRedirect(reverse("trainer_home", args=[new_trainer.id]))
@@ -137,7 +142,7 @@ def delete_user_media_view(request, usermediafile_id: int):
         num_notifications += 1
     if request.method == "POST":
         this_file.delete()
-        return HttpResponseRedirect(reverse('admin_homepage', args=[request.user.id]))
+        return HttpResponseRedirect(reverse('trainer_home', args=[request.user.id]))
     return render(request, 'delete_user_media.html', {'this_file': this_file, 'this_user': this_user, 'num_notifications': num_notifications})
 
 

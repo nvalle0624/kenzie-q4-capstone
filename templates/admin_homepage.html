@@ -2,24 +2,23 @@
 {% extends 'admin_navbar.html' %}
 {% block content %}
 {% load static %}
-<a href='/trainer_edit/{{trainer.id}}/'>Edit profile</a>
 
 <div>
     <div class="card-body">
+      {% if profile_pic.image %}
+      <img  src="{{profile_pic.image.url}}" class="card-img-top" style="height: 18rem; width: 14rem;" >
+      {% endif %}
       <h5 class="card-title">{{trainer.full_name}}</h5>
         
           <p class="card-text">Email: {{trainer.email}}</p>
           <p class="card-text">Cert: {{trainer.cert}}</p>
           <p class="card-text">Phone: {{trainer.phone}}</p>
-        
-
-          <form method='POST' action="" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{image_form.as_p}}
-            <input type='submit' value='Submit'>
-          </form>
+          <a href='/trainer_edit/{{trainer.id}}/'>Edit profile</a>
+          <br>
+          <a href='/upload_profile_pic/'>Update Profile Picture</a>
 
 
+          <br>
           <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#photos-dropdown" aria-expanded="false" aria-controls="collapseExample">
             Photos
           </button>
@@ -56,6 +55,12 @@
           {% endfor %}
         </div>
       </div>
+
+      <form method='POST' action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{image_form.as_p}}
+        <input type='submit' value='Submit'>
+      </form>
     </div>
 </div>
 {% endblock %}

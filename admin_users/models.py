@@ -21,6 +21,8 @@ class Trainer(models.Model):
     cert = models.CharField(max_length=50, blank=True)
     field_of_expertise = models.CharField(
         max_length=11, choices=EXPERTISE_CHOICES)
+    profile_pic = models.FileField(
+        upload_to='static/profile_pics/', blank=True, null=True)
 
     def __str__(self):
         return self.full_name

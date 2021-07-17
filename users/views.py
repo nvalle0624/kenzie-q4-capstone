@@ -11,6 +11,7 @@ from notifications.models import Notification
 
 from django.contrib.auth.models import User
 from admin_users.models import Trainer
+from media_files.models import UserMediaFile, UserProfilePic
 
 from django.contrib.auth.decorators import login_required
 
@@ -29,6 +30,9 @@ def app_home(request):
 
 def client_home(request, user_id: int):
     if request.user.is_authenticated:
+        profile_pic = ''
+        if UserProfilePic.objects.filter(user=request.user):
+            profile_pic = UserProfilePic.objects.get(user=request.user)
         client = Client.objects.get(user=request.user)
         client_notifications = Notification.objects.filter(
             send_to=request.user).exclude(seen_by_user=True)
@@ -39,7 +43,8 @@ def client_home(request, user_id: int):
         return render(request, 'client_homepage.html', {'client': client,
                                                         'client_notifications': client_notifications,
                                                         'num_notifications': num_notifications,
-                                                        'all_trainers': all_trainers})
+                                                        'all_trainers': all_trainers,
+                                                        'profile_pic': profile_pic})
     return HttpResponseRedirect(reverse('sign_up'))
 
 

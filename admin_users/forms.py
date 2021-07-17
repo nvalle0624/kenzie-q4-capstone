@@ -10,5 +10,5 @@ class TrainerForm(forms.ModelForm):
             'full_name',
             'phone',
             'cert',
-            'field_of_expertise'
+            'field_of_expertise',
         ]
