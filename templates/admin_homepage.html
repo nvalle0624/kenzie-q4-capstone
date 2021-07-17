@@ -2,24 +2,26 @@
 {% extends 'admin_navbar.html' %}
 {% block content %}
 {% load static %}
-<a href='/trainer_edit/{{trainer.id}}/'>Edit profile</a>
 
 <div>
     <div class="card-body">
-      <h5 class="card-title">{{trainer.full_name}}</h5>
+      {% if profile_pic.image %}
+      <img  src="{{profile_pic.image.url}}" class="card-img-top" style="height: 18rem; width: 14rem;" >
+      {% endif %}
+      <h3 class="card-title">{{trainer.full_name}}</h3>
         
-          <p class="card-text">Email: {{trainer.email}}</p>
-          <p class="card-text">Cert: {{trainer.cert}}</p>
-          <p class="card-text">Phone: {{trainer.phone}}</p>
-        
-
-          <form method='POST' action="" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{image_form.as_p}}
-            <input type='submit' value='Submit'>
-          </form>
+          <p class="card-text"><b>Email: </b>{{trainer.email}}</p>
+          <p class="card-text"><b>Cert: </b>{{trainer.cert}}</p>
+          <p class="card-text"><b>Phone:</b> {{trainer.phone}}</p>
+          <a href='/trainer_edit/{{trainer.id}}/'>Edit profile</a>
+          <br>
+          <a href='/upload_profile_pic/'>Update Profile Picture</a>
 
 
+          <br>
+          <br>
+          <br>
+          <h3>Your Media</h3>
           <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#photos-dropdown" aria-expanded="false" aria-controls="collapseExample">
             Photos
           </button>
@@ -56,6 +58,12 @@
           {% endfor %}
         </div>
       </div>
+
+      <form method='POST' action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{image_form.as_p}}
+        <input type='submit' value='Upload'>
+      </form>
     </div>
 </div>
 {% endblock %}

@@ -1,23 +1,18 @@
 {% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html'%}
 {% block content %}
-<!-- {% if request.user.is_staff %}
-<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
-{% else %}
-<button><a href='/client_home/{{this_user.id}}'>Home</a></button>
-{% endif %} -->
 
 <h1>All Trainers</h1>
 
 {% for trainer in all_trainers %}
-<br>
-<h3>Trainer</h3>
-<a href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a>
-<ul>
-  <h4>Roles:</h4>
-{% for role in roles %}
-<li>{{role}}</li>
+
+<div class="card-body">
+{% for pic in all_profile_pics %}
+{% if pic.user == trainer.admin_user %}
+  <img src={{pic.image.url}} class="card-img-top" style="height: 12rem; width: 10rem;">
+{% endif %}
 {% endfor %}
-</ul>
-<br>
+  <h5 class="card-title"><a href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a></h5>
+{{trainer.field_of_expertise}}
+</div>
 {% endfor %}
 {% endblock %}

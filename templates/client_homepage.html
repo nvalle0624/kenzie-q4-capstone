@@ -1,15 +1,21 @@
 {% extends 'client_navbar.html' %}
 {% block content %}
 
-<a href='/client_edit/{{client.id}}/'>Edit profile</a>
+
 
 <div>
   <div class="card-body">
-    <h5 class="card-title">{{client.full_name}}</h5>
+    {% if profile_pic.image %}
+    <img  src="{{profile_pic.image.url}}" class="card-img-top" style="height: 18rem; width: 14rem;" >
+    {% endif %}
+    <h3 class="card-title">{{client.full_name}}</h3>
       
-        <p class="card-text">Email: {{client.email}}</p>
-        <p class="card-text">Address: {{client.address}}</p>
-        <p class="card-text">Phone: {{client.phone_contact}}</p>
+        <p class="card-text"><b>Email: </b>{{client.email}}</p>
+        <p class="card-text"><b>Address:</b> {{client.address}}</p>
+        <p class="card-text"><b>Phone:</b> {{client.phone_contact}}</p>
+        <a href='/client_edit/{{client.id}}/'>Edit profile</a>
+        <br>
+        <a href='/upload_profile_pic/'>Update Profile Picture</a>
       
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
