@@ -4,43 +4,15 @@
 <h1>All Trainers</h1>
 
 {% for trainer in all_trainers %}
-<br>
-<h3>Trainer</h3>
-<a href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a>
-<ul>
-  <h4>Roles:</h4>
-{% for role in roles %}
-<li>{{role}}</li>
-{% endfor %}
-</ul>
-<br>
-{% endfor %}
-{% endblock %}
-
-
 
 <div class="card-body">
+{% for pic in all_profile_pics %}
+{% if pic.user == trainer.admin_user %}
+  <img src={{pic.image.url}} class="card-img-top" style="height: 12rem; width: 10rem;">
+{% endif %}
+{% endfor %}
   <h5 class="card-title"><a href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a></h5>
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          My Dogs
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          {%for dog in client.dogs_owned.all%}
-          <a class="dropdown-item"  href='/dog_profile/{{dog.id}}'>{{dog.name}}</a>
-          {%endfor%}
-        </div>
-      </div>
-
+{{trainer.field_of_expertise}}
 </div>
-
-
-
-<div class="card" style="width: 18rem;">
-  <img src="..." class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
-</div>
+{% endfor %}
+{% endblock %}

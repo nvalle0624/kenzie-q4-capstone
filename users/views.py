@@ -129,17 +129,19 @@ def client_signup_view(request):
 
 def all_trainers_view(request):
     all_trainers = Trainer.objects.all()
+    all_profile_pics = UserProfilePic.objects.all()
     this_user = User.objects.get(id=request.user.id)
     user_notifications = Notification.objects.filter(
         send_to=request.user).exclude(seen_by_user=True)
     num_notifications = 0
     for notification in user_notifications:
         num_notifications += 1
-    return render(request, 'all_trainers.html', {'all_trainers': all_trainers, 'this_user': this_user, 'num_notifications': num_notifications})
+    return render(request, 'all_trainers.html', {'all_trainers': all_trainers, 'this_user': this_user, 'num_notifications': num_notifications, 'all_profile_pics': all_profile_pics})
 
 
 def trainer_detail_view(request, trainer_id: int):
     this_trainer = Trainer.objects.get(id=trainer_id)
+    all_profile_pics = UserProfilePic.objects.all()
     this_user = User.objects.get(id=request.user.id)
     all_trainers = Trainer.objects.all()
     user_notifications = Notification.objects.filter(
@@ -147,7 +149,9 @@ def trainer_detail_view(request, trainer_id: int):
     num_notifications = 0
     for notification in user_notifications:
         num_notifications += 1
-    return render(request, 'trainer_detail.html', {'this_trainer': this_trainer, 'this_user': this_user, 'all_trainers': all_trainers, 'num_notifications': num_notifications})
+    return render(request, 'trainer_detail.html', {'this_trainer': this_trainer,
+                                                   'this_user': this_user, 'all_trainers': all_trainers,
+                                                   'num_notifications': num_notifications, 'all_profile_pics': all_profile_pics})
 
 
 class ClientEditView(UpdateView):

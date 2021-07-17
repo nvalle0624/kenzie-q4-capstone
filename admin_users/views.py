@@ -109,7 +109,8 @@ def client_detail_view(request, client_id: int):
     this_client = Client.objects.get(id=client_id)
     this_user = User.objects.get(id=request.user.id)
     all_trainers = Trainer.objects.all()
-    return render(request, 'client_detail.html', {'this_client': this_client, 'this_user': this_user, 'all_trainers': all_trainers})
+    all_profile_pics = UserProfilePic.objects.all()
+    return render(request, 'client_detail.html', {'this_client': this_client, 'this_user': this_user, 'all_trainers': all_trainers, 'all_profile_pics': all_profile_pics})
 
 
 def my_sessions_view(request, user_id: int):
