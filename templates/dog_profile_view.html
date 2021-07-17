@@ -4,6 +4,9 @@
 
 <div>
   <div class="card-body"></div>
+  {% if profile_pic.image %}
+  <img  src="{{profile_pic.image.url}}" class="card-img-top" style="height: 18rem; width: 14rem;" >
+  {% endif %}
   <h3 class="card-title">{{dog.name}}</h3>
   {% if this_user.is_staff %}
     <p><b>Owner: </b><a href='/client_detail/{{dog.owner.id}}'>{{dog.owner.full_name}}</a></p>
@@ -18,6 +21,8 @@
     <p><b>Speacial Needs:</b> {{dog.special_needs}}</p>
     <p><b>Extra Notes:</b> {{dog.extra_notes}}</p>
     <a href="/dog_edit/{{dog.id}}/">Edit Dog Profile</a>
+    <br>
+    <a href='/upload_dog_profile_pic/{{dog.id}}'>Update Profile Picture</a>
     <br>
   <button><a href=/all_reports/{{dog.id}}>All Reports</a></button>
   <br>

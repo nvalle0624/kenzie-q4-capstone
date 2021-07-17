@@ -94,7 +94,7 @@ def add_trainer(request):
 @staff_member_required
 def all_clients_view(request):
     this_user = User.objects.get(id=request.user.id)
-    all_clients = Client.objects.all()
+    all_clients = Client.objects.all().order_by('full_name')
     all_trainers = Trainer.objects.all()
     user_notifications = Notification.objects.filter(
         send_to=request.user).exclude(seen_by_user=True)

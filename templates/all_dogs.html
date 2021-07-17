@@ -1,12 +1,17 @@
 {% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 {% block content %}
-<!-- <button><a href='/trainer_home/{{this_user.id}}'>Home</a></button> -->
+
 
 <h1>All Dogs</h1>
 
-<ul>
-  {% for d in dogs %}
-  <li><a href='/dog_profile/{{d.id}}/'>{{d.name}}</a></li>
+  {% for dog in dogs %}
+  <div class="card-body">
+    {% for pic in all_profile_pics %}
+    {% if pic.dog == dog %}
+      <img src={{pic.image.url}} class="card-img-top" style="height: 12rem; width: 10rem;">
+    {% endif %}
+    {% endfor %}
+      <h5 class="card-title"><a href='/dog_profile/{{dog.id}}/'>{{dog.name}}</a></h5>
+    </div>
   {% endfor %}
   {% endblock %}
-</ul>

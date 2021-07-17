@@ -47,4 +47,6 @@ urlpatterns = [
          dog_views.DogEditView.as_view(), name='dog_edit'),
     path('upload_profile_pic/',
          media_views.upload_profile_pic, name='upload_profile_pic'),
+    path('upload_dog_profile_pic/<int:dog_id>',
+         media_views.upload_dog_profile_pic, name='upload_dog_profile_pic'),
 ]
