@@ -128,7 +128,7 @@ def client_signup_view(request):
 
 
 def all_trainers_view(request):
-    all_trainers = Trainer.objects.all()
+    all_trainers = Trainer.objects.all().order_by('full_name')
     all_profile_pics = UserProfilePic.objects.all()
     this_user = User.objects.get(id=request.user.id)
     user_notifications = Notification.objects.filter(
