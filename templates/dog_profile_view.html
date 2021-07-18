@@ -38,7 +38,7 @@
       <div class="card" style="width: 10rem;">
           <img class="card-img-top" src={{image.image.url}} style="height: 12rem;" >
           {% if not request.user.is_staff %}
-          <a class="btn btn-primary" href='/delete__dog_media/{{image.id}}'>Delete</a>
+          <a class="btn btn-primary" href='/delete_dog_media/{{image.id}}'>Delete</a>
           {% endif %}
         </div>
       </div>

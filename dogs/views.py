@@ -100,6 +100,7 @@ def delete_dog_media_view(request, dogmediafile_id: int):
         num_notifications += 1
     if request.method == "POST":
         this_file.delete()
+        os.remove('.' + this_file.image.url)
         return HttpResponseRedirect(reverse('dog_profile_view', args=[this_dog.id]))
     return render(request, 'delete_dog_media.html', {'this_file': this_file, 'this_dog': this_dog, 'num_notifications': num_notifications})
 
