@@ -114,7 +114,7 @@ def client_detail_view(request, client_id: int):
 
 
 def my_sessions_view(request, user_id: int):
-    this_trainer = Trainer.objects.get(id=user_id)
+    this_trainer = Trainer.objects.get(admin_user=request.user)
     my_sessions = Session.objects.filter(trainer=this_trainer).order_by('date')
     all_trainers = Trainer.objects.all()
 
