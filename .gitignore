@@ -128,4 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-static/image_media/
+static/image_media/*
+!static/image_media/.gitkeep
+static/profile_pics/*
+!static/profile_pics/.gitkeep

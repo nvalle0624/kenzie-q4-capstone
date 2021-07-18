@@ -13,9 +13,12 @@ from django.shortcuts import render, HttpResponseRedirect, reverse
 # @login_required
 def all_messages_view(request, user_id: int):
     this_user = User.objects.get(id=request.user.id)
-    all_sent_messages = Message.objects.all().filter(sent_by=this_user)
-    all_recieved_messages = Message.objects.all().filter(send_to=this_user)
+    all_sent_messages = Message.objects.all().filter(
+        sent_by=this_user).order_by("-time_posted")
+    all_recieved_messages = Message.objects.all().filter(
+        send_to=this_user).order_by("-time_posted")
     all_messages = []
+    sorted(all_messages, key=lambda message: message.time_created)
     all_trainers = Trainer.objects.all()
 
     for item in all_sent_messages:
@@ -32,6 +35,7 @@ def all_messages_view(request, user_id: int):
 
     if request.method == 'GET' and this_user.is_staff == False:
         form = ClientMessageFilterForm(request.GET)
+        form2 = ClientMessageForm()
         if form.is_valid():
             data = form.cleaned_data
             if len(user_filter) > 0:
@@ -42,11 +46,15 @@ def all_messages_view(request, user_id: int):
             return render(request, 'all_messages.html', {'all_messages': all_messages,
                                                          'num_notifications': num_notifications,
                                                          'form': form,
+                                                         'form2': form2,
                                                          'all_trainers': all_trainers,
                                                          'user_filter': user_filter[0],
+                                                         'all_sent_messages': all_sent_messages,
+                                                         'all_recieved_messages': all_recieved_messages,
                                                          })
     elif request.method == 'POST' and this_user.is_staff == False:
         form2 = ClientMessageForm(request.POST)
+        form = ClientMessageFilterForm()
         if form2.is_valid():
             data = form2.cleaned_data
             new_message = Message.objects.create(
@@ -59,10 +67,25 @@ def all_messages_view(request, user_id: int):
                 sent_by=this_user,
                 send_to=data['send_to']
             )
-            return HttpResponseRedirect(reverse('all_messages_view', args=[this_user.id]))
+            if len(user_filter) > 0:
+                user_filter.pop(0)
+                user_filter.append(data['send_to'])
+            else:
+                user_filter.append(data['send_to'])
+            return render(request, 'all_messages.html', {'all_messages': all_messages,
+                                                         'num_notifications': num_notifications,
+                                                         'form': form,
+                                                         'form2': form2,
+                                                         'all_trainers': all_trainers,
+                                                         'user_filter': user_filter[0],
+                                                         'all_sent_messages': all_sent_messages,
+                                                         'all_recieved_messages': all_recieved_messages,
+                                                         })
+            # return HttpResponseRedirect(reverse('all_messages_view', args=[this_user.id]))
 
     elif request.method == 'GET' and this_user.is_staff == True:
         form = TrainerMessageFilterForm(request.GET)
+        form2 = TrainerMessageForm()
         if form.is_valid():
             data = form.cleaned_data
             if len(user_filter) > 0:
@@ -74,11 +97,13 @@ def all_messages_view(request, user_id: int):
             return render(request, 'all_messages.html', {'all_messages': all_messages,
                                                          'num_notifications': num_notifications,
                                                          'form': form,
+                                                         'form2': form2,
                                                          'all_trainers': all_trainers,
                                                          'user_filter': user_filter[0],
                                                          'form2': form2})
     elif request.method == 'POST' and this_user.is_staff == True:
         form2 = TrainerMessageForm(request.POST)
+        form = TrainerMessageFilterForm()
         if form2.is_valid():
             data = form2.cleaned_data
             new_message = Message.objects.create(
@@ -91,6 +116,18 @@ def all_messages_view(request, user_id: int):
                 sent_by=this_user,
                 send_to=data['send_to']
             )
+            if len(user_filter) > 0:
+                user_filter.pop(0)
+                user_filter.append(data['send_to'])
+            else:
+                user_filter.append(data['send_to'])
+            return render(request, 'all_messages.html', {'all_messages': all_messages,
+                                                         'num_notifications': num_notifications,
+                                                         'form': form,
+                                                         'form2': form2,
+                                                         'all_trainers': all_trainers,
+                                                         'user_filter': user_filter[0],
+                                                         })
             return HttpResponseRedirect(reverse('all_messages_view', args=[this_user.id]))
 
     if this_user.is_staff != True:

@@ -1,23 +1,20 @@
 {% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 {% block content %}
-
-<!-- {% if request.user.is_staff %}
-<button><a href='/trainer_home/{{this_user.id}}'>Home</a></button>
-{% else %}
-<button><a href='/client_home/{{this_user.id}}'>Home</a></button>
-{% endif %}
-<button><a href='/logout/'>Logout</a></button> -->
-
-<p>Name: {{this_trainer.full_name}}</p>
-<p>Phone: {{this_trainer.phone}}</p>
-<p>Email: {{this_trainer.email}}</p>
-<p>Roles: 
-  <ul>
-  {% for role in this_trainer.field_of_expertise.all %}
-  <li>{{role}}</li>
-  {%endfor%}
-</ul>
-</p>
-<p>Certifications: {{this_trainer.cert}}</p>
+<div>
+  <div class="card-body">
+    {% for pic in all_profile_pics %}
+    {% if this_trainer.admin_user == pic.user %}
+      <img src={{pic.image.url}} class="card-img-top" style="height: 18rem; width: 14rem;">
+    {% endif %}
+    {% endfor %}
+    <h3 class="card-title">{{this_trainer.full_name}}</h3>
+        <p class="card-text"><b>Role:</b> {{this_trainer.field_of_expertise}}</p>
+        <p class="card-text"><b>Certifications:</b> {{this_trainer.cert}}</p>
+        <p class="card-text"><b>Email: </b>{{this_trainer.email}}</p>
+        <p class="card-text"><b>Address:</b> {{this_trainer.address}}</p>
+        <p class="card-text"><b>Phone:</b> {{this_trainer.phone_contact}}</p>
+        <br>
+  </div>
+</div>
 
 {% endblock %}

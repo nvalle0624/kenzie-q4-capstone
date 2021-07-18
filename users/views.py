@@ -4,12 +4,14 @@ from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.contrib.auth import login, logout, authenticate
 
 from users.forms import LoginForm, SignUpForm, ClientForm
+from django.views.generic import UpdateView
 
 from users.models import Client
 from notifications.models import Notification
 
 from django.contrib.auth.models import User
 from admin_users.models import Trainer
+from media_files.models import UserMediaFile, UserProfilePic
 
 from django.contrib.auth.decorators import login_required
 
@@ -28,6 +30,9 @@ def app_home(request):
 
 def client_home(request, user_id: int):
     if request.user.is_authenticated:
+        profile_pic = ''
+        if UserProfilePic.objects.filter(user=request.user):
+            profile_pic = UserProfilePic.objects.get(user=request.user)
         client = Client.objects.get(user=request.user)
         client_notifications = Notification.objects.filter(
             send_to=request.user).exclude(seen_by_user=True)
@@ -38,7 +43,8 @@ def client_home(request, user_id: int):
         return render(request, 'client_homepage.html', {'client': client,
                                                         'client_notifications': client_notifications,
                                                         'num_notifications': num_notifications,
-                                                        'all_trainers': all_trainers})
+                                                        'all_trainers': all_trainers,
+                                                        'profile_pic': profile_pic})
     return HttpResponseRedirect(reverse('sign_up'))
 
 
@@ -122,18 +128,20 @@ def client_signup_view(request):
 
 
 def all_trainers_view(request):
-    all_trainers = Trainer.objects.all()
+    all_trainers = Trainer.objects.all().order_by('full_name')
+    all_profile_pics = UserProfilePic.objects.all()
     this_user = User.objects.get(id=request.user.id)
     user_notifications = Notification.objects.filter(
         send_to=request.user).exclude(seen_by_user=True)
     num_notifications = 0
     for notification in user_notifications:
         num_notifications += 1
-    return render(request, 'all_trainers.html', {'all_trainers': all_trainers, 'this_user': this_user, 'num_notifications': num_notifications})
+    return render(request, 'all_trainers.html', {'all_trainers': all_trainers, 'this_user': this_user, 'num_notifications': num_notifications, 'all_profile_pics': all_profile_pics})
 
 
 def trainer_detail_view(request, trainer_id: int):
     this_trainer = Trainer.objects.get(id=trainer_id)
+    all_profile_pics = UserProfilePic.objects.all()
     this_user = User.objects.get(id=request.user.id)
     all_trainers = Trainer.objects.all()
     user_notifications = Notification.objects.filter(
@@ -141,4 +149,62 @@ def trainer_detail_view(request, trainer_id: int):
     num_notifications = 0
     for notification in user_notifications:
         num_notifications += 1
-    return render(request, 'trainer_detail.html', {'this_trainer': this_trainer, 'this_user': this_user, 'all_trainers': all_trainers, 'num_notifications': num_notifications})
+    return render(request, 'trainer_detail.html', {'this_trainer': this_trainer,
+                                                   'this_user': this_user, 'all_trainers': all_trainers,
+                                                   'num_notifications': num_notifications, 'all_profile_pics': all_profile_pics})
+
+
+class ClientEditView(UpdateView):
+    model = Client
+    # form_class = ClientForm
+
+    template_name = 'edit_profile_form.html'
+    success_url = '/'
+    fields = [
+        'full_name',
+        'address',
+        'phone_contact'
+    ]
+
+    def get_context_data(self, **kwargs):
+        all_trainers = Trainer.objects.all()
+        user_notifications = Notification.objects.filter(
+            send_to=self.request.user).exclude(seen_by_user=True)
+        num_notifications = 0
+        for notification in user_notifications:
+            num_notifications += 1
+        context = super().get_context_data(**kwargs)
+        context['all_trainers'] = all_trainers
+        context['num_notifications'] = num_notifications
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+class UserEditView(UpdateView):
+    model = User
+    template_name = 'edit_profile_form.html'
+    success_url = '/'
+    fields = [
+        'username',
+        'password',
+        'email',
+    ]
+
+    def get_context_data(self, **kwargs):
+        all_trainers = Trainer.objects.all()
+        user_notifications = Notification.objects.filter(
+            send_to=self.request.user).exclude(seen_by_user=True)
+        num_notifications = 0
+        for notification in user_notifications:
+            num_notifications += 1
+        context = super().get_context_data(**kwargs)
+        context['all_trainers'] = all_trainers
+        context['num_notifications'] = num_notifications
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

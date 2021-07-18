@@ -3,9 +3,11 @@
 
 {% load crispy_forms_tags %}
 
-<h3>Write New Message</h3>
+
 <div>
+  
   <form method='post' action="">
+    <h3>Write New Message</h3>
     {% csrf_token %}
     {{ form2|crispy }}
     <input type='submit' value='Send'>
@@ -15,31 +17,42 @@
 <br>
 <br>
   <form method="get" action=''>
-    {% csrf_token%} {{form.as_p}}
+    <h2>Messages: </h2>
+    {% csrf_token%} 
+    {{form|crispy}}
     <input type="submit" value="Filter by Name" />
   </form>
 </div>
 
-<h2>Messages: </h2>
-{% for message in all_messages %}
-{% if  message.sent_by == request.user and message.send_to == user_filter %}
-<div style='border: 2px solid blue; width: 300px; flex-direction: column;'>
-  <p>To: {{message.send_to}}</p>
+
+<div>
+  
+<div style="display: flex;flex-direction: column; border: 2px dashed pink;float: left;width: 50%;">
+  {% for message in all_messages %}
+  {% if  message.sent_by == request.user and message.send_to == user_filter %}
+  <div style='border: 2px solid blue;'>
+  <p><b>From:</b> You
+  <br> <b>To: </b>{{message.send_to}}</p>
   <p>{{message.text}}</p>
   <p>{{message.time_posted}}</p>
-  
+  </div>
+  {% endif %}
+  {% endfor %}
 </div>
 
-{% elif message.send_to == request.user and message.sent_by == user_filter %}
-<div style='border: 2px solid green; width: 300px; flex-direction: column; margin-left: 50%;'>
-  <p>From: {{message.sent_by}}</p>
+<div style="display: flex;flex-direction: column; border: 2px dashed orange;float: right;width: 50%;">
+  {% for message in all_messages %}
+  {%if message.send_to == request.user and message.sent_by == user_filter %}
+  <div style='border: 2px solid green;'>
+  <p><b>From:</b> {{message.sent_by}}
+  <br><b>To: </b>You</p>
   <p>{{message.text}}</p>
   <p>{{message.time_posted}}</p>
-  
+  </div>
+  {% endif %}
+  {% endfor %}
 </div>
 
-{% endif %}
-
-{% endfor %}
+</div>
 
 {% endblock %}

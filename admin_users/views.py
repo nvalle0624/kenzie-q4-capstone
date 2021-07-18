@@ -10,8 +10,9 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from media_files.forms import MediaForm
-from media_files.models import UserMediaFile
+from media_files.models import UserMediaFile, UserProfilePic
 from notifications.models import Notification
+from django.views.generic import UpdateView
 
 
 # Create your views here.
@@ -26,6 +27,9 @@ def trainer_home(request, user_id: int):
         num_notifications = 0
         for notification in trainer_notifications:
             num_notifications += 1
+        profile_pic = ''
+        if UserProfilePic.objects.filter(user=request.user):
+            profile_pic = UserProfilePic.objects.get(user=request.user)
         image_files = UserMediaFile.objects.filter(user=request.user)
         trainer = Trainer.objects.get(admin_user=request.user)
         all_trainers = Trainer.objects.all()
@@ -38,7 +42,10 @@ def trainer_home(request, user_id: int):
                     image=data['media'],
                 )
         image_form = MediaForm()
-        return render(request, 'admin_homepage.html', {'trainer': trainer, 'all_trainers': all_trainers, 'image_form': image_form, 'image_files': image_files, 'num_notifications': num_notifications})
+        return render(request, 'admin_homepage.html', {'trainer': trainer,
+                                                       'all_trainers': all_trainers, 'image_form': image_form,
+                                                       'image_files': image_files, 'num_notifications': num_notifications,
+                                                       'profile_pic': profile_pic})
     return HttpResponseRedirect(reverse('add_trainer'))
 
 
@@ -77,7 +84,6 @@ def add_trainer(request):
                 email=request.user.email,
                 cert=data['cert'],
                 field_of_expertise=data['field_of_expertise']
-
             )
 
             return HttpResponseRedirect(reverse("trainer_home", args=[new_trainer.id]))
@@ -88,7 +94,7 @@ def add_trainer(request):
 @staff_member_required
 def all_clients_view(request):
     this_user = User.objects.get(id=request.user.id)
-    all_clients = Client.objects.all()
+    all_clients = Client.objects.all().order_by('full_name')
     all_trainers = Trainer.objects.all()
     user_notifications = Notification.objects.filter(
         send_to=request.user).exclude(seen_by_user=True)
@@ -103,11 +109,12 @@ def client_detail_view(request, client_id: int):
     this_client = Client.objects.get(id=client_id)
     this_user = User.objects.get(id=request.user.id)
     all_trainers = Trainer.objects.all()
-    return render(request, 'client_detail.html', {'this_client': this_client, 'this_user': this_user, 'all_trainers': all_trainers})
+    all_profile_pics = UserProfilePic.objects.all()
+    return render(request, 'client_detail.html', {'this_client': this_client, 'this_user': this_user, 'all_trainers': all_trainers, 'all_profile_pics': all_profile_pics})
 
 
 def my_sessions_view(request, user_id: int):
-    this_trainer = Trainer.objects.get(id=user_id)
+    this_trainer = Trainer.objects.get(admin_user=request.user)
     my_sessions = Session.objects.filter(trainer=this_trainer).order_by('date')
     all_trainers = Trainer.objects.all()
 
@@ -136,5 +143,33 @@ def delete_user_media_view(request, usermediafile_id: int):
         num_notifications += 1
     if request.method == "POST":
         this_file.delete()
-        return HttpResponseRedirect(reverse('admin_homepage', args=[request.user.id]))
+        return HttpResponseRedirect(reverse('trainer_home', args=[request.user.id]))
     return render(request, 'delete_user_media.html', {'this_file': this_file, 'this_user': this_user, 'num_notifications': num_notifications})
+
+
+class TrainerEditView(UpdateView):
+    model = Trainer
+    template_name = 'edit_profile_form.html'
+    success_url = '/'
+    fields = [
+        'full_name',
+        'phone',
+        'cert',
+        'field_of_expertise',
+    ]
+
+    def get_context_data(self, **kwargs):
+        all_trainers = Trainer.objects.all()
+        user_notifications = Notification.objects.filter(
+            send_to=self.request.user).exclude(seen_by_user=True)
+        num_notifications = 0
+        for notification in user_notifications:
+            num_notifications += 1
+        context = super().get_context_data(**kwargs)
+        context['all_trainers'] = all_trainers
+        context['num_notifications'] = num_notifications
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
