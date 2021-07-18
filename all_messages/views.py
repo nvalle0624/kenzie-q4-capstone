@@ -18,6 +18,7 @@ def all_messages_view(request, user_id: int):
     all_recieved_messages = Message.objects.all().filter(
         send_to=this_user).order_by("-time_posted")
     all_messages = []
+    sorted(all_messages, key=lambda message: message.time_created)
     all_trainers = Trainer.objects.all()
 
     for item in all_sent_messages:
@@ -48,6 +49,8 @@ def all_messages_view(request, user_id: int):
                                                          'form2': form2,
                                                          'all_trainers': all_trainers,
                                                          'user_filter': user_filter[0],
+                                                         'all_sent_messages': all_sent_messages,
+                                                         'all_recieved_messages': all_recieved_messages,
                                                          })
     elif request.method == 'POST' and this_user.is_staff == False:
         form2 = ClientMessageForm(request.POST)
@@ -75,6 +78,8 @@ def all_messages_view(request, user_id: int):
                                                          'form2': form2,
                                                          'all_trainers': all_trainers,
                                                          'user_filter': user_filter[0],
+                                                         'all_sent_messages': all_sent_messages,
+                                                         'all_recieved_messages': all_recieved_messages,
                                                          })
             # return HttpResponseRedirect(reverse('all_messages_view', args=[this_user.id]))
 

@@ -1,29 +1,28 @@
-*{
-    box-sizing: border-box;
+* {
+  box-sizing: border-box;
 }
 
-body{
-    
-    margin:20px;
-    color: #F9E54E;
-    padding :20px;
-    background-image:url('banana_dog.jpeg') ;
+body {
+  margin: 20px;
+  color: #f9e54e;
+  padding: 20px;
+  background-image: url("banana_dog.jpeg");
 }
 
-form{
-    background-color: #5BBDC8;
-    padding:100px;
-    border-radius: 2%;
+form {
+  background-color: #5bbdc8;
+  padding: 100px;
+  border-radius: 2%;
 }
-h1{
-    color:#5BBDC8;
-    background-color:#F9E54E ;
-    border-radius: 10px;
-    padding-left:10px;
-    
-}
-
-td, th, a.btn{
-    background-color: white;
+h1 {
+  color: #5bbdc8;
+  background-color: #f9e54e;
+  border-radius: 10px;
+  padding-left: 10px;
 }
 
+td,
+th,
+a.btn {
+  background-color: white;
+}
