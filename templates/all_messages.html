@@ -15,7 +15,8 @@
 <br>
 <br>
   <form method="get" action=''>
-    {% csrf_token%} {{form.as_p}}
+    {% csrf_token%} 
+    {{form|crispy}}
     <input type="submit" value="Filter by Name" />
   </form>
 </div>
