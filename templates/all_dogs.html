@@ -1,17 +1,18 @@
-{% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% load static %}
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
 
-
-<h1>All Dogs</h1>
+<h1 style="background-color: #5bbdc8; color:#f9e54e;text-shadow: 2px 2px #ff0000;">All Dogs</h1>
 
   {% for dog in dogs %}
-  <div class="card-body">
+  <div class="card-body" style="align-items: center;">
     {% for pic in all_profile_pics %}
     {% if pic.dog == dog %}
-      <img src={{pic.image.url}} class="card-img-top" style="height: 12rem; width: 10rem;">
+      <img src={{pic.image.url}} class="card-img-top" style="height: 12rem; width: 10rem; border-radius: 10px;">
     {% endif %}
     {% endfor %}
-      <h5 class="card-title"><a href='/dog_profile/{{dog.id}}/'>{{dog.name}}</a></h5>
+      <h5 class="card-title"><a href='/dog_profile/{{dog.id}}/' style="background-color: #5bbdc8; color:#f9e54e;text-shadow: 2px 2px #ff0000;">{{dog.name}}</a></h5>
     </div>
   {% endfor %}
   {% endblock %}

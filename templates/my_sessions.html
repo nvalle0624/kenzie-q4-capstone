@@ -1,19 +1,30 @@
 
+{% load static %}
+
 {% block content %}
 {% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
-<h1>{{this_trainer}}'s Sessions</h1>
-<ul>
-  {% for session in my_sessions %}
-  <li><a href='/session/{{session.id}}'>{{session.activity_name}}</a>: {{session.date}}</li>
+<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
+
+<h1 style='background-color:#5bbdc8;color:#f9e54e;text-shadow: 2px 2px #ff0000;'>{{this_trainer}}'s Sessions</h1>
+
+<div class="card-body">
+
   <ul>
-    {% for dog in session.dogs_in_session.all %}
-      {% for report in my_reports %}
-        {% if dog == report.dog_name and session == report.session%}
-    <li><a href='/report_detail/{{report.id}}'>{{report}}</a>: {{session.date}}</li>
-        {% endif %}
+    {% for session in my_sessions %}
+    <li><a href='/session/{{session.id}}'>{{session.activity_name}}</a>: {{session.date}}</li>
+    <ul>
+      {% for dog in session.dogs_in_session.all %}
+        {% for report in my_reports %}
+          {% if dog == report.dog_name and session == report.session%}
+      <li><a href='/report_detail/{{report.id}}'>{{report}}</a>: {{session.date}}</li>
+          {% endif %}
+        {% endfor %}
       {% endfor %}
-    {% endfor %}
+    </ul>
+  {% endfor %}
   </ul>
-{% endfor %}
-</ul>
+
+
+</div>
+
 {% endblock %}

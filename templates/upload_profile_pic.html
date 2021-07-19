@@ -1,12 +1,11 @@
-
-
-
-
-
+{% load static %}
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
 {% load crispy_forms_tags %}
 
-{% block content %}
-{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+
+
 <h1>Update Profile Picture</h1>
 <form method='POST' action="" enctype="multipart/form-data">
   {% csrf_token %}

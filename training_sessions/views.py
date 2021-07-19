@@ -105,6 +105,11 @@ class CalendarView(generic.ListView):
         # Call the formatmonth method, which returns our calendar as a table
         html_cal = cal.formatmonth(withyear=True)
         context['calendar'] = mark_safe(html_cal)
+        user_notifications = Notification.objects.filter(
+            send_to=self.request.user).exclude(seen_by_user=True)
+        num_notifications = 0
+        for notification in user_notifications:
+            num_notifications += 1
 
         all_trainers = Trainer.objects.all()
 
@@ -112,6 +117,7 @@ class CalendarView(generic.ListView):
         context['next_month'] = next_month(d)
         context['this_user'] = this_user
         context['all_trainers'] = all_trainers
+        context['num_notifications'] = num_notifications
         return context
 
 
