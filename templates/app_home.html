@@ -9,30 +9,44 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>BananaDog</title>
   </head>
+  {% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
   <body>
 
-  <div class="container">
+
+
+
+  <div class="container" style="display: flex;flex-direction: column;align-items: center;">
         <div class="row justify-content-center">
           <div class="col-8">
-            <h1 class="mt-2">BananaDog</h1>
+            <h1 class="mt-2">BananaDog</h1>            
+            <div class='logo-image-div'>
+              <img src="{% static 'base/bananaDoglogo2.0.png' %}"  class='logo-image'>
+            </div>
             <hr class="mt-0 mb-4">
+          </div>
+        </div>
+            
+
+
 
 
     {% if request.user.is_authenticated and request.user.is_staff%}
-    <a href='/trainer_home/{{this_user.id}}'>Home</a>
+    button<a href='/trainer_home/{{this_user.id}}'>Home</a>
     {% elif request.user.is_authenticated and not request.user.is_staff %}
-    <a href='/client_home/{{this_user.id}}'>Home</a>
+    <a href='/client_home/{{this_user.id}}'><button style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' >Home</button></a>
     {% endif %}
 
     <div class="card" style="width: 18rem;">
       <div class="card-body">
         {% if request.user.is_authenticated %}
         <h5 class="card-title">Log Out</h5>
-        <a href='/logout/' class="btn btn-primary">Logout</a>
+        <a href='/logout/'><button style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' class="btn">Logout</button></a>
         {% elif not request.user.is_authenticated %}
         <h5 class="card-title">Log In</h5>
         <p class="card-text">Returning Trainers and Clients</p>
-        <a href='/login/' class="btn btn-primary">Login</a>
+        <a href='/login/'><button  style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' class="btn">Login</button></a>
         {% endif %}
       </div>
     </div>
@@ -42,9 +56,10 @@
       <div class="card-body">
         <h5 class="card-title">New Client?</h5>
         <p class="card-text">If you're new to BananaDog, start here</p>
-        <a href='/signup/' class="btn btn-primary">Client Sign Up</a>
+        <a href='/signup/'><button  class="btn" style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;'>Client Sign Up</button></a>
       </div>
     </div>
+  </div>
 
 
 
@@ -54,4 +69,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
+
+  {% endblock %}
 </html>

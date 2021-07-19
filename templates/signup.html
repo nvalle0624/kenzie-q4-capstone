@@ -1,13 +1,10 @@
-{% extends 'base.html' %}
-
+{% load static %}
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
 {% load crispy_forms_tags %}
 
-
-
-
-{% block content %}
-{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
-<button><a href="/">Home</a></button>
+<a href="/"><button class="btn" style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;'class="btn" >Home</button></a>
 <form method='post' action=''>
 
 

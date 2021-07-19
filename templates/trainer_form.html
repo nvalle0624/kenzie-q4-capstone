@@ -1,21 +1,13 @@
-<<<<<<< HEAD
-{% extends 'base.html' %} {% load crispy_forms_tags %} {% block content %}
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block content %} {%
 {%include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 
-=======
-
-
-
-{% extends 'base.html' %}
-
-{% load crispy_forms_tags %}
-
-{% block content %}
-{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
-
->>>>>>> 4c1961c2baf1db7159cb6c52e05b9638e1ab2448
 <div id="trainer_form_container">
-  <form id="trainer_form" method="post" action="" enctype = 'multiplart/form-data'>
+  <form
+    id="trainer_form"
+    method="post"
+    action=""
+    enctype="multiplart/form-data"
+  >
     {% csrf_token%} {{ form|crispy }}
     <input type="submit" value="submit" />
   </form>

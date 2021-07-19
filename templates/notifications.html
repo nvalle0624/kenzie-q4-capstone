@@ -1,16 +1,25 @@
-{% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% load static %}
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
+{% load crispy_forms_tags %}
 
 {% if all_notifications %}
-<h3>You have {{count}} new notification(s)</h3>
+<div class="card-body">
+  <h3 style='color: #f9e54e;'>You have <b style="color: black;">{{count}}</b> new notification(s)</h3>
+</div>
+
 {% for item in all_notifications %}
-<div style='border: 2px solid lightblue; width: 300px;'>
+<div class='card-body' style='border: 2px solid green;background-color: white;color: black;'>
   <p><b>{{item.sent_by}}</b></p>
 <p>{{item.text}}</p>
 <h5>{{item.time_posted}}</h5>
 </div>
 {% endfor %}
 {% else %}
-<h3>No new notifications</h3>
+<div class="card-body">
+  <h3 style='color: #f9e54e;;'>No new notifications</h3>
+</div>
+
 {% endif %}
 {% endblock %}

@@ -1,12 +1,16 @@
-{% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% load static %}
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
 <div>
-  <div class="card-body">
+  <div class="card-body" style='display: flex; flex-direction: row;'>
     {% for pic in all_profile_pics %}
     {% if this_client.user == pic.user %}
-      <img src={{pic.image.url}} class="card-img-top" style="height: 18rem; width: 14rem;">
+      <img src={{pic.image.url}} class="card-img-top" style="height: 18rem; width: 14rem; margin-right: 20px; border-radius: 20px;">
     {% endif %}
     {% endfor %}
+
+    <div>
     <h3 class="card-title">{{this_client.full_name}}</h3>
       
         <p class="card-text"><b>Email: </b>{{this_client.email}}</p>
@@ -15,16 +19,16 @@
         <br>
       
         <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button  style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             My Dogs
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {%for dog in this_client.dogs_owned.all%}
-            <a class="dropdown-item"  href='/dog_profile/{{dog.id}}'>{{dog.name}}</a>
+            <a class="dropdown-item"  style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' href='/dog_profile/{{dog.id}}'>{{dog.name}}</a>
             {%endfor%}
           </div>
         </div>
-
+      </div>
   </div>
 </div>
 {% endblock %}

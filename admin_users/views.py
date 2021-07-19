@@ -13,6 +13,7 @@ from media_files.forms import MediaForm
 from media_files.models import UserMediaFile, UserProfilePic
 from notifications.models import Notification
 from django.views.generic import UpdateView
+import os
 
 
 # Create your views here.
@@ -52,6 +53,11 @@ def trainer_home(request, user_id: int):
 @staff_member_required
 def add_admin_user(request):
     this_user = Trainer.objects.get(admin_user=request.user)
+    user_notifications = Notification.objects.filter(
+        send_to=request.user).exclude(seen_by_user=True)
+    num_notifications = 0
+    for notification in user_notifications:
+        num_notifications += 1
     all_trianers = Trainer.objects.all()
     if request.method == "POST":
         form = SignUpForm(request.POST)
@@ -65,7 +71,7 @@ def add_admin_user(request):
                 is_staff=True)
             return HttpResponseRedirect(reverse('login'))
     form = SignUpForm()
-    return render(request, "clientform.html", {"form": form, "this_user": this_user, 'all_trainers': all_trianers})
+    return render(request, "clientform.html", {"form": form, "this_user": this_user, 'all_trainers': all_trianers, 'num_notifications': num_notifications})
 
 
 @staff_member_required
@@ -143,6 +149,7 @@ def delete_user_media_view(request, usermediafile_id: int):
         num_notifications += 1
     if request.method == "POST":
         this_file.delete()
+        os.remove('.' + this_file.image.url)
         return HttpResponseRedirect(reverse('trainer_home', args=[request.user.id]))
     return render(request, 'delete_user_media.html', {'this_file': this_file, 'this_user': this_user, 'num_notifications': num_notifications})
 

@@ -9,7 +9,7 @@ from django.utils import timezone
 
 class Message(models.Model):
     text = models.TextField(max_length=140)
-    time_posted = models.DateTimeField(default=timezone.now)
+    time_posted = models.TimeField(default=timezone.now)
     sent_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='sent_by')
     send_to = models.ForeignKey(

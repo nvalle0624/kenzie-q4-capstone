@@ -1,32 +1,37 @@
-{% extends 'client_navbar.html' %}
+{% load static %}
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
+{% load crispy_forms_tags %}
 
 
 
 <div>
-  <div class="card-body">
+  <div class="card-body" style='display: flex; flex-direction: row;'>
     {% if profile_pic.image %}
-    <img  src="{{profile_pic.image.url}}" class="card-img-top" style="height: 18rem; width: 14rem;" >
+    <img  src="{{profile_pic.image.url}}" class="card-img-top" style="height: 18rem; width: 14rem; margin-right: 20px;" id='profile-image'>
     {% endif %}
-    <h3 class="card-title">{{client.full_name}}</h3>
-      
+      <div>
+        <h3 class="card-title">{{client.full_name}}</h3>
         <p class="card-text"><b>Email: </b>{{client.email}}</p>
         <p class="card-text"><b>Address:</b> {{client.address}}</p>
         <p class="card-text"><b>Phone:</b> {{client.phone_contact}}</p>
-        <a href='/client_edit/{{client.id}}/'>Edit profile</a>
+        <a href='/client_edit/{{client.id}}/' style="background-color: #5bbdc8; color:#f9e54e;text-shadow: 2px 2px #ff0000;">Edit profile</a>
         <br>
-        <a href='/upload_profile_pic/'>Update Profile Picture</a>
-      
-        <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a href='/upload_profile_pic/' style="background-color: #5bbdc8; color:#f9e54e;text-shadow: 2px 2px #ff0000;">Update Profile Picture</a>
+      </div>
+
+        <div class="dropdown" style="margin-left: 40px;">
+          <br>
+          <button style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             My Dogs
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {%for dog in client.dogs_owned.all%}
-            <a class="dropdown-item"  href='/dog_profile/{{dog.id}}'>{{dog.name}}</a>
+            <a style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' class="dropdown-item"  href='/dog_profile/{{dog.id}}'>{{dog.name}}</a>
             {%endfor%}
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/dog_form/"><b>Add a new Dog!</b></a>
+            <div class="dropdown-divider" style="border: 1px solid black;"></div>
+            <a class="dropdown-item" href="/dog_form/" style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;'><b>Add a new Dog!</b></a>
           </div>
         </div>
 
