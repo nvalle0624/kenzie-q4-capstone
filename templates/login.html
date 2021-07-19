@@ -1,11 +1,11 @@
-
-{% extends 'base.html' %}
-
-{% load crispy_forms_tags %}
-
-{% block content %}
+{% load static %}
 {% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
-<button><a href="/">Home</a></button>
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
+{% load crispy_forms_tags %}
+<a href="/"><button class="btn" style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;'>Home</button></a>
+
+<a  href='/signup/'><button class="btn" style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;'>Sign Up</button></a>
 <form method='post' action=''>
 <h2>LogIn</h2>
 
@@ -15,8 +15,7 @@
   
     <input type="submit" value="Submit">
   </form>
-  <br>
-  <button><a style='text-decoration: none;' href='/signup/'>Sign Up</a></button>
+  
 
   {% endblock %}
 

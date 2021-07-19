@@ -1,55 +1,63 @@
-{% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
-{% block content %}
 {% load static %}
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
+{% load crispy_forms_tags %}
 
 <div>
-  <div class="card-body"></div>
-  {% if profile_pic.image %}
-  <img  src="{{profile_pic.image.url}}" class="card-img-top" style="height: 18rem; width: 14rem;" >
-  {% endif %}
-  <h3 class="card-title">{{dog.name}}</h3>
-  {% if this_user.is_staff %}
-    <p><b>Owner: </b><a href='/client_detail/{{dog.owner.id}}'>{{dog.owner.full_name}}</a></p>
-    {% else %}
-    <p><b>Owner:</b> {{dog.owner.full_name}}</p>
+  <div class="card-body" style='display: flex; flex-direction: row;'>
+    {% if profile_pic.image %}
+      <img  src="{{profile_pic.image.url}}" class="card-img-top" style="height: 18rem; width: 14rem;margin-right: 20px;" id='profile-image'>
     {% endif %}
-    <p><b>Breed: </b>{{dog.breed}}</p>
-    <p><b>Age: </b>{{dog.age_years}}year(s) {{dog.age_months}}month(s)</p>
-    <p><b>Vet Name: </b>{{dog.vet_name}}</p>
-    <p><b>Vet Contact #: </b>{{dog.vet_number}}</p>
-    <p><b>Vet Address:</b> {{dog.vet_address}}</p>
-    <p><b>Speacial Needs:</b> {{dog.special_needs}}</p>
-    <p><b>Extra Notes:</b> {{dog.extra_notes}}</p>
-    <a href=/all_reports/{{dog.id}}>All Reports</a>
+
+    <div>
+      <h3 class="card-title">{{dog.name}}</h3>
+    {% if this_user.is_staff %}
+      <p><b>Owner: </b><a href='/client_detail/{{dog.owner.id}}'>{{dog.owner.full_name}}</a></p>
+    {% else %}
+      <p><b>Owner:</b> {{dog.owner.full_name}}</p>
+    {% endif %}
+      <p><b>Breed: </b>{{dog.breed}}</p>
+      <p><b>Age: </b>{{dog.age_years}}year(s) {{dog.age_months}}month(s)</p>
+      <p><b>Vet Name: </b>{{dog.vet_name}}</p>
+      <p><b>Vet Contact #: </b>{{dog.vet_number}}</p>
+      <p><b>Vet Address:</b> {{dog.vet_address}}</p>
+      <p><b>Special Needs:</b> {{dog.special_needs}}</p>
+      <p><b>Extra Notes:</b> {{dog.extra_notes}}</p>
+    <a href=/all_reports/{{dog.id}} style="background-color: #5bbdc8; color:#f9e54e;text-shadow: 2px 2px #ff0000;">All Reports</a>
     <br>
-    <a href="/dog_edit/{{dog.id}}/">Edit Dog Profile</a>
+    <a href="/dog_edit/{{dog.id}}/" style="background-color: #5bbdc8; color:#f9e54e;text-shadow: 2px 2px #ff0000;">Edit Dog Profile</a>
     <br>
-    <a href='/upload_dog_profile_pic/{{dog.id}}'>Update Profile Picture</a>
+    <a href='/upload_dog_profile_pic/{{dog.id}}' style="background-color: #5bbdc8; color:#f9e54e;text-shadow: 2px 2px #ff0000;">Update Profile Picture</a>
+  </div>
+</div>
+
     <br>
-  <br>
-  <br>
-  <h3>{{dog.name}}'s Media</h3>
-    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#photos-dropdown" aria-expanded="false" aria-controls="collapseExample">
+    <br>
+    <br>
+  <div class="card-body">
+    <h3>{{dog.name}}'s Media</h3>
+    <button style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' class="btn btn-primary" type="button" data-toggle="collapse" data-target="#photos-dropdown" aria-expanded="false" aria-controls="collapseExample">
       Photos
     </button>
-  <div class="collapse" id="photos-dropdown">
-    <div class="card card-body">
+    <div class="collapse" id="photos-dropdown">
+      <div class="card card-body">
       {% for image in image_files %}
       {% if '.jpg' in image.image.url %}
-      <div class="card" style="width: 10rem;">
+        <div class="card" style="width: 10rem;">
           <img class="card-img-top" src={{image.image.url}} style="height: 12rem;" >
           {% if not request.user.is_staff %}
-          <a class="btn btn-primary" href='/delete_dog_media/{{image.id}}'>Delete</a>
+          <a class="btn" href='/delete_dog_media/{{image.id}}'>Delete</a>
           {% endif %}
         </div>
-      </div>
       {% endif %}
       {% endfor %}
     </div>
   </div>
+
   <br>
   <br>
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#videos-dropdown" aria-expanded="false" aria-controls="collapseExample">
+  <button style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' class="btn btn-primary" type="button" data-toggle="collapse" data-target="#videos-dropdown" aria-expanded="false" aria-controls="collapseExample">
     Videos
   </button>
 <div class="collapse" id="videos-dropdown">

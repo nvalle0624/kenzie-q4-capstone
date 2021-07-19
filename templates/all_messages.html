@@ -1,6 +1,7 @@
-{% extends request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+{% load static %}
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 {% block content %}
-
+<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
 {% load crispy_forms_tags %}
 
 
@@ -27,10 +28,10 @@
 
 <div>
   
-<div style="display: flex;flex-direction: column; border: 2px dashed pink;float: left;width: 50%;">
+<div class='card-body' style="display: flex;flex-direction: column; border: 2px solid lightblue;float: left;width: 50%;">
   {% for message in all_messages %}
   {% if  message.sent_by == request.user and message.send_to == user_filter %}
-  <div style='border: 2px solid blue;'>
+  <div class='card-body' style='border: 2px solid blue;background-color: white;color: black;'>
   <p><b>From:</b> You
   <br> <b>To: </b>{{message.send_to}}</p>
   <p>{{message.text}}</p>
@@ -40,10 +41,10 @@
   {% endfor %}
 </div>
 
-<div style="display: flex;flex-direction: column; border: 2px dashed orange;float: right;width: 50%;">
+<div class='card-body' style="display: flex;flex-direction: column; border: 2px solid lightgreen;float: right;width: 50%;">
   {% for message in all_messages %}
   {%if message.send_to == request.user and message.sent_by == user_filter %}
-  <div style='border: 2px solid green;'>
+  <div class='card-body' style='border: 2px solid green;background-color: white;color: black;'>
   <p><b>From:</b> {{message.sent_by}}
   <br><b>To: </b>You</p>
   <p>{{message.text}}</p>

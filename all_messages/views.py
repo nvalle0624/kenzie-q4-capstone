@@ -72,6 +72,7 @@ def all_messages_view(request, user_id: int):
                 user_filter.append(data['send_to'])
             else:
                 user_filter.append(data['send_to'])
+
             return render(request, 'all_messages.html', {'all_messages': all_messages,
                                                          'num_notifications': num_notifications,
                                                          'form': form,
@@ -81,7 +82,6 @@ def all_messages_view(request, user_id: int):
                                                          'all_sent_messages': all_sent_messages,
                                                          'all_recieved_messages': all_recieved_messages,
                                                          })
-            # return HttpResponseRedirect(reverse('all_messages_view', args=[this_user.id]))
 
     elif request.method == 'GET' and this_user.is_staff == True:
         form = TrainerMessageFilterForm(request.GET)
@@ -93,7 +93,6 @@ def all_messages_view(request, user_id: int):
                 user_filter.append(data['name'])
             else:
                 user_filter.append(data['name'])
-            form2 = TrainerMessageForm()
             return render(request, 'all_messages.html', {'all_messages': all_messages,
                                                          'num_notifications': num_notifications,
                                                          'form': form,
@@ -128,11 +127,11 @@ def all_messages_view(request, user_id: int):
                                                          'all_trainers': all_trainers,
                                                          'user_filter': user_filter[0],
                                                          })
-            return HttpResponseRedirect(reverse('all_messages_view', args=[this_user.id]))
 
     if this_user.is_staff != True:
         form = ClientMessageFilterForm()
         form2 = ClientMessageForm()
+
         return render(request, 'all_messages.html', {'all_messages': all_messages,
                                                      'num_notifications': num_notifications,
                                                      'all_trainers': all_trainers,

@@ -5,6 +5,7 @@ from notifications.models import Notification
 from media_files.models import UserProfilePic, DogProfilePic
 from media_files.forms import MediaForm
 from dogs.models import Dog
+import os
 
 
 def upload_profile_pic(request):
@@ -18,6 +19,7 @@ def upload_profile_pic(request):
         if UserProfilePic.objects.filter(user=request.user):
             profile_pic = UserProfilePic.objects.get(user=request.user)
             profile_pic.delete()
+            os.remove('.' + profile_pic.image.url)
         image_form = MediaForm(request.POST, request.FILES)
         if image_form.is_valid():
             data = image_form.cleaned_data
@@ -47,6 +49,7 @@ def upload_dog_profile_pic(request, dog_id: int):
         if DogProfilePic.objects.filter(dog=this_dog):
             profile_pic = DogProfilePic.objects.get(dog=this_dog)
             profile_pic.delete()
+            os.remove('.' + profile_pic.image.url)
         image_form = MediaForm(request.POST, request.FILES)
         if image_form.is_valid():
             data = image_form.cleaned_data

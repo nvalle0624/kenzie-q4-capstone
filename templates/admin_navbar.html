@@ -1,3 +1,5 @@
+
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -13,41 +15,44 @@
   <body>
 <div class="container">
       <div class="row justify-content-center">
-        <div class="col-8">
-          <h1 class="mt-2">BananaDog</h1>
+        <div class="col-8" >
+          <h1 class="mt-2" style='color: #5bbdc8;font-size: xx-large;text-shadow: 2px 2px #ff0000;' >BananaDog</h1>
+          <div class='logo-image-div'>
+            <img src="{% static 'base/bananaDoglogo2.0.png' %}"  class='logo-image'>
+          </div>
           <hr class="mt-0 mb-4">
           </div>
           </div>
 
-<div class='adminnav_container'>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand active" href="/trainer_home/{{request.user.id}}">{{request.user.username}}<span class="sr-only">(current)</span></a>
+<div class='adminnav_container' style='border-radius: 10px;background-color: #f9e54e;width: 100%;'>
+    <nav class="navbar navbar-expand-lg navbar-light bg" style='border-radius: 10px;'>
+        <a style='color: #5bbdc8;font-size: xx-large;text-shadow: 2px 2px #ff0000;' class="navbar-brand active" href="/trainer_home/{{request.user.id}}">{{request.user.username}}<span class="sr-only">(current)</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/calendar/">Calendar</a> 
-            <a class="nav-item nav-link" href="/all_messages/{{request.user.id}}">Messages</a>
-            <a class="nav-item nav-link" href="/notifications/{{request.user.id}}">Notifications<span class="badge badge-light">{{num_notifications}}</span></a>
-            <a class="nav-item nav-link" href='/my_sessions/{{request.user.id}}'>My Sessions</a>
-            <a class="nav-item nav-link" href='/session_form/'>New Session</a>
-            <a class="nav-item nav-link " href="/all_clients/">All Clients</a>
+            <a class="nav-item nav-link" href="/calendar/" style='color: #5bbdc8;font-size: large;text-shadow: 1px 1px #ff0000;'>Calendar</a> 
+            <a class="nav-item nav-link" href="/all_messages/{{request.user.id}}" style='color: #5bbdc8;font-size: large;text-shadow: 1px 1px #ff0000;'>Messages</a>
+            <a class="nav-item nav-link" href="/notifications/{{request.user.id}}" style='color: #5bbdc8;font-size: large;text-shadow: 1px 1px #ff0000;'>Notifications<span class="badge badge-light">{{num_notifications}}</span></a>
+            <a class="nav-item nav-link" href='/my_sessions/{{request.user.id}}' style='color: #5bbdc8;font-size: large;text-shadow: 1px 1px #ff0000;'>My Sessions</a>
+            <a class="nav-item nav-link" href='/session_form/' style='color: #5bbdc8;font-size: large;text-shadow: 1px 1px #ff0000;'>New Session</a>
+            <a class="nav-item nav-link " href="/all_clients/" style='color: #5bbdc8;font-size: large;text-shadow: 1px 1px #ff0000;'>All Clients</a>
             <div class="dropdown">
-              <a class="nav-item nav-link dropdown-toggle" href="/all_trainers/" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                All Trainers
+              <a class="nav-item nav-link dropdown-toggle" href="/all_trainers/" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style='color: #5bbdc8;font-size: x-large;text-shadow: 2px 2px #ff0000;'>
+                Trainers
               </a>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="/all_trainers/">All Trainers</a>
-                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/all_trainers/" style='color: #5bbdc8;font-size: large;text-shadow: 1px 1px #ff0000;'>All Trainers</a>
+                <div class="dropdown-divider" style="border: 1px solid black;"></div>
                 {% for trainer in all_trainers %}
-                <a class="dropdown-item" href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a>
+                <a style='color: #5bbdc8;font-size: large;text-shadow: 1px 1px #ff0000;' class="dropdown-item" href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a>
                 {% endfor %}
               </div>
             </div>
-            <a class="nav-item nav-link" href="/all_dogs/">All Dogs</a>
-            <a class="nav-item nav-link" href="/add_admin_user/">Add Trainer</a>
-            <a class="nav-item nav-link" href="/logout/">Logout</a>
+            <a class="nav-item nav-link" href="/all_dogs/" style='color: #5bbdc8;font-size: large;text-shadow: 1px 1px #ff0000;'>All Dogs</a>
+            <a class="nav-item nav-link" href="/add_admin_user/" style='color: #5bbdc8;font-size: large;text-shadow: 1px 1px #ff0000;'>Add Trainer</a>
+            <a class="nav-item nav-link" href="/logout/" style='color: #5bbdc8;font-size: large;text-shadow: 1px 1px #ff0000;'>Logout</a>
             <a class="nav-item nav-link" href="/user_edit/{{request.user.id}}/">Change Login</a>
           </div>
         </div>

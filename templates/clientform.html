@@ -1,7 +1,8 @@
 
 
 {% load crispy_forms_tags %}
-
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
 
 {% block content %}
 {% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
