@@ -11,7 +11,7 @@
     <h3>Write New Message</h3>
     {% csrf_token %}
     {{ form2|crispy }}
-    <input type='submit' value='Send'>
+    <input class='btn btn-primary' style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;'  type='submit' value='Send'>
   </form>
 
 
@@ -21,7 +21,7 @@
     <h2>Messages: </h2>
     {% csrf_token%} 
     {{form|crispy}}
-    <input type="submit" value="Filter by Name" />
+    <input class='btn btn-primary' style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;'  type="submit" value="Filter by Name" />
   </form>
 </div>
 
@@ -31,7 +31,7 @@
 <div class='card-body' style="display: flex;flex-direction: column; border: 2px solid lightblue;float: left;width: 50%;">
   {% for message in all_messages %}
   {% if  message.sent_by == request.user and message.send_to == user_filter %}
-  <div class='card-body' style='border: 2px solid blue;background-color: white;color: black;'>
+  <div class='card-body' style='border: 2px solid blue;background-color: white;color: black;text-shadow: none;'>
   <p><b>From:</b> You
   <br> <b>To: </b>{{message.send_to}}</p>
   <p>{{message.text}}</p>
@@ -44,7 +44,7 @@
 <div class='card-body' style="display: flex;flex-direction: column; border: 2px solid lightgreen;float: right;width: 50%;">
   {% for message in all_messages %}
   {%if message.send_to == request.user and message.sent_by == user_filter %}
-  <div class='card-body' style='border: 2px solid green;background-color: white;color: black;'>
+  <div class='card-body' style='border: 2px solid green;background-color: white;color: black;text-shadow: none;'>
   <p><b>From:</b> {{message.sent_by}}
   <br><b>To: </b>You</p>
   <p>{{message.text}}</p>

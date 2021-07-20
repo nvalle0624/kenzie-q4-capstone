@@ -13,13 +13,16 @@
   padding: 10px;
   text-align: center;
   font-size: 18px;
-  background-color: #5bbdc8;
+  background-color: #f9e54e;
+  color: #5bbdc8;
 }
 
 .calendar td {
   width: 200px;
   height: 150px;
   padding: 20px 0px 0px 5px;
+  background-color: #f9e54e;
+  color: #5bbdc8;
 }
 
 .month {

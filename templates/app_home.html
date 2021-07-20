@@ -33,9 +33,9 @@
 
 
     {% if request.user.is_authenticated and request.user.is_staff%}
-    <a href='/trainer_home/{{this_user.id}}'><button style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' >Home</button></a>
+    <a class='btn btn-primary' style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' href='/trainer_home/{{this_user.id}}'>Home</a>
     {% elif request.user.is_authenticated and not request.user.is_staff %}
-    <a href='/client_home/{{this_user.id}}'><button style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' >Home</button></a>
+    <a class='btn btn-primary' style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' href='/client_home/{{this_user.id}}'>Home</a>
     {% endif %}
 
     <div class="card" style="width: 18rem;">

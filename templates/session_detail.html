@@ -27,7 +27,7 @@
 <b>Trainers</b>
 {% for trainer in session.trainer.all  %}
 <li>
-  <a href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a>
+  <a href='/trainer_detail/{{trainer.id}}' style="background-color: #5bbdc8; color:#f9e54e;text-shadow: 2px 2px #ff0000;">{{trainer.full_name}}</a>
 </li>
 {% endfor %}
 <br>
@@ -36,7 +36,7 @@
 <br>
 {% for dog in dogs_assigned %}
 <li>
-  <a href='/dog_profile/{{dog.id}}'>{{dog.name}}</a>
+  <a href='/dog_profile/{{dog.id}}' style="background-color: #5bbdc8; color:#f9e54e;text-shadow: 2px 2px #ff0000;">{{dog.name}}</a>
 </li>
 <br>
 {% endfor %}
