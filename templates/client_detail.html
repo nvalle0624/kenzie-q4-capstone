@@ -4,11 +4,12 @@
 <link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
 <div>
   <div class="card-body" style='display: flex; flex-direction: row;'>
-    {% for pic in all_profile_pics %}
-    {% if this_client.user == pic.user %}
+    
+    {% if this_client.profile_pic %}
       <img src={{pic.image.url}} class="card-img-top" style="height: 18rem; width: 14rem; margin-right: 20px; border-radius: 20px;">
+      {% else %}
+      <img  src="/static/base/default_profile_image.jpg/" class="card-img-top" style="height: 18rem; width: 14rem; margin-right: 20px;" id='profile-image'>
     {% endif %}
-    {% endfor %}
 
     <div>
     <h3 class="card-title">{{this_client.full_name}}</h3>
