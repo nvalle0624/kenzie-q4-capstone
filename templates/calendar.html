@@ -7,10 +7,10 @@
 {% block content %}
 {% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 <div class="clearfix">
-	<a class="btn left" style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
-	<a class="btn right" style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
+	<a class="btn left" style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;box-shadow: 4px 5px #5bbdc8;' href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
+	<a class="btn right" style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;box-shadow: 4px 5px #5bbdc8;' href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
 </div>
-
-
+<div class="card-body">
 {{ calendar }}
+</div>
 {% endblock %}

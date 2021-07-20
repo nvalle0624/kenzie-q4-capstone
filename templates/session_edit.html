@@ -3,13 +3,8 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
 {% load crispy_forms_tags %}
-
-<h>Edit Session</h>
-<br>
-<br>
-<br>
-
 <form method='post' action="">
+  <h1>Edit Session</h1>
   {% csrf_token %}
   {{form.as_p}}
   <input type='submit' value='Submit'>
