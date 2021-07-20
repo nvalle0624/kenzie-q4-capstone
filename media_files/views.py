@@ -1,10 +1,12 @@
 
 # Create your views here.
+from admin_users.models import Trainer
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from notifications.models import Notification
 from media_files.models import UserProfilePic, DogProfilePic
 from media_files.forms import MediaForm
 from dogs.models import Dog
+from users.models import Client
 import os
 
 
@@ -27,11 +29,18 @@ def upload_profile_pic(request):
                 user=request.user,
                 image=data['media'],
             )
+            request.user
             homepage = ''
             if request.user.is_staff:
                 homepage = 'trainer_home'
+                this_user = Trainer.objects.get(admin_user=request.user)
+                this_user.profile_pic = new_image
+                this_user.save()
             else:
                 homepage = 'client_home'
+                this_user = Client.objects.get(user=request.user)
+                this_user.profile_pic = new_image
+                this_user.save()
             return HttpResponseRedirect(reverse(homepage, args=[request.user.id]))
     image_form = MediaForm()
     return render(request, 'upload_profile_pic.html', {'image_form': image_form, 'num_notifications': num_notifications})
@@ -57,6 +66,8 @@ def upload_dog_profile_pic(request, dog_id: int):
                 dog=this_dog,
                 image=data['media'],
             )
+            this_dog.profile_pic = new_image
+            this_dog.save()
             homepage = ''
             if request.user.is_staff:
                 homepage = 'trainer_home'

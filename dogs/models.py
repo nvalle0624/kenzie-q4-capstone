@@ -21,8 +21,8 @@ class Dog(models.Model):
     booked_sessions = models.ManyToManyField(
         to="training_sessions.Session", default=None, blank=True)
     no_match_dogs = models.ManyToManyField('self', default=None, blank=True)
-    # reports = models.ForeignKey(
-    #     to="training_sessions.Report", on_delete=models.CASCADE, blank=True, default=None)
+    profile_pic = models.ForeignKey(
+        to='media_files.DogProfilePic', blank=True, null=True, on_delete=models.CASCADE, related_name='dog_profile_pic')
 
     def __str__(self):
         return self.name

@@ -6,11 +6,11 @@
 <br>
 <div>
   <div class="card-body">
-    {% for pic in all_profile_pics %}
-    {% if this_trainer.admin_user == pic.user %}
-      <img src={{pic.image.url}} class="card-img-top" style="height: 18rem; width: 14rem;">
+    {% if this_trainer.profile_pic %}
+      <img src={{this_trainer.profile_pic.image.url}} class="card-img-top" style="height: 18rem; width: 14rem; border-radius: 20px;">
+      {% else %}
+      <img  src="/static/base/default_profile_image.jpg/" class="card-img-top" style="height: 18rem; width: 14rem;border-radius: 20px;">
     {% endif %}
-    {% endfor %}
     <h3 class="card-title">{{this_trainer.full_name}}</h3>
         <p class="card-text"><b>Role:</b> {{this_trainer.field_of_expertise}}</p>
         <p class="card-text"><b>Certifications:</b> {{this_trainer.cert}}</p>
