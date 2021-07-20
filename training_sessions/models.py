@@ -7,7 +7,7 @@ from admin_users.models import Trainer
 # calendar: https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html
 
 # Create your models here.
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 from calendar import HTMLCalendar
 
 
@@ -24,10 +24,11 @@ class Calendar(HTMLCalendar):
         d = ''
         for session in sessions_per_day:
             # each session added links to session view
-            d += f'<li> <a href="/session/{session.id}">{session.activity_name}</a> </li>'
+            time_format = session.start_time.strftime('%I:%M:%p')
+            d += f'<li> <a style="color:#f9e54e;text-shadow: 1px 1px #ff0000;text-decoration: underline;" href="/session/{session.id}">{session.activity_name}: {time_format}</a> </li>'
 
         if day != 0:
-            return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
+            return f"<td style='background-color: #5bbdc8; color:#f9e54e;text-shadow: 2px 2px #ff0000;'><span class='date'>{day}</span><ul> {d} </ul></td>"
         return '<td></td>'
 
     # formats a week as a tr

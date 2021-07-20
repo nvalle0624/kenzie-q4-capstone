@@ -24,12 +24,6 @@ h1 {
   width: 100%;
 }
 
-td,
-th,
-a.btn {
-  background-color: white;
-}
-
 /*Nick-  new css that can be chaged/removed */
 .card-body {
   background-color: #5bbdc8;

@@ -12,8 +12,8 @@
 
     <div>
       <h3 class="card-title">{{dog.name}}</h3>
-    {% if this_user.is_staff %}
-      <p><b>Owner: </b><a href='/client_detail/{{dog.owner.id}}'>{{dog.owner.full_name}}</a></p>
+    {% if request.user.is_staff %}
+      <p><b>Owner: </b><a  style="background-color: #5bbdc8; color:#f9e54e;text-shadow: 2px 2px #ff0000;" href='/client_detail/{{dog.owner.id}}'>{{dog.owner.full_name}}</a></p>
     {% else %}
       <p><b>Owner:</b> {{dog.owner.full_name}}</p>
     {% endif %}
@@ -31,9 +31,6 @@
     <a href='/upload_dog_profile_pic/{{dog.id}}' style="background-color: #5bbdc8; color:#f9e54e;text-shadow: 2px 2px #ff0000;">Update Profile Picture</a>
   </div>
 </div>
-
-    <br>
-    <br>
     <br>
   <div class="card-body">
     <h3>{{dog.name}}'s Media</h3>

@@ -38,6 +38,7 @@ def all_messages_view(request, user_id: int):
         form2 = ClientMessageForm()
         if form.is_valid():
             data = form.cleaned_data
+
             if len(user_filter) > 0:
                 user_filter.pop(0)
                 user_filter.append(data['name'])

@@ -1,13 +1,15 @@
+
 {% load static %}
-{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+
 {% block content %}
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 <link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
 {% load static %}
 
-<h1>All Reports:{{this_dog.name}}</h1>
+<h1 style='background-color:#5bbdc8;color:#f9e54e;text-shadow: 2px 2px #ff0000;'>All Reports:{{this_dog.name}}</h1>
 
 
-
+<div class="card-body">
 <ul>
 {% for report in all_reports %}
 <li>Session:<a href='/session/{{report.session.id}}/'>{{report.session.activity_name}}</a></li>
@@ -18,4 +20,5 @@
 <a href='/report_detail/{{report.id}}/'>Detail</a>
 {% endfor %}
 </ul>
+</div>
 {% endblock %}

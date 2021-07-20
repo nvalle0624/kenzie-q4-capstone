@@ -1,17 +1,20 @@
 {% load static %}
-{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
+
 {% block content %}
+{% include request.user.is_staff|yesno:'admin_navbar.html,client_navbar.html' %}
 <link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
 {% load crispy_forms_tags %}
 
-<h1>Report Detail for {{this_dog.name}}</h1>
-
-<p>Session:<a href='/session/{{this_report.session.id}}/'>{{this_report.session.activity_name}}</a></li></p>
+<div class="card-body">
+<h1 style='background-color:#5bbdc8;color:#f9e54e;text-shadow: 2px 2px #ff0000;'>Report Detail for {{this_dog.name}}</h1>
+</div>
+<br>
+<div class="card-body">
+<p>Session: <a style="background-color: #5bbdc8; color:#f9e54e;text-shadow: 2px 2px #ff0000;" href='/session/{{this_report.session.id}}/'>{{this_report.session.activity_name}}</a></li></p>
 <p>Report submitted at:{{this_report.time_created}}</p>
 <p>Notes: {{this_report.notes}}</p>
-
-
-
+</div>
+<br>
 {% if request.user.is_staff %}
 <div >
   <form method="post" action="">
