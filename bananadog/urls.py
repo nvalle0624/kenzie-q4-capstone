@@ -14,13 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-
+from django.conf.urls import handler404, handler500, handler403, handler400
 
 from dogs import views as dog_views
 from all_messages import views as message_views
 from notifications import views as notifications_view
 from users import views as user_views
+
 from media_files import views as media_views
+
 
 from django.urls import path, include
 
@@ -49,4 +51,7 @@ urlpatterns = [
          media_views.upload_profile_pic, name='upload_profile_pic'),
     path('upload_dog_profile_pic/<int:dog_id>',
          media_views.upload_dog_profile_pic, name='upload_dog_profile_pic'),
+
 ]
+handler404 = user_views.err_404
+handler500 = user_views.err_500

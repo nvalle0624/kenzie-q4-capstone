@@ -18,6 +18,16 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
+def err_404(request, *args, **kwargs):
+
+    return render(request, 'err400.html', {})
+
+
+def err_500(request, *args, **kwargs):
+
+    return render(request, 'err500.html', {})
+
+
 def app_home(request):
     if request.user.is_authenticated and request.user.is_staff:
         this_user = Trainer.objects.get(admin_user=request.user)
