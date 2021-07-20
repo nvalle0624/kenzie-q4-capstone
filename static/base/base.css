@@ -65,7 +65,7 @@ h1 {
   border-radius: 20px;
 }
 
-.err_container{
+.err_container {
   border: 1px soid red;
   display: flex;
   justify-content: center;
