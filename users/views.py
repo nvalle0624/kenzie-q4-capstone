@@ -20,12 +20,12 @@ from django.contrib.auth.decorators import login_required
 
 def err_404(request, *args, **kwargs):
 
-    return render(request, 'err400.html', {})
+    return render(request, 'generic_err.html', {})
 
 
 def err_500(request, *args, **kwargs):
 
-    return render(request, 'err500.html', {})
+    return render(request, 'generic_err.html', {})
 
 
 def app_home(request):
