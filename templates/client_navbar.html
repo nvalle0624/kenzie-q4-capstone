@@ -23,7 +23,7 @@
           </div>
           </div>
     {% if request.user.is_authenticated and not request.user.is_staff %}
-<div class='navcontainer' style='border-radius: 10px;background-color: #f9e54e;'>
+<div class='navcontainer' style='border-radius: 10px;background-color: #f9e54e;box-shadow: 6px 7px #5bbdc8;'>
     <nav class="navbar navbar-expand-lg navbar-light bg"  style='border-radius: 10px;'>
       <a style='color: #5bbdc8;font-size: xx-large;text-shadow: 2px 2px #ff0000;' class="navbar-brand active" href="/client_home/{{request.user.id}}">{{request.user.username}}<span class="sr-only">(current)</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
