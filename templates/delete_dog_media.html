@@ -8,7 +8,7 @@
 <form action="" method='POST'>
   {% csrf_token %}
 <a href="/dog_profile/{{this_dog.id}}">Cancel</a>
-<input type="submit" name="submit" value="Delete">
+<input class='btn btn-primary' style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;'  type="submit" name="submit" value="Delete">
 </form>
 
 {% endblock %}

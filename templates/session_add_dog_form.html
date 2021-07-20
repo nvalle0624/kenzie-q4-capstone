@@ -3,23 +3,25 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
 {% load crispy_forms_tags %}
+<br>
+<a class="btn btn-primary" style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' href='/session/{{this_session.id}}' >Session Details</a>
+<br>
+<br>
+<h1 class="card-body" style='background-color:#5bbdc8;color:#f9e54e;text-shadow: 2px 2px #ff0000;'>Add dogs to session</h1>
+<br>
 
-<button><a href='/session/{{this_session.id}}' >Session Details</a></button>
-
-<h1>Add dogs to session</h1>
 
 
 
-<h3>Select one or more dogs to add to this session:</h3>
-
-{% if this_session.full %}
+<form method='post' action="">
+  <h3>Select one or more dogs to add to this session:</h3>
+  {% csrf_token %}
+  {{form.as_p}}
+  {% if this_session.full %}
 <p>{{slots_full_message}}</p>
 {% endif %}
 
-<form method='post' action="">
-  {% csrf_token %}
-  {{form.as_p}}
-  <input type='submit' value='Submit'>
+  <input class="btn btn-primary" style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' type='submit' value='Submit'>
 </form>
 {% endblock %}
 

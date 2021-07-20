@@ -10,6 +10,8 @@
   <div class="card-body" style='display: flex; flex-direction: row;'>
     {% if profile_pic.image %}
     <img  src="{{profile_pic.image.url}}" class="card-img-top" style="height: 18rem; width: 14rem; margin-right: 20px;" id='profile-image'>
+    {% else %}
+    <img  src="/static/base/default_profile_image.jpg/" class="card-img-top" style="height: 18rem; width: 14rem; margin-right: 20px;" id='profile-image'>
     {% endif %}
       <div>
         <h3 class="card-title">{{client.full_name}}</h3>

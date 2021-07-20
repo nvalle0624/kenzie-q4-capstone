@@ -8,6 +8,8 @@
   <div class="card-body" style='display: flex; flex-direction: row;'>
     {% if profile_pic.image %}
       <img  src="{{profile_pic.image.url}}" class="card-img-top" style="height: 18rem; width: 14rem;margin-right: 20px;" id='profile-image'>
+      {% else %}
+      <img  src="/static/base/dog_default_pic.jpg" class="card-img-top" style="height: 18rem; width: 14rem; margin-right: 20px;" id='profile-image'>
     {% endif %}
 
     <div>
@@ -41,10 +43,10 @@
       <div class="card card-body">
       {% for image in image_files %}
       {% if '.jpg' in image.image.url %}
-        <div class="card" style="width: 10rem;">
+        <div class="card" style="width: 10rem;border-radius: 5px;">
           <img class="card-img-top" src={{image.image.url}} style="height: 12rem;" >
           {% if not request.user.is_staff %}
-          <a class="btn" href='/delete_dog_media/{{image.id}}'>Delete</a>
+          <a class='btn btn-primary' style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' href='/delete_dog_media/{{image.id}}'>Delete</a>
           {% endif %}
         </div>
       {% endif %}
@@ -62,12 +64,12 @@
     {% for file in image_files %}
     {% if '.m4v' in file.image.url %}
     <p>{{file.file}}</p>
-    <div class="card" style="width: 18rem;">
+    <div class="card" style="width: 18rem;border-radius: 5px;">
       <video class="card-img-top" controls >
         <source src={{file.image.url}} type="video/mp4">
       </video>
       {% if not request.user.is_staff %}
-      <a class="btn btn-primary" href='/delete_dog_media/{{file.id}}'>Delete</a>
+      <a class="btn btn-primary" style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' href='/delete_dog_media/{{file.id}}'>Delete</a>
       {% endif %}
     </div>
   </div>
@@ -75,7 +77,9 @@
     {% endfor %}
   </div>
 </div>
+<br>
 <form method='POST' action="" enctype="multipart/form-data">
+  <h3 style='text-shadow: 1px 1px #ff0000;'>Upload Media</h3>
   {% csrf_token %}
   {{image_form.as_p}}
   <input type='submit' value='Upload'>

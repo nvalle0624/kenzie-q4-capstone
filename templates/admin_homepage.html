@@ -8,6 +8,8 @@
     <div class="card-body" style='display: flex; flex-direction: row;'>
       {% if profile_pic.image %}
       <img  src="{{profile_pic.image.url}}" class="card-img-top" style="height: 18rem; width: 14rem; margin-right: 20px;" id='profile-image'>
+      {% else %}
+      <img  src="/static/base/default_profile_image.jpg/" class="card-img-top" style="height: 18rem; width: 14rem; margin-right: 20px;" id='profile-image'>
       {% endif %}
           <div>
           <h3 class="card-title">{{trainer.full_name}}</h3>
@@ -59,13 +61,15 @@
           {% endfor %}
         </div>
       </div>
-
-      <form method='POST' action="" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{image_form.as_p}}
-        <input type='submit' value='Upload'>
-      </form>
     </div>
+    <br>
+    <form method='POST' action="" enctype="multipart/form-data">
+      <h3 style='text-shadow: 1px 1px #ff0000;'>Upload Media</h3>
+      {% csrf_token %}
+      {{image_form.as_p}}
+      <input class='btn btn-primary' style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' type='submit' value='Upload'>
+    </form>
+  </div>
 </div>
-</div>
+
 {% endblock %}
