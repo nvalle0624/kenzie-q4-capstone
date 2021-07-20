@@ -7,14 +7,20 @@
 <div style="display:flex;flex-direction:row; flex-wrap: wrap;">
 {% for trainer in all_trainers %}
 <div class="card-body" style="flex: none;width: 50%;">
-{% for pic in all_profile_pics %}
+  {% if trainer.profile_pic %}
+    {% for pic in all_profile_pics %}
 <br>
-{% if pic.user == trainer.admin_user %}
-  <img src={{pic.image.url}} class="card-img-top" style="height: 12rem; width: 10rem;border-radius: 20px;margin-left: 30%;">
-{% endif %}
-{% endfor %}
-  <h5 class="card-title"><a style='color:#f9e54e;text-shadow: 1px 1px #ff0000;margin-left: 39%;' href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a></h5>
-<p style="margin-left: 44%;">{{trainer.field_of_expertise}}</p>
+        {% if pic.user == trainer.admin_user %}
+          <img src={{pic.image.url}} class="card-img-top" style="height: 12rem; width: 10rem;border-radius: 20px;margin-left: 30%;">
+        {% endif %}
+    {% endfor %}
+  {% else %}
+    
+  <img  src="/static/base/default_profile_image.jpg/" class="card-img-top" style="height: 12rem; width: 10rem;border-radius: 20px;margin-left: 30%;" id='profile-image'>
+  {% endif %}
+
+  <h5 class="card-title"><a style='color:#f9e54e;text-shadow: 1px 1px #ff0000;margin-left: 37%;' href='/trainer_detail/{{trainer.id}}'>{{trainer.full_name}}</a></h5>
+<p style="margin-left: 40%;">{{trainer.field_of_expertise}}</p>
 </div>
 <br>
 {% endfor %}

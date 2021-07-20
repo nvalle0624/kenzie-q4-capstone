@@ -7,11 +7,13 @@
 
   {% for dog in dogs %}
   <div class="card-body" style="align-items: center;">
-    {% for pic in all_profile_pics %}
-    {% if pic.dog == dog %}
-      <img src={{pic.image.url}} class="card-img-top" style="height: 12rem; width: 10rem; border-radius: 10px;">
+    {% if dog.profile_pic %}
+      <img src={{dog.profile_pic.image.url}} class="card-img-top" style="height: 12rem; width: 10rem; border-radius: 20px;">
+      {% else %}
+      <img  src="/static/base/dog_default_pic.jpg/" class="card-img-top" style="height: 12rem; width: 10rem; border-radius: 20px;">
+
     {% endif %}
-    {% endfor %}
+
       <h5 class="card-title"><a href='/dog_profile/{{dog.id}}/' style="background-color: #5bbdc8; color:#f9e54e;text-shadow: 2px 2px #ff0000;">{{dog.name}}</a></h5>
     </div>
     <br>
