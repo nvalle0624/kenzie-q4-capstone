@@ -64,3 +64,11 @@ h1 {
 #profile-image {
   border-radius: 20px;
 }
+
+.err_container{
+  border: 1px soid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
