@@ -135,6 +135,9 @@ class DogEditView(UpdateView):
         'no_match_dogs',
     ]
 
+    def get_success_url(self):
+        return f'/dog_profile/{self.get_object().id}'
+
     def get_context_data(self, **kwargs):
         all_trainers = Trainer.objects.all()
         user_notifications = Notification.objects.filter(
