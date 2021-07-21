@@ -22,7 +22,7 @@ class Dog(models.Model):
         to="training_sessions.Session", default=None, blank=True)
     no_match_dogs = models.ManyToManyField('self', default=None, blank=True)
     profile_pic = models.ForeignKey(
-        to='media_files.DogProfilePic', blank=True, null=True, on_delete=models.CASCADE, related_name='dog_profile_pic')
+        to='media_files.DogProfilePic', blank=True, null=True, on_delete=models.SET_NULL, related_name='dog_profile_pic')
 
     def __str__(self):
         return self.name

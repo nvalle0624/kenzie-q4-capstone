@@ -19,7 +19,7 @@ class Client(models.Model):
         to="dogs.Dog", blank=True)
 
     profile_pic = models.ForeignKey(
-        to='media_files.UserProfilePic', blank=True, null=True, on_delete=models.CASCADE)
+        to='media_files.UserProfilePic', blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.full_name

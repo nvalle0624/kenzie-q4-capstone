@@ -22,7 +22,7 @@ class Trainer(models.Model):
     field_of_expertise = models.CharField(
         max_length=11, choices=EXPERTISE_CHOICES)
     profile_pic = models.ForeignKey(
-        to='media_files.UserProfilePic', blank=True, null=True, on_delete=models.CASCADE)
+        to='media_files.UserProfilePic', blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.full_name

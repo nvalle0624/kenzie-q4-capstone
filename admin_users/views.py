@@ -165,6 +165,9 @@ class TrainerEditView(UpdateView):
         'field_of_expertise',
     ]
 
+    def get_success_url(self):
+        return f'/trainer_home/{self.get_object().id}'
+
     def get_context_data(self, **kwargs):
         all_trainers = Trainer.objects.all()
         user_notifications = Notification.objects.filter(

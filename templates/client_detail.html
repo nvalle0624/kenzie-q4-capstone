@@ -6,7 +6,7 @@
   <div class="card-body" style='display: flex; flex-direction: row;'>
     
     {% if this_client.profile_pic %}
-      <img src={{pic.image.url}} class="card-img-top" style="height: 18rem; width: 14rem; margin-right: 20px; border-radius: 20px;">
+      <img src={{this_client.profile_pic.image.url}} class="card-img-top" style="height: 18rem; width: 14rem; margin-right: 20px; border-radius: 20px;">
       {% else %}
       <img  src="/static/base/default_profile_image.jpg/" class="card-img-top" style="height: 18rem; width: 14rem; margin-right: 20px;" id='profile-image'>
     {% endif %}
