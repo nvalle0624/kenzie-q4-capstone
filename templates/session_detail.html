@@ -4,14 +4,16 @@
 <link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
 {% load crispy_forms_tags %}
 {% if request.user.is_staff %}
+<br>
 <a href='/session_edit/{{session.id}}'><button style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' class='btn btn-primary'>Edit Session</button></a>
-{% else %}
+{% elif not request.user.is_staff and not session.completed %}
+<br>
 <a href='/session_add_dog/{{session.id}}'><button style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' class='btn btn-primary'>Book this session</button></a>
 {% endif %}
 
 
 
-
+<br>
 <div class="card-body">
         <h4 class="card-title">Activity:</b> {{session.activity_name}}</h4>
         <p class="card-text"><b>Date:</b> {{session.date}}</p>
@@ -82,11 +84,11 @@ end:{{session.end}}
   {% csrf_token %}
   {{form.as_p}}
   {% if not session.start_check and not session.completed %}
-  <input type='submit' value='Start'>
+  <input style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' class='btn btn-primary' type='submit' value='Start'>
   {% elif session.start_check and not session.completed %}
-  <input type='submit' value='End'>
+  <input style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' class='btn btn-primary' type='submit' value='End'>
   {% elif session.completed and not session.report_submitted %}
-  <input type='submit' value='Submit Reports'>
+  <input style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;' class='btn btn-primary' type='submit' value='Submit Reports'>
   {% endif %}
 </form>
 </div>

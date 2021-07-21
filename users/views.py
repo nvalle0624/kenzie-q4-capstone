@@ -1,11 +1,11 @@
 
 from django.shortcuts import render, HttpResponseRedirect, reverse
 
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 
 from users.forms import LoginForm, SignUpForm, ClientForm
 from django.views.generic import UpdateView
-
+from django import forms
 from users.models import Client
 from notifications.models import Notification
 
@@ -176,6 +176,9 @@ class ClientEditView(UpdateView):
         'phone_contact'
     ]
 
+    def get_success_url(self):
+        return f'/client_home/{self.get_object().id}'
+
     def get_context_data(self, **kwargs):
         all_trainers = Trainer.objects.all()
         user_notifications = Notification.objects.filter(
@@ -196,12 +199,16 @@ class ClientEditView(UpdateView):
 class UserEditView(UpdateView):
     model = User
     template_name = 'edit_profile_form.html'
-    success_url = '/'
     fields = [
         'username',
-        'password',
         'email',
     ]
+
+    def get_success_url(self):
+        if self.get_object().is_staff:
+            return f'/trainer_home/{self.get_object().id}'
+        else:
+            return f'/client_home/{self.get_object().id}'
 
     def get_context_data(self, **kwargs):
         all_trainers = Trainer.objects.all()
@@ -217,4 +224,15 @@ class UserEditView(UpdateView):
 
     def form_valid(self, form):
         form.save()
+        if self.get_object().is_staff:
+            this_trainer = Trainer.objects.get(
+                admin_user=self.get_object())
+            data = form.cleaned_data
+            this_trainer.email = data['email']
+            this_trainer.save()
+        else:
+            this_client = Client.objects.get(user=self.get_object())
+            data = form.cleaned_data
+            this_client.email = data['email']
+            this_client.save()
         return super().form_valid(form)

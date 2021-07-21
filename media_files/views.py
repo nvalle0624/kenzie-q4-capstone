@@ -68,11 +68,6 @@ def upload_dog_profile_pic(request, dog_id: int):
             )
             this_dog.profile_pic = new_image
             this_dog.save()
-            homepage = ''
-            if request.user.is_staff:
-                homepage = 'trainer_home'
-            else:
-                homepage = 'client_home'
-            return HttpResponseRedirect(reverse(homepage, args=[request.user.id]))
+            return HttpResponseRedirect(reverse('dog_profile_view', args=[int(this_dog.id)]))
     image_form = MediaForm()
     return render(request, 'upload_profile_pic.html', {'image_form': image_form, 'num_notifications': num_notifications, 'all_notifications': all_notifications})
