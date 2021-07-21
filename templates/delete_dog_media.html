@@ -4,8 +4,17 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
 {% load static %}
-<p>Are you sure you want to delete this media? <img src={{this_file.image.url}} style="width: 200px ;height: 200px;" ></p>
+
 <form action="" method='POST'>
+  <p>Are you sure you want to delete this media?
+    {% if '.jpg' in this_file.image.url %}
+    <img src={{this_file.image.url}} style="width: 200px ;height: 200px;" >
+  {% elif '.m4v' in this_file.image.url %}
+  <video class="card-img-top" style="width: 200px ;height: 200px;" controls >
+    <source style="width: 200px ;height: 200px;" src={{this_file.image.url}} type="video/mp4">
+  </video>
+  {% endif %}
+  </p>
   {% csrf_token %}
 <a href="/dog_profile/{{this_dog.id}}">Cancel</a>
 <input class='btn btn-primary' style='background-color:#f9e54e;color:#5bbdc8;text-shadow: 1px 1px #ff0000;'  type="submit" name="submit" value="Delete">
