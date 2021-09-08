@@ -12,11 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.utils.timezone import timezone
 from datetime import datetime
-
-
 from datetime import datetime, date, timedelta, timezone
-
-from django.http import HttpResponse, request
 from django.views import generic
 from django.utils.safestring import mark_safe
 import calendar
@@ -43,6 +39,13 @@ def session_view(request, session_id: int):
     open_slots = this_session.max_slots - num_of_dogs
     this_session.slots_available = open_slots
     this_session.save()
+
+# slot price increased by 1.1 for every slot taken
+# only increased on boooking
+    # if open_slots < this_session.max_slots:
+    #     for i in range(this_session.max_slots - open_slots):
+    #         this_session.slot_price *= 1.1
+    #         this_session.save()
 
     if request.method == 'POST':
         form = SessionTriggerForm(request.POST)
@@ -73,6 +76,11 @@ def session_view(request, session_id: int):
                 this_session.save()
         form = SessionTriggerForm()
         return HttpResponseRedirect(reverse('calendar'))
+    # price adjustment needs to be rounded
+    this_session.adjusted_slot_price = this_session.slot_price
+    for dog in dogs_assigned:
+        this_session.adjusted_slot_price *= 1.1
+        this_session.save()
     return render(request, 'session_detail.html', {'session': this_session, 'dogs_assigned': dogs_assigned, 'this_user': this_user, 'num_of_dogs': num_of_dogs, 'open_slots': open_slots})
 
 
@@ -187,6 +195,7 @@ class SessionEditView(UserPassesTestMixin, UpdateView):
         'end_time',
         'completed',
         'max_slots',
+        'slot_price',
         'notes',
     ]
 
@@ -209,6 +218,11 @@ class SessionEditView(UserPassesTestMixin, UpdateView):
         return self.request.user.is_staff
 
     def form_valid(self, form):
+        # grab model instance from form view, adjust slot price on submisison
+        # dogs = self.instance.dogs_in_session
+        # self.instance.adjusted_slot_price = self.instance.slot_price
+        # for dog in len(dogs):
+        #     self.instance.adjusted_slot_price *= 1.1
         form.save()
         return super().form_valid(form)
 
