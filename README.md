@@ -29,3 +29,5 @@ python manage.py createsuperuser ->follow the steps to create an admin user (acc
 database directly at http://localhost:8000/admin )
 
 python manage.py runserver ->this will start the server at http://localhost:8000/
+
+\*This code is shared for demonstration purposes only
