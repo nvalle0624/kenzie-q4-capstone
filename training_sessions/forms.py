@@ -26,6 +26,7 @@ class SessionForm(forms.ModelForm):
             'end_time',
             'completed',
             'max_slots',
+            'slot_price',
             'notes',
         ]
 
