@@ -77,10 +77,10 @@ def session_view(request, session_id: int):
         form = SessionTriggerForm()
         return HttpResponseRedirect(reverse('calendar'))
     # price adjustment needs to be rounded
-    this_session.adjusted_slot_price = this_session.slot_price
-    for dog in dogs_assigned:
-        this_session.adjusted_slot_price *= 1.1
-        this_session.save()
+    # this_session.adjusted_slot_price = this_session.slot_price
+    # for dog in dogs_assigned:
+    #     this_session.adjusted_slot_price *= 1.1
+    #     this_session.save()
     return render(request, 'session_detail.html', {'session': this_session, 'dogs_assigned': dogs_assigned, 'this_user': this_user, 'num_of_dogs': num_of_dogs, 'open_slots': open_slots})
 
 
@@ -195,7 +195,7 @@ class SessionEditView(UserPassesTestMixin, UpdateView):
         'end_time',
         'completed',
         'max_slots',
-        'slot_price',
+        # 'slot_price',
         'notes',
     ]
 
