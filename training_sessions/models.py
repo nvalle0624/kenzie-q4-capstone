@@ -69,7 +69,7 @@ class Session(models.Model):
     slots_available = models.IntegerField(default=0, editable=False)
     full = models.BooleanField(default=False)
     notes = models.TextField(blank=True)
-    slot_price = models.IntegerField(blank=True, null=True)
+    # slot_price = models.IntegerField(blank=True, null=True)
     adjusted_slot_price = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
